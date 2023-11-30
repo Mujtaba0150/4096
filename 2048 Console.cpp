@@ -1,9 +1,6 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-#include <fcntl.h>
-#include <termios.h>
-#include <unistd.h>
 
 using namespace std;
 
