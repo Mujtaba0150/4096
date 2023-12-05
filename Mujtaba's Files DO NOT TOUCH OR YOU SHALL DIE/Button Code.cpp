@@ -60,7 +60,7 @@ public:
             return 1;
         }
         else
-        return 0;
+            return 0;
     }
 
 private:
@@ -70,43 +70,43 @@ private:
 
 int main()
 {
+    // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
+    Button button("Don't Click Me!", Vector2f(200, 50), 24, Color::Blue, Color::White); // Creating an object of the Button class named "button" and specifying its properties
 
-    Button button("Don't Click Me!", Vector2f(200, 50), 24, Color::Blue, Color::White);
-    Font font;
+    Font font; // Making an object of the Font class called "font"
+    font.loadFromFile("/usr/share/fonts/truetype/tlwg/Laksaman.ttf"); // Loading the font for the button
+    button.setFont(font); // Setting the font to the button
 
-    font.loadFromFile("/usr/share/fonts/truetype/tlwg/Laksaman.ttf");
-    button.setFont(font);
-
-    button.setPosition(Vector2f(100, 100));
+    button.setPosition(Vector2f(100, 100)); // Setting button position
 
     VideoMode screenSize = VideoMode::getDesktopMode(); // Get screen dimensions
     RenderWindow window(screenSize, "SFML");            // Create a window using the screen dimensions
 
-    window.setFramerateLimit(60);
-    // CircleShape shape(100.f);
+    window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
     while (window.isOpen())
     {
-        Event event;
-        while (window.pollEvent(event))
+        Event event; // Making an object "event" of the Event class
+        
+        while (window.pollEvent(event)) // Loop to manage when something changes in the console
         {
             if (event.type == Event::Closed)
             {
                 window.close();
             }
 
-            else if (event.type == Event ::MouseButtonPressed)
+            else if (event.type == Event ::MouseButtonPressed) // Checking if mouse was clicked
             {
 
-                if (event.mouseButton.button == Mouse ::Left)
+                if (event.mouseButton.button == Mouse ::Left) // Checking if the left mouse button was clicked
                 {
 
                     Vector2f mousePos = window.mapPixelToCoords(Mouse ::getPosition(window));
 
-                    if (button.buttonClicked(window))
+                    if (button.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
 
-                        window.close();
+                        window.close(); // Closes the window
                     }
                 }
             }
@@ -114,7 +114,6 @@ int main()
 
         window.clear();
 
-        // Draw your button here
         button.drawTo(window);
 
         window.display();
