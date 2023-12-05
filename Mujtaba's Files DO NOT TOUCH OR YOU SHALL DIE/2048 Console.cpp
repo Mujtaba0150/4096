@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
+#include <conio.h>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ int arr[4][4] = {0};
 
 void mergeTiles()
 {
-    
+
     for (int r = 0; r < 4; ++r)
     {
         for (int c = 0; c < 4 - 1; ++c)
@@ -65,7 +66,7 @@ void moveTilesRight()
 
 void moveTilesDown()
 {
-    
+
     for (int c = 0; c < 4; c++)
     {
         int row = 3;
@@ -86,7 +87,7 @@ void moveTilesDown()
 
 void moveTilesUp()
 {
-    
+
     for (int c = 0; c < 4; c++)
     {
         int row = 0;
@@ -98,8 +99,7 @@ void moveTilesUp()
                 if (row != r)
                 {
                     arr[r][c] = 0;
-                }
-                ;
+                };
             }
         }
     }
@@ -161,7 +161,29 @@ int main()
 
     grid();
 
-    rightArrow();
-    system("clear");
-    grid();
+    while (true)
+    {
+
+        if (kbhit())
+        {
+
+            char key = _getch();
+
+            if ((key == 'w') || (key = 72) || (key == 'W'))
+                upArrow();
+
+            else if ((key == 's') || (key == 80) || (key == 'S'))
+                downArrow();
+
+            else if ((key == 'a') || (key == 75) || (key == 'A'))
+                leftArrow();
+
+            else if ((key == 'd') || (key == 77) || (key == 'D'))
+                rightArrow();
+
+            system("cls");
+            grid();
+
+        }
+    }
 }
