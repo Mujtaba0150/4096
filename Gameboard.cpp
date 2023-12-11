@@ -1,16 +1,149 @@
-#include <iostream>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
+#include<string>
+#include<iostream>
+
+
 
 
 using namespace std;
 using namespace sf;
 
+int arr[4][4] = {0};
+
+void mergeTiles()
+{
+
+    for (int r = 0; r < 4; ++r)
+    {
+        for (int c = 0; c < 4 - 1; ++c)
+        {
+            if (arr[r][c] == arr[r][c + 1])
+            {
+                arr[r][c] *= 2;
+                arr[r][c + 1] = 0;
+            }
+        }
+    }
+}
+
+void moveTilesLeft()
+{
+
+    for (int r = 0; r < 4; ++r)
+    {
+        int column = 0;
+        for (int c = 0; c < 4; c++)
+        {
+            if (arr[r][c] != 0)
+            {
+                arr[r][column] = arr[r][c];
+                if (column != c)
+                {
+                    arr[r][c] = 0;
+                }
+                column++;
+            }
+        }
+    }
+}
+
+void moveTilesRight()
+{
+    for (int r = 0; r < 4; r++)
+    {
+        int column = 3;
+        for (int c = 3; c >= 0; c--)
+        {
+            if (arr[r][c] != 0)
+            {
+                arr[r][column] = arr[r][c];
+                if (column != c)
+                {
+                    arr[r][c] = 0;
+                }
+                column--;
+            }
+        }
+    }
+}
+
+void moveTilesDown()
+{
+
+    for (int c = 0; c < 4; c++)
+    {
+        int row = 3;
+        for (int r = 3; r >= 0; r--)
+        {
+            if (arr[r][c] != 0)
+            {
+                arr[row][c] = arr[r][c];
+                if (row != r)
+                {
+                    arr[r][c] = 0;
+                }
+                row--;
+            }
+        }
+    }
+}
+
+void moveTilesUp()
+{
+
+    for (int c = 0; c < 4; c++)
+    {
+        int row = 0;
+        for (int r = 0; r < 4; r++)
+        {
+            if (arr[r][c] != 0)
+            {
+                arr[row][c] = arr[r][c];
+                if (row != r)
+                {
+                    arr[r][c] = 0;
+                };
+            }
+        }
+    }
+}
+
+void upArrow()
+{
+    moveTilesUp();
+    mergeTiles();
+    moveTilesUp();
+}
+
+void leftArrow()
+{
+    moveTilesLeft();
+    mergeTiles();
+    moveTilesLeft();
+}
+
+void rightArrow()
+{
+    moveTilesRight();
+    mergeTiles();
+    moveTilesRight();
+}
+
+void downArrow()
+{
+    moveTilesDown();
+    mergeTiles();
+    moveTilesDown();
+}
+
 class Button
 {
 public:
-    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor)
+    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset=1)
+    :offset(offset)
     {
         text.setString(t);
         text.setFillColor(textColor);
@@ -35,19 +168,15 @@ public:
     {
         button.setPosition(pos);
 
-        float xPos = (pos.x + button.getLocalBounds().width /2) - (text.getLocalBounds().width/2 );
-        float yPos = (pos.y + button.getLocalBounds().height /2) - (text.getLocalBounds().height/2 );
-        text.setPosition(xPos, yPos);
-    }
-     void leftalign(sf::Vector2f pos,float textOffset)
-    {
-        button.setPosition(pos);
+        float xPos = pos.x + (button.getLocalBounds().width - text.getLocalBounds().width) / 2;
+        float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
 
-         float xPos = pos.x + textOffset; // Set the x-position with the offset
-         float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
+        // Adjusts the vertical position by subtracting a specific offset (e.g., 5.0f)
+        yPos -= offset; // You can adjust this offset as needed
+
         text.setPosition(xPos, yPos);
-        
     }
+
     Vector2f getPosition() const
     {
         return button.getPosition();
@@ -77,31 +206,38 @@ public:
 private:
     sf::RectangleShape button;
     sf::Text text;
+    float offset;
 };
 int main(){
+     srand(time(0));
+
+    int r = rand() % 4;
+    int c = rand() % 4;
+
+    arr[r][c] = 2;
 
     //Assigning Variables.
-    Button name("2048",Vector2f(150,100),50,Color::Transparent,Color::Black);
+    Button name("2048",Vector2f(150,100),50,Color::Transparent,Color::Black,6);
     Button boardbackground(" ",Vector2f(395,440),90,Color(105,105,105),Color::Cyan);
-    Button b1(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b2(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b3(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b4(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b5(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b6(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b7(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b8(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b9(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b10(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b11(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b12(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b13(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b14(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b15(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button b16(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
-    Button newgame("New Game",Vector2f(100,45),15,Color(160,82,45),Color(188,143,143));
-    Button score("Score\n2334",Vector2f(100,55),14,Color(160,82,45),Color(188,143,143));
-    Button best("Best\n 2356",Vector2f(100,55),14,Color(160,82,45),Color(188,143,143));
+    Button b1(to_string(arr[0][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b2(to_string(arr[0][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b3(to_string(arr[0][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b4(to_string(arr[0][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b5(to_string(arr[1][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b6(to_string(arr[1][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b7(to_string(arr[1][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b8(to_string(arr[1][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b9(to_string(arr[2][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b10(to_string(arr[2][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b11(to_string(arr[2][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b12(to_string(arr[2][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b13(to_string(arr[3][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);  
+    Button b14(to_string(arr[3][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b15(to_string(arr[3][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button b16(to_string(arr[3][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
+    Button newgame("New Game",Vector2f(100,45),15,Color(160,82,45),Color::White);
+    Button score("Score\n2334",Vector2f(100,55),14,Color(160,82,45),Color::White);
+    Button best("Best\n 2356",Vector2f(100,55),14,Color(160,82,45),Color::White);
 
 
     
@@ -184,7 +320,27 @@ int main(){
                     }
                 }
             }
-        }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Up) {
+                    upArrow();
+                } else if (event.key.code == sf::Keyboard::Down) {
+                    downArrow();
+                } else if (event.key.code == sf::Keyboard::Left) {
+                    leftArrow();
+                } else if (event.key.code == sf::Keyboard::Right) {
+                    rightArrow();
+                }
+        }  if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
+                    upArrow();
+                } else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
+                    downArrow();
+                } else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
+                    leftArrow();
+                } else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
+                    rightArrow();
+                }
+            }  
     window.clear(Color::White);
     name.drawTo(window);
     boardbackground.drawTo(window);
@@ -211,6 +367,7 @@ int main(){
     
     window.display();
 
+    }
     }
     return 0;
     
