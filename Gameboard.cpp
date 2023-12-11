@@ -240,6 +240,12 @@ int main()
     int c = rand() % 4;
 
     arr[r][c] = 2;
+    srand(time(0));
+
+     r = rand() % 4;
+     c = rand() % 4;
+
+    arr[2][2] = 2;
 
     // Assigning Variables.
     Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
