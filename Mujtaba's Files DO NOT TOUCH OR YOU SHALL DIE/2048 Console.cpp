@@ -5,19 +5,56 @@
 
 using namespace std;
 
-int arr[4][4] = {0};
+int arr[4][4] = { 0 };
 
-void mergeTiles()
+void mergeTilesud()
 {
+    for (int c = 0; c < 4; ++c)
+    {
+        for (int r = 0; r < 4 - 1; ++r)
+        {
+            if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
+            {
+                arr[r][c] *= 2;
+                arr[r + 1][c] = 0;
+            }
+        }
+    }
+}
 
+
+void mergeTilesrl()
+{
     for (int r = 0; r < 4; ++r)
     {
         for (int c = 0; c < 4 - 1; ++c)
         {
-            if (arr[r][c] == arr[r][c + 1])
+            if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
             {
                 arr[r][c] *= 2;
                 arr[r][c + 1] = 0;
+            }
+        }
+    }
+}
+
+
+
+void moveTilesRight()
+{
+    for (int r = 0; r < 4; r++)
+    {
+        int column = 3;
+        for (int c = 3; c >= 0; c--)
+        {
+            if (arr[r][c] != 0)
+            {
+                arr[r][column] = arr[r][c];
+                if (column != c)
+                {
+                    arr[r][c] = 0;
+                }
+                column--;
             }
         }
     }
@@ -43,27 +80,26 @@ void moveTilesLeft()
         }
     }
 }
-
-void moveTilesRight()
+void moveTilesUp()
 {
-    for (int r = 0; r < 4; r++)
+
+    for (int c = 0; c < 4; c++)
     {
-        int column = 3;
-        for (int c = 3; c >= 0; c--)
+        int row = 0;
+        for (int r = 0; r < 4; r++)
         {
             if (arr[r][c] != 0)
             {
-                arr[r][column] = arr[r][c];
-                if (column != c)
+                arr[row][c] = arr[r][c];
+                if (row != r)
                 {
                     arr[r][c] = 0;
-                }
-                column--;
+                };
+                row++;
             }
         }
     }
 }
-
 void moveTilesDown()
 {
 
@@ -85,51 +121,32 @@ void moveTilesDown()
     }
 }
 
-void moveTilesUp()
-{
-
-    for (int c = 0; c < 4; c++)
-    {
-        int row = 0;
-        for (int r = 0; r < 4; r++)
-        {
-            if (arr[r][c] != 0)
-            {
-                arr[row][c] = arr[r][c];
-                if (row != r)
-                {
-                    arr[r][c] = 0;
-                };
-            }
-        }
-    }
-}
 
 void upArrow()
 {
     moveTilesUp();
-    mergeTiles();
+    mergeTilesud();
     moveTilesUp();
 }
 
 void leftArrow()
 {
     moveTilesLeft();
-    mergeTiles();
+    mergeTilesrl();
     moveTilesLeft();
 }
 
 void rightArrow()
 {
     moveTilesRight();
-    mergeTiles();
+    mergeTilesrl();
     moveTilesRight();
 }
 
 void downArrow()
 {
     moveTilesDown();
-    mergeTiles();
+    mergeTilesud();
     moveTilesDown();
 }
 
@@ -158,18 +175,19 @@ int main()
     int c = rand() % 4;
 
     arr[r][c] = 2;
+    arr[2][2] = 2;
 
     grid();
 
     while (true)
     {
 
-        if (kbhit())
+        if (_kbhit())
         {
 
             char key = _getch();
 
-            if ((key == 'w') || (key = 72) || (key == 'W'))
+            if ((key == 'w') || (key == 72) || (key == 'W'))
                 upArrow();
 
             else if ((key == 's') || (key == 80) || (key == 'S'))
