@@ -2,11 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
-#include<string>
-#include<iostream>
-
-
-
+#include <string>
+#include <iostream>
+#include<iomanip>
 
 using namespace std;
 using namespace sf;
@@ -138,12 +136,38 @@ void downArrow()
     mergeTiles();
     moveTilesDown();
 }
+void handleMovement(sf::Keyboard::Key key) {
+    if (key == sf::Keyboard::W || key == sf::Keyboard::Up) {
+        upArrow();
+
+                    
+                    moveTilesUp();
+                    mergeTiles();
+                    moveTilesUp();
+    } else if (key == sf::Keyboard::S || key == sf::Keyboard::Down) {
+        downArrow();
+         moveTilesDown();
+                    mergeTiles();
+                    moveTilesDown();
+    } else if (key == sf::Keyboard::A || key == sf::Keyboard::Left) {
+        leftArrow();
+         moveTilesLeft();
+                    mergeTiles();
+                    moveTilesLeft();
+    } else if (key == sf::Keyboard::D || key == sf::Keyboard::Right) {
+        rightArrow();
+         moveTilesRight();
+                    mergeTiles();
+                    moveTilesRight();
+    }
+}
+
 
 class Button
 {
 public:
-    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset=1)
-    :offset(offset)
+    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
+        : offset(offset)
     {
         text.setString(t);
         text.setFillColor(textColor);
@@ -208,41 +232,39 @@ private:
     sf::Text text;
     float offset;
 };
-int main(){
-     srand(time(0));
+int main()
+{
+    srand(time(0));
 
     int r = rand() % 4;
     int c = rand() % 4;
 
     arr[r][c] = 2;
 
-    //Assigning Variables.
-    Button name("2048",Vector2f(150,100),50,Color::Transparent,Color::Black,6);
-    Button boardbackground(" ",Vector2f(395,440),90,Color(105,105,105),Color::Cyan);
-    Button b1(to_string(arr[0][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b2(to_string(arr[0][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b3(to_string(arr[0][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b4(to_string(arr[0][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b5(to_string(arr[1][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b6(to_string(arr[1][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b7(to_string(arr[1][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b8(to_string(arr[1][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b9(to_string(arr[2][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b10(to_string(arr[2][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b11(to_string(arr[2][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b12(to_string(arr[2][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b13(to_string(arr[3][0]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);  
-    Button b14(to_string(arr[3][1]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b15(to_string(arr[3][2]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button b16(to_string(arr[3][3]),Vector2f(90,100),90,Color(169,169,169),Color::Cyan,16.0f);
-    Button newgame("New Game",Vector2f(100,45),15,Color(160,82,45),Color::White);
-    Button score("Score\n2334",Vector2f(100,55),14,Color(160,82,45),Color::White);
-    Button best("Best\n 2356",Vector2f(100,55),14,Color(160,82,45),Color::White);
+    // Assigning Variables.
+    Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+    Button boardbackground(" ", Vector2f(395, 440), 90, Color(105, 105, 105), Color::Cyan);
+    Button b1(to_string(arr[0][0]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b2(to_string(arr[0][1]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b3(to_string(arr[0][2]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b4(to_string(arr[0][3]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b5(to_string(arr[1][0]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b6(to_string(arr[1][1]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b7(to_string(arr[1][2]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b8(to_string(arr[1][3]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b9(to_string(arr[2][0]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b10(to_string(arr[2][1]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b11(to_string(arr[2][2]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b12(to_string(arr[2][3]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b13(to_string(arr[3][0]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b14(to_string(arr[3][1]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b15(to_string(arr[3][2]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button b16(to_string(arr[3][3]), Vector2f(90, 100), 90, Color(169, 169, 169), Color::Cyan, 16.0f);
+    Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+    Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+    Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
 
-
-    
-
-    //Applying fonts...
+    // Applying fonts...
     Font font;
     font.loadFromFile("LEMONMILK-Regular.otf");
     name.setFont(font);
@@ -266,30 +288,29 @@ int main(){
     newgame.setFont(font);
     score.setFont(font);
     best.setFont(font);
-    
-    //Assigning the positions...
-    boardbackground.setPosition(Vector2f(370,200));
-    name.setPosition(Vector2f(370,70));
-    b1.setPosition(Vector2f(378,210));
-    b2.setPosition(Vector2f(474,210));
-    b3.setPosition(Vector2f(570,210));
-    b4.setPosition(Vector2f(666,210));
-    b5.setPosition(Vector2f(378,316));
-    b6.setPosition(Vector2f(474,316));
-    b7.setPosition(Vector2f(570,316));
-    b8.setPosition(Vector2f(666,316));
-    b9.setPosition(Vector2f(378,422));
-    b10.setPosition(Vector2f(474,422));
-    b11.setPosition(Vector2f(570,422));
-    b12.setPosition(Vector2f(666,422));
-    b13.setPosition(Vector2f(378,528));
-    b14.setPosition(Vector2f(474,528));
-    b15.setPosition(Vector2f(570,528));
-    b16.setPosition(Vector2f(666,528));
-    newgame.setPosition(Vector2f(666,150));
-    score.setPosition(Vector2f(566,50));
-    best.setPosition(Vector2f(672,50));
-    
+
+    // Assigning the positions...
+    boardbackground.setPosition(Vector2f(370, 200));
+    name.setPosition(Vector2f(370, 70));
+    b1.setPosition(Vector2f(378, 210));
+    b2.setPosition(Vector2f(474, 210));
+    b3.setPosition(Vector2f(570, 210));
+    b4.setPosition(Vector2f(666, 210));
+    b5.setPosition(Vector2f(378, 316));
+    b6.setPosition(Vector2f(474, 316));
+    b7.setPosition(Vector2f(570, 316));
+    b8.setPosition(Vector2f(666, 316));
+    b9.setPosition(Vector2f(378, 422));
+    b10.setPosition(Vector2f(474, 422));
+    b11.setPosition(Vector2f(570, 422));
+    b12.setPosition(Vector2f(666, 422));
+    b13.setPosition(Vector2f(378, 528));
+    b14.setPosition(Vector2f(474, 528));
+    b15.setPosition(Vector2f(570, 528));
+    b16.setPosition(Vector2f(666, 528));
+    newgame.setPosition(Vector2f(666, 150));
+    score.setPosition(Vector2f(566, 50));
+    best.setPosition(Vector2f(672, 50));
 
     VideoMode screenSize = VideoMode::getDesktopMode();
     RenderWindow window(screenSize, "Game Board");
@@ -297,6 +318,7 @@ int main(){
     while (window.isOpen())
     {
         Event event; // Making an object "event" of the Event class
+        window.clear();
 
         while (window.pollEvent(event)) // Loop to manage when something changes in the console
         {
@@ -319,58 +341,67 @@ int main(){
                         window.close(); // Closes the window
                     }
                 }
+            }  if (event.type == sf::Event::KeyPressed) {
+                handleMovement(event.key.code);
             }
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::Up) {
-                    upArrow();
-                } else if (event.key.code == sf::Keyboard::Down) {
-                    downArrow();
-                } else if (event.key.code == sf::Keyboard::Left) {
-                    leftArrow();
-                } else if (event.key.code == sf::Keyboard::Right) {
-                    rightArrow();
-                }
-        }  if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow();
-                } else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow();
-                } else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow();
-                } else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow();
-                }
-            }  
-    window.clear(Color::White);
-    name.drawTo(window);
-    boardbackground.drawTo(window);
-    b1.drawTo(window);
-    b2.drawTo(window);
-    b3.drawTo(window);
-    b4.drawTo(window);
-    b5.drawTo(window);
-    b6.drawTo(window);
-    b7.drawTo(window);
-    b8.drawTo(window);
-    b9.drawTo(window);
-    b10.drawTo(window);
-    b11.drawTo(window);
-    b12.drawTo(window);
-    b13.drawTo(window);
-    b14.drawTo(window);
-    b15.drawTo(window);
-    b16.drawTo(window);
-    newgame.drawTo(window);
-    score.drawTo(window);
-    best.drawTo(window);
-    
-    
-    window.display();
 
-    }
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
+                {
+                    upArrow();
+                    moveTilesUp();
+                    mergeTiles();
+                    moveTilesUp();
+                }
+                else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
+                {
+                    downArrow();
+                    moveTilesDown();
+                    mergeTiles();
+                    moveTilesDown();
+                }
+                else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
+                {
+                    leftArrow();
+                    moveTilesLeft();
+                    mergeTiles();
+                    moveTilesLeft();
+                }
+                else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
+                {
+                    rightArrow();
+                    moveTilesRight();
+                    mergeTiles();
+                    moveTilesRight();
+                }
+            }
+        }
+
+        window.clear(Color::White);
+        name.drawTo(window);
+        boardbackground.drawTo(window);
+        b1.drawTo(window);
+        b2.drawTo(window);
+        b3.drawTo(window);
+        b4.drawTo(window);
+        b5.drawTo(window);
+        b6.drawTo(window);
+        b7.drawTo(window);
+        b8.drawTo(window);
+        b9.drawTo(window);
+        b10.drawTo(window);
+        b11.drawTo(window);
+        b12.drawTo(window);
+        b13.drawTo(window);
+        b14.drawTo(window);
+        b15.drawTo(window);
+        b16.drawTo(window);
+        newgame.drawTo(window);
+        score.drawTo(window);
+        best.drawTo(window);
+
+        window.display();
     }
     return 0;
-    
-    
-    
 }
