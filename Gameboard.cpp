@@ -81,26 +81,27 @@ private:
 int main(){
 
     //Assigning Variables.
-    Button name("2048",Vector2f(150,100),50,Color::Yellow,Color::Black);
-    Button boardbackground(" ",Vector2f(395,440),90,Color::Black,Color::Cyan);
-    Button b1(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b2(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b3(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b4(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b5(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b6(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b7(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b8(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b9(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b10(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b11(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b12(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b13(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b14(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b15(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button b16(" ",Vector2f(90,100),90,Color::White,Color::Cyan);
-    Button newgame("New Game",Vector2f(100,45),15,Color::Blue,Color::Cyan);
-    Button score("Score\n2334",Vector2f(100,55),14,Color::Blue,Color::Magenta);
+    Button name("2048",Vector2f(150,100),50,Color::Transparent,Color::Black);
+    Button boardbackground(" ",Vector2f(395,440),90,Color(105,105,105),Color::Cyan);
+    Button b1(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b2(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b3(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b4(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b5(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b6(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b7(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b8(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b9(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b10(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b11(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b12(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b13(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b14(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b15(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button b16(" ",Vector2f(90,100),90,Color(169,169,169),Color::Cyan);
+    Button newgame("New Game",Vector2f(100,45),15,Color(160,82,45),Color(188,143,143));
+    Button score("Score\n2334",Vector2f(100,55),14,Color(160,82,45),Color(188,143,143));
+    Button best("Best\n 2356",Vector2f(100,55),14,Color(160,82,45),Color(188,143,143));
 
 
     
@@ -128,6 +129,7 @@ int main(){
     b16.setFont(font);
     newgame.setFont(font);
     score.setFont(font);
+    best.setFont(font);
     
     //Assigning the positions...
     boardbackground.setPosition(Vector2f(370,200));
@@ -150,6 +152,7 @@ int main(){
     b16.setPosition(Vector2f(666,528));
     newgame.setPosition(Vector2f(666,150));
     score.setPosition(Vector2f(566,50));
+    best.setPosition(Vector2f(672,50));
     
 
     VideoMode screenSize = VideoMode::getDesktopMode();
@@ -203,6 +206,7 @@ int main(){
     b16.drawTo(window);
     newgame.drawTo(window);
     score.drawTo(window);
+    best.drawTo(window);
     
     
     window.display();
