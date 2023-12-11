@@ -5,11 +5,11 @@
 using namespace std;
 using namespace sf;
 
-class Button
-{
+class Button {
 public:
-    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor)
-    {
+    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
+    : offset(offset) 
+        {
         text.setString(t);
         text.setFillColor(textColor);
         text.setCharacterSize(charSize);
@@ -17,19 +17,19 @@ public:
         button.setSize(size);
         button.setFillColor(bgColor);
     }
-    void setFont(sf::Font &font)
+    void setFont(sf::Font& font)
     {
         text.setFont(font);
     }
-    void setBackColor(sf::Color color)
+    void setBackColor(sf::Color color) 
     {
         button.setFillColor(color);
     }
-    void setTextColor(sf::Color color)
+    void setTextColor(sf::Color color) 
     {
         text.setFillColor(color);
     }
-    void setPosition(sf::Vector2f pos)
+    void setPosition(sf::Vector2f pos) 
     {
         button.setPosition(pos);
 
@@ -37,31 +37,30 @@ public:
         float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
 
         // Adjusts the vertical position by subtracting a specific offset (e.g., 5.0f)
-        yPos -= 5.0f; // You can adjust this offset as needed
+        yPos -= offset; // You can adjust this offset as needed
 
         text.setPosition(xPos, yPos);
     }
 
-    Vector2f getPosition() const
+    Vector2f getPosition() const 
     {
         return button.getPosition();
     }
 
-    Vector2f getSize() const
+    Vector2f getSize() const 
     {
         return button.getSize();
     }
-    void drawTo(sf::RenderWindow &window)
+    void drawTo(sf::RenderWindow& window) 
     {
         window.draw(button);
         window.draw(text);
     }
-    bool buttonClicked(sf::RenderWindow &window)
+    bool buttonClicked(sf::RenderWindow& window) 
     {
 
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y)
-        {
+        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y) {
             return 1;
         }
         else
@@ -71,6 +70,7 @@ public:
 private:
     sf::RectangleShape button;
     sf::Text text;
+    float offset;
 };
 
 int main()
@@ -80,16 +80,17 @@ int main()
     window.setFramerateLimit(60);                       // Setting the frame rate to 60 fps
 
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
-    Button backbutton("BACK", Vector2f(205, 50), 24, Color::Blue, Color::White); // Creating an object of the Button class named "button" and specifying its properties
-    Button nextbutton("NEXT", Vector2f(205, 50), 24, Color::Blue, Color::White);
-    Button grid4button("4 x 4", Vector2f(175, 50), 24, Color::Blue, Color::White);
-    Button grid6button("6 x 6", Vector2f(175, 50), 24, Color::Blue, Color::White);
-    Button grid8button("8 x 8", Vector2f(175, 50), 24, Color::Blue, Color::White);
-    Button gdisplaybutton("GRID SIZE", Vector2f(400, 80), 30, Color::Blue, Color::White);
-    Button multiple2button("2", Vector2f(120, 50), 24, Color::Blue, Color::White);
-    Button multiple3button("3", Vector2f(120, 50), 24, Color::Blue, Color::White);
-    Button multiple6button("6", Vector2f(120, 50), 24, Color::Blue, Color::White);
-    Button multiple7button("7", Vector2f(120, 50), 24, Color::Blue, Color::White);
+    Button backbutton("BACK", Vector2f(205, 50), 24, Color(114, 156, 155), Color::White); // Creating an object of the Button class named "button" and specifying its properties
+    Button nextbutton("NEXT", Vector2f(205, 50), 24, Color(114, 156, 155), Color::White);
+    Button grid4button("4 x 4", Vector2f(175, 50), 24, Color(25, 105, 174), Color::White);
+    Button grid6button("6 x 6", Vector2f(175, 50), 24, Color(18, 121, 18), Color::White);
+    Button grid8button("8 x 8", Vector2f(175, 50), 24, Color(205, 52, 6), Color::White);
+    Button gdisplaybutton("GRID SIZE", Vector2f(400, 80), 30, Color(16, 98, 116), Color::White);
+    Button multiple2button("2", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+    Button multiple3button("3", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+    Button multiple6button("6", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+    Button multiple7button("7", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+    Button lbbutton("lb", Vector2f(40, 40), 25, Color(114, 156, 155), Color::White);
 
     Text inputText;
 
@@ -107,11 +108,12 @@ int main()
     multiple3button.setFont(font);
     multiple6button.setFont(font);
     multiple7button.setFont(font);
-    inputText.setFont(font);
-    
+    lbbutton.setFont(font);
 
-    backbutton.setPosition(Vector2f(100, 500)); // Setting button position
-    nextbutton.setPosition(Vector2f(1000, 500));
+    inputText.setFont(font);
+
+    backbutton.setPosition(Vector2f(20, 520)); // Setting button position
+    nextbutton.setPosition(Vector2f(1070, 520));
     grid4button.setPosition(Vector2f(350, 420));
     grid6button.setPosition(Vector2f(560, 420));
     grid8button.setPosition(Vector2f(769, 420));
@@ -120,6 +122,7 @@ int main()
     multiple3button.setPosition(Vector2f(510, 250));
     multiple6button.setPosition(Vector2f(650, 250));
     multiple7button.setPosition(Vector2f(790, 250));
+    lbbutton.setPosition(Vector2f(1240, 10));
 
     textBoxBackground.setPosition(350.f, 182.f);
     inputText.setPosition(356.f, 196.f);
@@ -127,10 +130,10 @@ int main()
     string input;
 
     inputText.setCharacterSize(25);
-    inputText.setFillColor(Color::Magenta);
+    inputText.setFillColor(Color::Black);
 
     textBoxBackground.setSize(Vector2f(590.f, 50.f));
-    textBoxBackground.setFillColor(Color::White);
+    textBoxBackground.setFillColor(Color::Transparent);
 
     while (window.isOpen())
     {
@@ -156,6 +159,12 @@ int main()
 
                         window.close(); // Closes the window
                     }
+                
+                    else if (lbbutton.buttonClicked(window)) 
+                    {
+
+                        window.close();
+                    }
 
                     else if (nextbutton.buttonClicked(window)) 
                     {
@@ -165,7 +174,15 @@ int main()
                     else if (grid4button.buttonClicked(window)) 
                     {
 
-                        window.close(); 
+                        backbutton.setBackColor(Color(77, 143, 186));
+                        nextbutton.setBackColor(Color(77, 143, 186));
+                        lbbutton.setBackColor(Color(77, 143, 186));
+                        multiple2button.setBackColor(Color(77, 143, 186));
+                        multiple3button.setBackColor(Color(77, 143, 186));
+                        multiple6button.setBackColor(Color(77, 143, 186));
+                        multiple7button.setBackColor(Color(77, 143, 186));
+                        gdisplaybutton.setBackColor(Color(6, 46, 81));
+                        //window.clear(Color::Blue); works but gets removed because of frame rate and window clear white defined at the end.
                     }
                     else if (grid6button.buttonClicked(window)) 
                     {
@@ -205,7 +222,10 @@ int main()
             {
                 if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') ||(event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ')
                 {
-                    input += static_cast<char>(event.text.unicode);
+                    if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding (10) as needed
+                    {
+                        input += static_cast<char>(event.text.unicode);
+                    }
                 }
 
                 else if (event.text.unicode == 8 && !input.empty())
@@ -215,7 +235,9 @@ int main()
                 inputText.setString(input);
             }
 
-        window.clear();
+        window.clear(Color::White);
+        
+        //Buttons:
         backbutton.drawTo(window);
         nextbutton.drawTo(window);
         grid4button.drawTo(window);
@@ -226,7 +248,9 @@ int main()
         multiple3button.drawTo(window);
         multiple6button.drawTo(window);
         multiple7button.drawTo(window);
+        lbbutton.drawTo(window);
 
+        //Textbox:
         window.draw(textBoxBackground);
         window.draw(inputText);
 
