@@ -288,28 +288,56 @@ void downArrow() {
 Color tileColor (int r, int c, int n) {
 
     if(arr[r][c] == n * pow(2,0))
-        return Color::Blue;
+        return Color(156,132,212);
     
     else if (arr[r][c] == n * pow(2, 1))
-        return Color::Cyan;
+        return Color(132,108,188);
 
     else if (arr[r][c] == n * pow(2, 2))
-        return Color::White;
+        return Color(124,100,172);
 
     else if (arr[r][c] == n * pow(2, 3))
-        return Color::Green;
+        return Color(116,92,156);
 
     else if (arr[r][c] == n * pow(2, 4))
-        return Color::Yellow;
+        return Color(92,76,164);
 
     else if (arr[r][c] == n * pow(2, 5))
-        return Color::Red;
+        return Color(84,68,148);
 
-    else 
-        return Color::Magenta;
+    else if(arr[r][c] == n * pow(2, 6))
+        return Color(76,60,116);
+
+    else if(arr[r][c] == n * pow(2, 7))
+        return Color(60,52,124);
+
+    else if(arr[r][c] == n * pow(2, 8))
+        return Color(52,44,108)  ;
+
+    else if(arr[r][c] == n * pow(2, 9))
+        return Color(36,28,100);
+
+    else if(arr[r][c] == n * pow(2, 10))
+        return Color(36,20,84)    ;
+    else
+        return Color(204,196,228);          
+
 
 }
+int calculateFontSize(int value) {
+    // Define a base font size
+    int baseFontSize = 50;
 
+    // Calculate a dynamic font size based on the value
+    int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
+
+    // Ensure the font size doesn't become too small
+    if (fontSize < 15) {
+        fontSize = 15; // Set a minimum font size to maintain readability
+    }
+
+    return fontSize;
+}
 int main() {
     srand(time(0));
 
@@ -335,43 +363,43 @@ int main() {
 
 
             Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-            Button boardbackground(" ", Vector2f(395, 465), 90, Color(105, 105, 105), Color::Black);
-            Button b1(to_string(arr[0][0]), Vector2f(60, 70), 32, tileColor(0,0,2), Color::Black, 16.0f);
-            Button b2(to_string(arr[0][1]), Vector2f(60, 70), 32, tileColor(0, 1, 2), Color::Black, 16.0f);
-            Button b3(to_string(arr[0][2]), Vector2f(60, 70), 32, tileColor(0, 2, 2), Color::Black, 16.0f);
-            Button b4(to_string(arr[0][3]), Vector2f(60, 70), 32, tileColor(0, 3, 2), Color::Black, 16.0f);
-            Button b5(to_string(arr[0][4]), Vector2f(60, 70), 32, tileColor(0, 4, 2), Color::Black, 16.0f);
-            Button b6(to_string(arr[0][5]), Vector2f(60, 70), 32, tileColor(0, 5, 2), Color::Black, 16.0f);
-            Button b7(to_string(arr[1][0]), Vector2f(60, 70), 32, tileColor(1, 0, 2), Color::Black, 16.0f);
-            Button b8(to_string(arr[1][1]), Vector2f(60, 70), 32, tileColor(1, 1, 2), Color::Black, 16.0f);
-            Button b9(to_string(arr[1][2]), Vector2f(60, 70), 32, tileColor(1, 2, 2), Color::Black, 16.0f);
-            Button b10(to_string(arr[1][3]), Vector2f(60, 70), 32, tileColor(1, 3, 2), Color::Black, 16.0f);
-            Button b11(to_string(arr[1][4]), Vector2f(60, 70), 32, tileColor(1, 4, 2), Color::Black, 16.0f);
-            Button b12(to_string(arr[1][5]), Vector2f(60, 70), 32, tileColor(1, 5, 2), Color::Black, 16.0f);
-            Button b13(to_string(arr[2][0]), Vector2f(60, 70), 32, tileColor(2, 0, 2), Color::Black, 16.0f);
-            Button b14(to_string(arr[2][1]), Vector2f(60, 70), 32, tileColor(2, 1, 2), Color::Black, 16.0f);
-            Button b15(to_string(arr[2][2]), Vector2f(60, 70), 32, tileColor(2, 2, 2), Color::Black, 16.0f);
-            Button b16(to_string(arr[2][3]), Vector2f(60, 70), 32, tileColor(2, 3, 2), Color::Black, 16.0f);
-            Button b17(to_string(arr[2][4]), Vector2f(60, 70), 32, tileColor(2, 4, 2), Color::Black, 16.0f);
-            Button b18(to_string(arr[2][5]), Vector2f(60, 70), 32, tileColor(2, 5, 2), Color::Black, 16.0f);
-            Button b19(to_string(arr[3][0]), Vector2f(60, 70), 32, tileColor(3, 0, 2), Color::Black, 16.0f);
-            Button b20(to_string(arr[3][1]), Vector2f(60, 70), 32, tileColor(3, 1, 2), Color::Black, 16.0f);
-            Button b21(to_string(arr[3][2]), Vector2f(60, 70), 32, tileColor(3, 2, 2), Color::Black, 16.0f);
-            Button b22(to_string(arr[3][3]), Vector2f(60, 70), 32, tileColor(3, 3, 2), Color::Black, 16.0f);
-            Button b23(to_string(arr[3][4]), Vector2f(60, 70), 32, tileColor(3, 4, 2), Color::Black, 16.0f);
-            Button b24(to_string(arr[3][5]), Vector2f(60, 70), 32, tileColor(3, 5, 2), Color::Black, 16.0f);
-            Button b25(to_string(arr[4][0]), Vector2f(60, 70), 32, tileColor(4, 0, 2), Color::Black, 16.0f);
-            Button b26(to_string(arr[4][1]), Vector2f(60, 70), 32, tileColor(4, 1, 2), Color::Black, 16.0f);
-            Button b27(to_string(arr[4][2]), Vector2f(60, 70), 32, tileColor(4, 2, 2), Color::Black, 16.0f);
-            Button b28(to_string(arr[4][3]), Vector2f(60, 70), 32, tileColor(4, 3, 2), Color::Black, 16.0f);
-            Button b29(to_string(arr[4][4]), Vector2f(60, 70), 32, tileColor(4, 4, 2), Color::Black, 16.0f);
-            Button b30(to_string(arr[4][5]), Vector2f(60, 70), 32, tileColor(4, 5, 2), Color::Black, 16.0f);
-            Button b31(to_string(arr[5][0]), Vector2f(60, 70), 32, tileColor(5, 0, 2), Color::Black, 16.0f);
-            Button b32(to_string(arr[5][1]), Vector2f(60, 70), 32, tileColor(5, 1, 2), Color::Black, 16.0f);
-            Button b33(to_string(arr[5][2]), Vector2f(60, 70), 32, tileColor(5, 2, 2), Color::Black, 16.0f);
-            Button b34(to_string(arr[5][3]), Vector2f(60, 70), 32, tileColor(5, 3, 2), Color::Black, 16.0f);
-            Button b35(to_string(arr[5][4]), Vector2f(60, 70), 32, tileColor(5, 4, 2), Color::Black, 16.0f);
-            Button b36(to_string(arr[5][5]), Vector2f(60, 70), 32, tileColor(5, 5, 2), Color::Black, 16.0f);
+            Button boardbackground(" ", Vector2f(395, 465), 90, Color(16,8,56), Color::Black);
+            Button b1(to_string(arr[0][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(0,0,2), Color::Black, 16.0f);
+            Button b2(to_string(arr[0][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor(0, 1, 2), Color::Black, 16.0f);
+            Button b3(to_string(arr[0][2]), Vector2f(60, 70), calculateFontSize(arr[0][2]), tileColor(0, 2, 2), Color::Black, 16.0f);
+            Button b4(to_string(arr[0][3]), Vector2f(60, 70), calculateFontSize(arr[0][3]), tileColor(0, 3, 2), Color::Black, 16.0f);
+            Button b5(to_string(arr[0][4]), Vector2f(60, 70), calculateFontSize(arr[0][4]), tileColor(0, 4, 2), Color::Black, 16.0f);
+            Button b6(to_string(arr[0][5]), Vector2f(60, 70), calculateFontSize(arr[0][5]), tileColor(0, 5, 2), Color::Black, 16.0f);
+            Button b7(to_string(arr[1][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(1, 0, 2), Color::Black, 16.0f);
+            Button b8(to_string(arr[1][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor(1, 1, 2), Color::Black, 16.0f);
+            Button b9(to_string(arr[1][2]), Vector2f(60, 70), calculateFontSize(arr[0][2]), tileColor(1, 2, 2), Color::Black, 16.0f);
+            Button b10(to_string(arr[1][3]), Vector2f(60, 70), calculateFontSize(arr[0][3]), tileColor(1, 3, 2), Color::Black, 16.0f);
+            Button b11(to_string(arr[1][4]), Vector2f(60, 70), calculateFontSize(arr[0][4]), tileColor(1, 4, 2), Color::Black, 16.0f);
+            Button b12(to_string(arr[1][5]), Vector2f(60, 70), calculateFontSize(arr[0][5]), tileColor(1, 5, 2), Color::Black, 16.0f);
+            Button b13(to_string(arr[2][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(2, 0, 2), Color::Black, 16.0f);
+            Button b14(to_string(arr[2][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor(2, 1, 2), Color::Black, 16.0f);
+            Button b15(to_string(arr[2][2]), Vector2f(60, 70), calculateFontSize(arr[0][2]), tileColor(2, 2, 2), Color::Black, 16.0f);
+            Button b16(to_string(arr[2][3]), Vector2f(60, 70), calculateFontSize(arr[0][3]), tileColor(2, 3, 2), Color::Black, 16.0f);
+            Button b17(to_string(arr[2][4]), Vector2f(60, 70), calculateFontSize(arr[0][4]), tileColor(2, 4, 2), Color::Black, 16.0f);
+            Button b18(to_string(arr[2][5]), Vector2f(60, 70), calculateFontSize(arr[0][5]), tileColor(2, 5, 2), Color::Black, 16.0f);
+            Button b19(to_string(arr[3][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 0, 2), Color::Black, 16.0f);
+            Button b20(to_string(arr[3][1]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 1, 2), Color::Black, 16.0f);
+            Button b21(to_string(arr[3][2]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 2, 2), Color::Black, 16.0f);
+            Button b22(to_string(arr[3][3]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 3, 2), Color::Black, 16.0f);
+            Button b23(to_string(arr[3][4]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 4, 2), Color::Black, 16.0f);
+            Button b24(to_string(arr[3][5]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(3, 5, 2), Color::Black, 16.0f);
+            Button b25(to_string(arr[4][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 0, 2), Color::Black, 16.0f);
+            Button b26(to_string(arr[4][1]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 1, 2), Color::Black, 16.0f);
+            Button b27(to_string(arr[4][2]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 2, 2), Color::Black, 16.0f);
+            Button b28(to_string(arr[4][3]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 3, 2), Color::Black, 16.0f);
+            Button b29(to_string(arr[4][4]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 4, 2), Color::Black, 16.0f);
+            Button b30(to_string(arr[4][5]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(4, 5, 2), Color::Black, 16.0f);
+            Button b31(to_string(arr[5][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 0, 2), Color::Black, 16.0f);
+            Button b32(to_string(arr[5][1]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 1, 2), Color::Black, 16.0f);
+            Button b33(to_string(arr[5][2]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 2, 2), Color::Black, 16.0f);
+            Button b34(to_string(arr[5][3]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 3, 2), Color::Black, 16.0f);
+            Button b35(to_string(arr[5][4]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 4, 2), Color::Black, 16.0f);
+            Button b36(to_string(arr[5][5]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(5, 5, 2), Color::Black, 16.0f);
 
 
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
