@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include<iomanip>
+#include<math.h>
 
 using namespace std;
 using namespace sf;
@@ -86,7 +87,7 @@ private:
     sf::Text text;
     float offset;
 };
-bool isGameOver() {
+void isGameOver() {
     bool boardFilled = true;
 
     // Check if the board is entirely filled
@@ -108,29 +109,28 @@ bool isGameOver() {
             for (int j = 0; j < 3; ++j) {
                 // Check row-wise
                 if (arr[i][j] == arr[i][j + 1]) {
-                    return false;
+                    return;
                 }
                 // Check column-wise
                 if (arr[j][i] == arr[j + 1][i]) {
-                    return false;
+                    return;
                 }
             }
         }
-          while(true){
-          Button gameover("GAME OVER", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-        Font font;
-        font.loadFromFile("LEMONMILK-Regular.otf");
-        gameover.setFont(font);
-        gameover.setPosition(Vector2f(370, 70));
-        window.clear();
-        gameover.drawTo(window);
-        window.display();
-          }
- // No adjacent elements found in the same row/column
+        
+        // Display "GAME OVER" if no adjacent elements found in the same row/column
+        while (true) {
+            Button gameover("GAME OVER", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+            Font font;
+            font.loadFromFile("LEMONMILK-Regular.otf");
+            gameover.setFont(font);
+            gameover.setPosition(Vector2f(370, 70));
+            gameover.drawTo(window);
+            window.display();
+        }
     }
-
-    return false; // Board is not entirely filled yet
 }
+
 
 // Function to copy the current board to prevArr
 void copyBoard() {
@@ -327,6 +327,60 @@ void downArrow()
      }
      isGameOver();
 }
+Color tileColor (int r, int c, int n) {
+
+    if(arr[r][c] == n * pow(2,0))
+        return Color(158,174,190);
+    
+    else if (arr[r][c] == n * pow(2, 1))
+        return Color(136,160,176);
+
+    else if (arr[r][c] == n * pow(2, 2))
+        return Color(100,124,148);
+
+    else if (arr[r][c] == n * pow(2, 3))
+        return Color(84,108,132);
+
+    else if (arr[r][c] == n * pow(2, 4))
+        return Color(68,100,124);
+
+    else if (arr[r][c] == n * pow(2, 5))
+        return Color(60,84,108);
+
+    else if(arr[r][c] == n * pow(2, 6))
+        return Color(36,68,100);
+
+    else if(arr[r][c] == n * pow(2, 7))
+        return Color(28,60,84);
+
+    else if(arr[r][c] == n * pow(2, 8))
+        return Color(20,44,68);
+
+    else if(arr[r][c] == n * pow(2, 9))
+        return Color(4,36,68);
+
+    else if(arr[r][c] == n * pow(2, 10))
+        return Color(16,20,52);
+    else
+        return Color(212,220,220);          
+
+
+}
+int calculateFontSize(int value) {
+    // Define a base font size
+    int baseFontSize = 50;
+
+    // Calculate a dynamic font size based on the value
+    int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
+
+    // Ensure the font size doesn't become too small
+    if (fontSize < 15) {
+        fontSize = 15; // Set a minimum font size to maintain readability
+    }
+
+    return fontSize;
+}
+
 
 
 int main()
@@ -356,29 +410,29 @@ int main()
       
    
              Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-    Button boardbackground(" ", Vector2f(395, 440), 90, Color(105, 105, 105), Color::Black);
-    Button b1(to_string(arr[0][0]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b2(to_string(arr[0][1]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b3(to_string(arr[0][2]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b4(to_string(arr[0][3]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b5(to_string(arr[1][0]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b6(to_string(arr[1][1]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b7(to_string(arr[1][2]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b8(to_string(arr[1][3]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b9(to_string(arr[2][0]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b10(to_string(arr[2][1]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b11(to_string(arr[2][2]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b12(to_string(arr[2][3]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b13(to_string(arr[3][0]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b14(to_string(arr[3][1]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b15(to_string(arr[3][2]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
-    Button b16(to_string(arr[3][3]), Vector2f(90, 100), 50, Color(169, 169, 169), Color::Black, 16.0f);
+    Button boardbackground(" ", Vector2f(395, 440), 90, Color(8,24,56), Color::Black);
+    Button b1(to_string(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor(0,0,2),  Color::Black, 16.0f);
+    Button b2(to_string(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor(0, 1, 2), Color::Black, 16.0f);
+    Button b3(to_string(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor(0, 2, 2), Color::Black, 16.0f);
+    Button b4(to_string(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor(0, 3, 2), Color::Black, 16.0f);
+    Button b5(to_string(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor(1, 0, 2), Color::Black, 16.0f);
+    Button b6(to_string(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor(1, 1, 2), Color::Black, 16.0f);
+    Button b7(to_string(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor(1, 2, 2), Color::Black, 16.0f);
+    Button b8(to_string(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor(1, 3, 2), Color::Black, 16.0f);
+    Button b9(to_string(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor(2, 0, 2), Color::Black, 16.0f);
+    Button b10(to_string(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor(2, 1, 2), Color::Black, 16.0f);
+    Button b11(to_string(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor(2, 2, 2), Color::Black, 16.0f);
+    Button b12(to_string(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor(2, 3, 2), Color::Black, 16.0f);
+    Button b13(to_string(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor(3, 0, 2), Color::Black, 16.0f);
+    Button b14(to_string(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor(3, 1, 2), Color::Black, 16.0f);
+    Button b15(to_string(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor(3, 2, 2), Color::Black, 16.0f);
+    Button b16(to_string(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor(3, 3, 2), Color::Black, 16.0f);
     Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
     Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
     Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
 
     Font font;
-    font.loadFromFile("LEMONMILK-Regular.otf");
+    font.loadFromFile("LEMONMILK.otf");
     name.setFont(font);
     boardbackground.setFont(font);
     b1.setFont(font);
