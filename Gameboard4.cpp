@@ -11,7 +11,7 @@ using namespace sf;
 VideoMode screenSize = VideoMode::getDesktopMode();
 RenderWindow window(screenSize, "Game Board");
 
-int arr[4][4] = {2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 2, 4, 8, 16, 32};
+int arr[4][4] = {0};
 int prevArr[4][4] = {0}; // Temporary copy of the board
 
 class Button
