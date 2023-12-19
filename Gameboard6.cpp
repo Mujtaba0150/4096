@@ -12,7 +12,7 @@ VideoMode screenSize = VideoMode::getDesktopMode();
 RenderWindow window(screenSize, "Game Board");
 
 
-int arr[6][6] = {  };
+int arr[6][6] = {0};
 int prevArr[6][6] = { }; // Temporary copy of the board
 
 
@@ -76,49 +76,31 @@ private:
     float offset;
 };
 bool isGameOver() {
-    bool boardFilled = true;
-
     // Check if the board is entirely filled
     for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 5; ++j) {
+        for (int j = 0; j < 6; ++j) {
             if (arr[i][j] == 0) {
-                boardFilled = false;
-                break;
+                return false; // If any empty cell found, the game is not over
             }
-        }
-        if (!boardFilled) {
-            break;
         }
     }
 
-    if (boardFilled) {
-        // Check if any adjacent elements in the same row/column are the same
-        for (int i = 0; i < 6; ++i) {
-            for (int j = 0; j < 5; ++j) {
-                // Check row-wise
-                if (arr[i][j] == arr[i][j + 1]) {
-                    return false;
-                }
-                // Check column-wise
-                if (arr[j][i] == arr[j + 1][i]) {
-                    return false;
-                }
+    // Check if any adjacent elements in the same row/column are the same
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            // Check row-wise
+            if (arr[i][j] == arr[i][j + 1]) {
+                return false; // If any adjacent elements are the same, the game is not over
+            }
+            // Check column-wise
+            if (arr[j][i] == arr[j + 1][i]) {
+                return false; // If any adjacent elements are the same, the game is not over
             }
         }
-        while (true) {
-            Button gameover("GAME OVER", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-            Font font;
-            font.loadFromFile("LEMONMILK.otf");
-            gameover.setFont(font);
-            gameover.setPosition(Vector2f(370, 70));
-            window.clear();
-            gameover.drawTo(window);
-            window.display();
-        }
-        // No adjacent elements found in the same row/column
     }
 
-    return false; // Board is not entirely filled yet
+    // If no empty cells and no adjacent elements found, the game is over
+    return true;
 }
 
 // Function to copy the current board to prevArr
@@ -339,9 +321,9 @@ int calculateFontSize(int value) {
     return fontSize;
 }
 
-string boardValues(int gridValue){
+string boardValues(int gridValue) {
 
-    if(gridValue != 0)
+    if (gridValue != 0)
         return to_string(gridValue);
 
     else
@@ -351,18 +333,13 @@ string boardValues(int gridValue){
 
 int main() {
     srand(time(0));
-
+    
+    bool gameover = false;
     int r = rand() % 4;
     int c = rand() % 4;
 
     arr[r][c] = 2;
     window.setFramerateLimit(60);
-
-    // Assigning Variables.
-
-
-    // Applying fonts...
-
 
 
     while (window.isOpen()) {
@@ -375,6 +352,7 @@ int main() {
 
             Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(395, 465), 90, Color(16, 8, 56), Color::Black);
+            Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             Button b1(boardValues(arr[0][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor(0, 0, 2), Color::Black, 16.0f);
             Button b2(boardValues(arr[0][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor(0, 1, 2), Color::Black, 16.0f);
             Button b3(boardValues(arr[0][2]), Vector2f(60, 70), calculateFontSize(arr[0][2]), tileColor(0, 2, 2), Color::Black, 16.0f);
@@ -425,6 +403,7 @@ int main() {
             Font font;
             font.loadFromFile("LEMONMILK.otf");
             name.setFont(font);
+            gameOver.setFont(font);
             boardbackground.setFont(font);
             b1.setFont(font);
             b2.setFont(font);
@@ -467,6 +446,7 @@ int main() {
             newgame.setFont(font);
             score.setFont(font);
             best.setFont(font);
+            gameOver.setPosition(Vector2f(200, 200));
 
             // Assigning the positions...
             boardbackground.setPosition(Vector2f(370, 200));
@@ -535,26 +515,33 @@ int main() {
                         window.close(); // Closes the window
                     }
                 }
-            }  //if (event.type == sf::Event::KeyPressed) {
-           //     handleMovement(event.key.code);
-           // }
+            }
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                     upArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                     downArrow();
-
+                    Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                     leftArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                     rightArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
             }
 
@@ -601,7 +588,9 @@ int main() {
             newgame.drawTo(window);
             score.drawTo(window);
             best.drawTo(window);
-
+            if (gameover) {
+                gameOver.drawTo(window);
+            }
             window.display();
         }
     }
