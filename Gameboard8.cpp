@@ -75,50 +75,33 @@ private:
     sf::Text text;
     float offset;
 };
+
 bool isGameOver() {
-    bool boardFilled = true;
-
     // Check if the board is entirely filled
-    for (int i = 0; i < 8; ++i) {
-        for (int j = 0; j < 7; ++j) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
             if (arr[i][j] == 0) {
-                boardFilled = false;
-                break;
+                return false; // If any empty cell found, the game is not over
             }
-        }
-        if (!boardFilled) {
-            break;
         }
     }
 
-    if (boardFilled) {
-        // Check if any adjacent elements in the same row/column are the same
-        for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 7; ++j) {
-                // Check row-wise
-                if (arr[i][j] == arr[i][j + 1]) {
-                    return false;
-                }
-                // Check column-wise
-                if (arr[j][i] == arr[j + 1][i]) {
-                    return false;
-                }
+    // Check if any adjacent elements in the same row/column are the same
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            // Check row-wise
+            if (arr[i][j] == arr[i][j + 1]) {
+                return false; // If any adjacent elements are the same, the game is not over
+            }
+            // Check column-wise
+            if (arr[j][i] == arr[j + 1][i]) {
+                return false; // If any adjacent elements are the same, the game is not over
             }
         }
-        while (true) {
-            Button gameover("GAME OVER", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-            Font font;
-            font.loadFromFile("LEMONMILK-Regular.otf");
-            gameover.setFont(font);
-            gameover.setPosition(Vector2f(370, 70));
-            window.clear();
-            gameover.drawTo(window);
-            window.display();
-        }
-        // No adjacent elements found in the same row/column
     }
 
-    return false; // Board is not entirely filled yet
+    // If no empty cells and no adjacent elements found, the game is over
+    return true;
 }
 
 // Function to copy the current board to prevArr
@@ -349,18 +332,12 @@ string boardValues(int gridValue) {
 int main() {
     srand(time(0));
 
-    int r = rand() % 4;
-    int c = rand() % 4;
+    bool gameover;
+    int r = rand() % 8;
+    int c = rand() % 8;
 
     arr[r][c] = 2;
     window.setFramerateLimit(60);
-
-    // Assigning Variables.
-
-
-    // Applying fonts...
-
-
 
     while (window.isOpen()) {
         Event event; // Making an object "event" of the Event class
@@ -372,6 +349,10 @@ int main() {
 
             Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(405, 512), 90, Color(80, 0, 8), Color::Black);
+            Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+            Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             //Row 1
             Button b1(boardValues(arr[0][0]), Vector2f(45, 55), calculateFontSize(arr[0][0]), tileColor(0, 0, 2), Color::Black, 16.0f);
             Button b2(boardValues(arr[0][1]), Vector2f(45, 55), calculateFontSize(arr[0][1]), tileColor(0, 1, 2), Color::Black, 16.0f);
@@ -445,15 +426,10 @@ int main() {
             Button b63(boardValues(arr[7][6]), Vector2f(45, 55), calculateFontSize(arr[7][6]), tileColor(7, 6, 2), Color::Black, 16.0f);
             Button b64(boardValues(arr[7][7]), Vector2f(45, 55), calculateFontSize(arr[7][7]), tileColor(7, 7, 2), Color::Black, 16.0f);
 
-
-
-            Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-            Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-            Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-
             Font font;
             font.loadFromFile("LEMONMILK.otf");
             name.setFont(font);
+            gameOver.setFont(font);
             boardbackground.setFont(font);
             b1.setFont(font);
             b2.setFont(font);
@@ -528,6 +504,7 @@ int main() {
             // Assigning the positions...
             boardbackground.setPosition(Vector2f(370, 200));
             name.setPosition(Vector2f(370, 70));
+            gameOver.setPosition(Vector2f(200, 200));
             //Row 1
             b1.setPosition(Vector2f(378, 210));
             b2.setPosition(Vector2f(427, 210));
@@ -625,26 +602,33 @@ int main() {
                         window.close(); // Closes the window
                     }
                 }
-            }  //if (event.type == sf::Event::KeyPressed) {
-           //     handleMovement(event.key.code);
-           // }
+            } 
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                     upArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                     downArrow();
-
+                    Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                     leftArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                     rightArrow();
-
+                    if (isGameOver()) {
+                        gameover = true;
+                    }
                 }
             }
 
@@ -720,6 +704,10 @@ int main() {
             newgame.drawTo(window);
             score.drawTo(window);
             best.drawTo(window);
+
+            if (gameover) {
+                gameOver.drawTo(window);
+            }
 
             window.display();
         }
