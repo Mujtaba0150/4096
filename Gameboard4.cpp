@@ -7,8 +7,10 @@
 #include <math.h>
 using namespace std;
 using namespace sf;
+
 VideoMode screenSize = VideoMode::getDesktopMode();
 RenderWindow window(screenSize, "Game Board");
+
 int arr[4][4] = { 0 };
 int prevArr[4][4] = { 0 }; // Temporary copy of the board
 
@@ -63,10 +65,10 @@ private:
     float offset;
 };
 
-bool isGameOver() {
+bool isGameOver(int n) {
     // Check if the board is entirely filled
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             if (arr[i][j] == 0) {
                 return false; // If any empty cell found, the game is not over
             }
@@ -74,8 +76,8 @@ bool isGameOver() {
     }
 
     // Check if any adjacent elements in the same row/column are the same
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 3; ++j) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n - 1; ++j) {
             // Check row-wise
             if (arr[i][j] == arr[i][j + 1]) {
                 return false; // If any adjacent elements are the same, the game is not over
@@ -92,17 +94,17 @@ bool isGameOver() {
 }
 
 // Function to copy the current board to prevArr
-void copyBoard() {
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+void copyBoard(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             prevArr[i][j] = arr[i][j];
         }
     }
 }
 // Function to check if the board has changed after movement
-bool boardChanged() {
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+bool boardChanged(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             if (prevArr[i][j] != arr[i][j]) {
                 return true; // Board has changed
             }
@@ -110,19 +112,19 @@ bool boardChanged() {
     }
     return false; // Board remains the same
 }
-void random1() {
+void random1(int n) {
     while (true) {
-        int r = rand() % 4;
-        int c = rand() % 4;
+        int r = rand() % n;
+        int c = rand() % n;
         if (arr[r][c] == 0) {
             arr[r][c] = 2;
             break;
         }
     }
 }
-void mergeTilesud() {
-    for (int c = 0; c < 4; ++c) {
-        for (int r = 0; r < 4 - 1; ++r) {
+void mergeTilesud(int n) {
+    for (int c = 0; c < n; ++c) {
+        for (int r = 0; r < n - 1; ++r) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                 arr[r][c] *= 2;
                 arr[r + 1][c] = 0;
@@ -130,9 +132,9 @@ void mergeTilesud() {
         }
     }
 }
-void mergeTilesrl() {
-    for (int r = 0; r < 4; ++r) {
-        for (int c = 0; c < 4 - 1; ++c) {
+void mergeTilesrl(int n) {
+    for (int r = 0; r < n; ++r) {
+        for (int c = 0; c < n - 1; ++c) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                 arr[r][c] *= 2;
                 arr[r][c + 1] = 0;
@@ -140,10 +142,10 @@ void mergeTilesrl() {
         }
     }
 }
-void moveTilesRight() {
-    for (int r = 0; r < 4; r++) {
-        int column = 3;
-        for (int c = 3; c >= 0; c--) {
+void moveTilesRight(int n) {
+    for (int r = 0; r < n; r++) {
+        int column = n - 1;
+        for (int c = n - 1; c >= 0; c--) {
             if (arr[r][c] != 0) {
                 arr[r][column] = arr[r][c];
                 if (column != c) {
@@ -154,10 +156,10 @@ void moveTilesRight() {
         }
     }
 }
-void moveTilesLeft() {
-    for (int r = 0; r < 4; ++r) {
+void moveTilesLeft(int n) {
+    for (int r = 0; r < n; ++r) {
         int column = 0;
-        for (int c = 0; c < 4; c++) {
+        for (int c = 0; c < n; c++) {
             if (arr[r][c] != 0) {
                 arr[r][column] = arr[r][c];
                 if (column != c) {
@@ -168,10 +170,10 @@ void moveTilesLeft() {
         }
     }
 }
-void moveTilesUp() {
-    for (int c = 0; c < 4; c++) {
+void moveTilesUp(int n) {
+    for (int c = 0; c < n; c++) {
         int row = 0;
-        for (int r = 0; r < 4; r++) {
+        for (int r = 0; r < n; r++) {
             if (arr[r][c] != 0) {
                 arr[row][c] = arr[r][c];
                 if (row != r) {
@@ -182,10 +184,10 @@ void moveTilesUp() {
         }
     }
 }
-void moveTilesDown() {
-    for (int c = 0; c < 4; c++) {
-        int row = 3;
-        for (int r = 3; r >= 0; r--) {
+void moveTilesDown(int n) {
+    for (int c = 0; c < n; c++) {
+        int row = n - 1;
+        for (int r = n - 1; r >= 0; r--) {
             if (arr[r][c] != 0) {
                 arr[row][c] = arr[r][c];
                 if (row != r) {
@@ -196,43 +198,43 @@ void moveTilesDown() {
         }
     }
 }
-void upArrow() {
-    copyBoard();
-    moveTilesUp();
-    mergeTilesud();
-    moveTilesUp();
-    if (boardChanged()) {
-        random1();
+void upArrow(int n) {
+    copyBoard(n);
+    moveTilesUp(n);
+    mergeTilesud(n);
+    moveTilesUp(n);
+    if (boardChanged(n)) {
+        random1(n);
     }
 }
-void leftArrow() {
-    copyBoard();
-    moveTilesLeft();
-    mergeTilesrl();
-    moveTilesLeft();
-    if (boardChanged()) {
-        random1();
+void leftArrow(int n) {
+    copyBoard(n);
+    moveTilesLeft(n);
+    mergeTilesrl(n);
+    moveTilesLeft(n);
+    if (boardChanged(n)) {
+        random1(n);
     }
 }
-void rightArrow() {
-    copyBoard();
-    moveTilesRight();
-    mergeTilesrl();
-    moveTilesRight();
-    if (boardChanged()) {
-        random1();
+void rightArrow(int n) {
+    copyBoard(n);
+    moveTilesRight(n);
+    mergeTilesrl(n);
+    moveTilesRight(n);
+    if (boardChanged(n)) {
+        random1(n);
     }
 }
-void downArrow() {
-    copyBoard();
-    moveTilesDown();
-    mergeTilesud();
-    moveTilesDown();
-    if (boardChanged()) {
-        random1();
+void downArrow(int n) {
+    copyBoard(n);
+    moveTilesDown(n);
+    mergeTilesud(n);
+    moveTilesDown(n);
+    if (boardChanged(n)) {
+        random1(n);
     }
 }
-Color tileColor(int r, int c, int n) {
+Color tileColor4x4(int r, int c, int n) {
     if (arr[r][c] == n * pow(2, 0))
         return Color(158, 174, 190);
     else if (arr[r][c] == n * pow(2, 1))
@@ -275,7 +277,7 @@ string boardValues(int gridValue) {
     if (gridValue != 0)
         return to_string(gridValue);
     else
-    return "";
+        return "";
 }
 
 
@@ -283,12 +285,14 @@ int main() {
     bool gameover;
     srand(time(0));
 
-    int r = rand() % 4;
-    int c = rand() % 4;
+    int n = 4;
+
+    int r = rand() % n;
+    int c = rand() % n;
     arr[r][c] = 2;
     window.setFramerateLimit(60);
-    // Assigning Variables.
-    // Applying fonts...
+
+
     while (window.isOpen()) {
         Event event; // Making an object "event" of the Event class
         window.clear();
@@ -298,22 +302,22 @@ int main() {
             Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(395, 440), 90, Color(8, 24, 56), Color::Black);
-            Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor(0, 0, 2), Color::Black, 16.0f);
-            Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor(0, 1, 2), Color::Black, 16.0f);
-            Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor(0, 2, 2), Color::Black, 16.0f);
-            Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor(0, 3, 2), Color::Black, 16.0f);
-            Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor(1, 0, 2), Color::Black, 16.0f);
-            Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor(1, 1, 2), Color::Black, 16.0f);
-            Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor(1, 2, 2), Color::Black, 16.0f);
-            Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor(1, 3, 2), Color::Black, 16.0f);
-            Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor(2, 0, 2), Color::Black, 16.0f);
-            Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor(2, 1, 2), Color::Black, 16.0f);
-            Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor(2, 2, 2), Color::Black, 16.0f);
-            Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor(2, 3, 2), Color::Black, 16.0f);
-            Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor(3, 0, 2), Color::Black, 16.0f);
-            Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor(3, 1, 2), Color::Black, 16.0f);
-            Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor(3, 2, 2), Color::Black, 16.0f);
-            Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor(3, 3, 2), Color::Black, 16.0f);
+            Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, 2), Color::Black, 16.0f);
+            Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, 2), Color::Black, 16.0f);
+            Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, 2), Color::Black, 16.0f);
+            Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor4x4(0, 3, 2), Color::Black, 16.0f);
+            Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor4x4(1, 0, 2), Color::Black, 16.0f);
+            Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor4x4(1, 1, 2), Color::Black, 16.0f);
+            Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor4x4(1, 2, 2), Color::Black, 16.0f);
+            Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor4x4(1, 3, 2), Color::Black, 16.0f);
+            Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor4x4(2, 0, 2), Color::Black, 16.0f);
+            Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor4x4(2, 1, 2), Color::Black, 16.0f);
+            Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor4x4(2, 2, 2), Color::Black, 16.0f);
+            Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor4x4(2, 3, 2), Color::Black, 16.0f);
+            Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor4x4(3, 0, 2), Color::Black, 16.0f);
+            Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor4x4(3, 1, 2), Color::Black, 16.0f);
+            Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, 2), Color::Black, 16.0f);
+            Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, 2), Color::Black, 16.0f);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
             Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
             Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
@@ -385,27 +389,27 @@ int main() {
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow();
-                    if (isGameOver()) {
+                    upArrow(n);
+                    if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow();
+                    downArrow(n);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                    if (isGameOver()) {
+                    if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow();
-                    if (isGameOver()) {
+                    leftArrow(n);
+                    if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow();
-                    if (isGameOver()) {
+                    rightArrow(n);
+                    if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
@@ -438,6 +442,6 @@ int main() {
                 gameOver.drawTo(window);
             }
             window.display();
+        }
     }
-}
 }
