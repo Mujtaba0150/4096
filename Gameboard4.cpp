@@ -13,6 +13,7 @@ RenderWindow window(screenSize, "Game Board");
 
 int arr[4][4] = { 0 };
 int prevArr[4][4] = { 0 }; // Temporary copy of the board
+int scoreValue = 0;
 
 class Button {
 public:
@@ -65,6 +66,19 @@ private:
     float offset;
 };
 
+int scorefunc(int base, int merged) {
+    int power = 0;
+
+    while (base * (pow(2,power))  <= merged) {
+        if (base * (pow(2, power)) == merged)
+            return 4 * (pow(2,power));
+        power++;
+    }
+
+    // Assuming the condition is always true
+    return 0;
+}
+
 bool isGameOver(int n) {
     // Check if the board is entirely filled
     for (int i = 0; i < n; ++i) {
@@ -112,7 +126,7 @@ bool boardChanged(int n) {
     }
     return false; // Board remains the same
 }
-void random1(int n) {
+void random1(int n, int multi) {
     while (true) {
         int r = rand() % n;
         int c = rand() % n;
@@ -127,6 +141,7 @@ void mergeTilesud(int n) {
         for (int r = 0; r < n - 1; ++r) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                 arr[r][c] *= 2;
+                scoreValue += scorefunc(n, arr[r][c]);
                 arr[r + 1][c] = 0;
             }
         }
@@ -137,6 +152,7 @@ void mergeTilesrl(int n) {
         for (int c = 0; c < n - 1; ++c) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                 arr[r][c] *= 2;
+                scoreValue += scorefunc(n, arr[r][c]);
                 arr[r][c + 1] = 0;
             }
         }
@@ -198,40 +214,40 @@ void moveTilesDown(int n) {
         }
     }
 }
-void upArrow(int n) {
+void upArrow(int n, int multi) {
     copyBoard(n);
     moveTilesUp(n);
     mergeTilesud(n);
     moveTilesUp(n);
     if (boardChanged(n)) {
-        random1(n);
+        random1(n, multi);
     }
 }
-void leftArrow(int n) {
+void leftArrow(int n, int multi) {
     copyBoard(n);
     moveTilesLeft(n);
     mergeTilesrl(n);
     moveTilesLeft(n);
     if (boardChanged(n)) {
-        random1(n);
+        random1(n, multi);
     }
 }
-void rightArrow(int n) {
+void rightArrow(int n, int multi) {
     copyBoard(n);
     moveTilesRight(n);
     mergeTilesrl(n);
     moveTilesRight(n);
     if (boardChanged(n)) {
-        random1(n);
+        random1(n, multi);
     }
 }
-void downArrow(int n) {
+void downArrow(int n, int multi) {
     copyBoard(n);
     moveTilesDown(n);
     mergeTilesud(n);
     moveTilesDown(n);
     if (boardChanged(n)) {
-        random1(n);
+        random1(n, multi);
     }
 }
 Color tileColor4x4(int r, int c, int n) {
@@ -280,12 +296,12 @@ string boardValues(int gridValue) {
         return "";
 }
 
-
 int main() {
     bool gameover;
     srand(time(0));
 
     int n = 4;
+    int multi = 2;
 
     int r = rand() % n;
     int c = rand() % n;
@@ -319,7 +335,7 @@ int main() {
             Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, 2), Color::Black, 16.0f);
             Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, 2), Color::Black, 16.0f);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-            Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
             Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
 
             Font font;
@@ -383,32 +399,30 @@ int main() {
                         window.close(); // Closes the window
                     }
                 }
-            } // if (event.type == sf::Event::KeyPressed) {
-            //     handleMovement(event.key.code);
-            // }
+            } 
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow(n);
+                    upArrow(n, multi);
                     if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow(n);
+                    downArrow(n, multi);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                     if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow(n);
+                    leftArrow(n, multi);
                     if (isGameOver(n)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow(n);
+                    rightArrow(n, multi);
                     if (isGameOver(n)) {
                         gameover = true;
                     }
