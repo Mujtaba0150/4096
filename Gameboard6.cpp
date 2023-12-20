@@ -12,10 +12,8 @@ VideoMode screenSize = VideoMode::getDesktopMode();
 RenderWindow window(screenSize, "Game Board");
 
 
-int arr[6][6] = {0};
+int arr[6][6] = { 0 };
 int prevArr[6][6] = { }; // Temporary copy of the board
-
-
 
 class Button {
 public:
@@ -24,7 +22,6 @@ public:
         text.setString(t);
         text.setFillColor(textColor);
         text.setCharacterSize(charSize);
-
         button.setSize(size);
         button.setFillColor(bgColor);
     }
@@ -39,20 +36,15 @@ public:
     }
     void setPosition(sf::Vector2f pos) {
         button.setPosition(pos);
-
         float xPos = pos.x + (button.getLocalBounds().width - text.getLocalBounds().width) / 2;
         float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
-
         // Adjusts the vertical position by subtracting a specific offset (e.g., 5.0f)
         yPos -= offset; // You can adjust this offset as needed
-
         text.setPosition(xPos, yPos);
     }
-
     Vector2f getPosition() const {
         return button.getPosition();
     }
-
     Vector2f getSize() const {
         return button.getSize();
     }
@@ -61,7 +53,6 @@ public:
         window.draw(text);
     }
     bool buttonClicked(sf::RenderWindow& window) {
-
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
         if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y) {
             return 1;
@@ -69,16 +60,16 @@ public:
         else
             return 0;
     }
-
 private:
     sf::RectangleShape button;
     sf::Text text;
     float offset;
 };
-bool isGameOver() {
+
+bool isGameOver(int n) {
     // Check if the board is entirely filled
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             if (arr[i][j] == 0) {
                 return false; // If any empty cell found, the game is not over
             }
@@ -86,8 +77,8 @@ bool isGameOver() {
     }
 
     // Check if any adjacent elements in the same row/column are the same
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 5; ++j) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n - 1; ++j) {
             // Check row-wise
             if (arr[i][j] == arr[i][j + 1]) {
                 return false; // If any adjacent elements are the same, the game is not over
@@ -104,18 +95,17 @@ bool isGameOver() {
 }
 
 // Function to copy the current board to prevArr
-void copyBoard() {
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
+void copyBoard(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             prevArr[i][j] = arr[i][j];
         }
     }
 }
-
 // Function to check if the board has changed after movement
-bool boardChanged() {
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
+bool boardChanged(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
             if (prevArr[i][j] != arr[i][j]) {
                 return true; // Board has changed
             }
@@ -123,21 +113,19 @@ bool boardChanged() {
     }
     return false; // Board remains the same
 }
-void random1() {
+void random1(int n) {
     while (true) {
-        int r = rand() % 4;
-        int c = rand() % 4;
-
+        int r = rand() % n;
+        int c = rand() % n;
         if (arr[r][c] == 0) {
             arr[r][c] = 2;
             break;
         }
     }
 }
-
-void mergeTilesud() {
-    for (int c = 0; c < 6; ++c) {
-        for (int r = 0; r < 6 - 1; ++r) {
+void mergeTilesud(int n) {
+    for (int c = 0; c < n; ++c) {
+        for (int r = 0; r < n - 1; ++r) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                 arr[r][c] *= 2;
                 arr[r + 1][c] = 0;
@@ -145,11 +133,9 @@ void mergeTilesud() {
         }
     }
 }
-
-
-void mergeTilesrl() {
-    for (int r = 0; r < 6; ++r) {
-        for (int c = 0; c < 6 - 1; ++c) {
+void mergeTilesrl(int n) {
+    for (int r = 0; r < n; ++r) {
+        for (int c = 0; c < n - 1; ++c) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                 arr[r][c] *= 2;
                 arr[r][c + 1] = 0;
@@ -157,13 +143,10 @@ void mergeTilesrl() {
         }
     }
 }
-
-
-
-void moveTilesRight() {
-    for (int r = 0; r < 6; r++) {
-        int column = 5;
-        for (int c = 5; c >= 0; c--) {
+void moveTilesRight(int n) {
+    for (int r = 0; r < n; r++) {
+        int column = n - 1;
+        for (int c = n - 1; c >= 0; c--) {
             if (arr[r][c] != 0) {
                 arr[r][column] = arr[r][c];
                 if (column != c) {
@@ -174,12 +157,10 @@ void moveTilesRight() {
         }
     }
 }
-
-void moveTilesLeft() {
-
-    for (int r = 0; r < 6; ++r) {
+void moveTilesLeft(int n) {
+    for (int r = 0; r < n; ++r) {
         int column = 0;
-        for (int c = 0; c < 6; c++) {
+        for (int c = 0; c < n; c++) {
             if (arr[r][c] != 0) {
                 arr[r][column] = arr[r][c];
                 if (column != c) {
@@ -190,11 +171,10 @@ void moveTilesLeft() {
         }
     }
 }
-void moveTilesUp() {
-
-    for (int c = 0; c < 6; c++) {
+void moveTilesUp(int n) {
+    for (int c = 0; c < n; c++) {
         int row = 0;
-        for (int r = 0; r < 6; r++) {
+        for (int r = 0; r < n; r++) {
             if (arr[r][c] != 0) {
                 arr[row][c] = arr[r][c];
                 if (row != r) {
@@ -205,11 +185,10 @@ void moveTilesUp() {
         }
     }
 }
-void moveTilesDown() {
-
-    for (int c = 0; c < 6; c++) {
-        int row = 5;
-        for (int r = 5; r >= 0; r--) {
+void moveTilesDown(int n) {
+    for (int c = 0; c < n; c++) {
+        int row = n - 1;
+        for (int r = n - 1; r >= 0; r--) {
             if (arr[r][c] != 0) {
                 arr[row][c] = arr[r][c];
                 if (row != r) {
@@ -220,51 +199,60 @@ void moveTilesDown() {
         }
     }
 }
-
-
-void upArrow() {
-    copyBoard();
-    moveTilesUp();
-    mergeTilesud();
-    moveTilesUp();
-
-    if (boardChanged()) {
-        random1();
+void upArrow(int n) {
+    copyBoard(n);
+    moveTilesUp(n);
+    mergeTilesud(n);
+    moveTilesUp(n);
+    if (boardChanged(n)) {
+        random1(n);
     }
-    isGameOver();
+}
+void leftArrow(int n) {
+    copyBoard(n);
+    moveTilesLeft(n);
+    mergeTilesrl(n);
+    moveTilesLeft(n);
+    if (boardChanged(n)) {
+        random1(n);
+    }
+}
+void rightArrow(int n) {
+    copyBoard(n);
+    moveTilesRight(n);
+    mergeTilesrl(n);
+    moveTilesRight(n);
+    if (boardChanged(n)) {
+        random1(n);
+    }
+}
+void downArrow(int n) {
+    copyBoard(n);
+    moveTilesDown(n);
+    mergeTilesud(n);
+    moveTilesDown(n);
+    if (boardChanged(n)) {
+        random1(n);
+    }
+}
+int calculateFontSize(int value) {
+    // Define a base font size
+    int baseFontSize = 50;
+    // Calculate a dynamic font size based on the value
+    int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
+    // Ensure the font size doesn't become too small
+    if (fontSize < 15) {
+        fontSize = 15; // Set a minimum font size to maintain readability
+    }
+    return fontSize;
 }
 
-void leftArrow() {
-    copyBoard();
-    moveTilesLeft();
-    mergeTilesrl();
-    moveTilesLeft();
-    if (boardChanged()) {
-        random1();
-    }
-    isGameOver();
-}
+string boardValues(int gridValue) {
 
-void rightArrow() {
-    copyBoard();
-    moveTilesRight();
-    mergeTilesrl();
-    moveTilesRight();
-    if (boardChanged()) {
-        random1();
-    }
-    isGameOver();
-}
-
-void downArrow() {
-    copyBoard();
-    moveTilesDown();
-    mergeTilesud();
-    moveTilesDown();
-    if (boardChanged()) {
-        random1();
-    }
-    isGameOver();
+    if (gridValue != 0)
+        return to_string(gridValue);
+    else
+        return "";
 }
 
 Color tileColor(int r, int c, int n) {
@@ -306,37 +294,13 @@ Color tileColor(int r, int c, int n) {
 
 
 }
-int calculateFontSize(int value) {
-    // Define a base font size
-    int baseFontSize = 50;
-
-    // Calculate a dynamic font size based on the value
-    int fontSize = baseFontSize - log2(value + 1) * 3; // Adjust the multiplication factor for your preference
-
-    // Ensure the font size doesn't become too small
-    if (fontSize < 15) {
-        fontSize = 15; // Set a minimum font size to maintain readability
-    }
-
-    return fontSize;
-}
-
-string boardValues(int gridValue) {
-
-    if (gridValue != 0)
-        return to_string(gridValue);
-
-    else
-        return "";
-
-}
 
 int main() {
     srand(time(0));
-    
+
     bool gameover = false;
-    int r = rand() % 4;
-    int c = rand() % 4;
+    int r = rand() % 6;
+    int c = rand() % 6;
 
     arr[r][c] = 2;
     window.setFramerateLimit(60);
@@ -519,27 +483,27 @@ int main() {
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow();
-                    if (isGameOver()) {
+                    upArrow(6);
+                    if (isGameOver(6)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow();
+                    downArrow(6);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                    if (isGameOver()) {
+                    if (isGameOver(6)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow();
-                    if (isGameOver()) {
+                    leftArrow(6);
+                    if (isGameOver(6)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow();
-                    if (isGameOver()) {
+                    rightArrow(6);
+                    if (isGameOver(6)) {
                         gameover = true;
                     }
                 }
