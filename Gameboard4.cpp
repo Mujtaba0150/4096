@@ -11,8 +11,6 @@ using namespace sf;
 VideoMode screenSize = VideoMode::getDesktopMode();
 RenderWindow window(screenSize, "Game Board");
 
-int prevArr[4][4] = { 0 }; // Temporary copy of the board
-
 class Button {
 public:
     Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
@@ -77,7 +75,7 @@ int scorefunc(int base, int merged) {
     return 0;
 }
 
-bool isGameOver(int (*arr[]), int n) {
+bool isGameOver(int(*arr[]), int n) {
     // Check if the board is entirely filled
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -106,7 +104,7 @@ bool isGameOver(int (*arr[]), int n) {
 }
 
 // Function to copy the current board to prevArr
-void copyBoard(int(*arr[]), int n) {
+void copyBoard(int(*prevArr[]), int(*arr[]), int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             prevArr[i][j] = arr[i][j];
@@ -114,7 +112,7 @@ void copyBoard(int(*arr[]), int n) {
     }
 }
 // Function to check if the board has changed after movement
-bool boardChanged(int(*arr[]), int n) {
+bool boardChanged(int(*prevArr[]), int(*arr[]), int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             if (prevArr[i][j] != arr[i][j]) {
@@ -184,7 +182,7 @@ void moveTilesLeft(int(*arr[]), int n) {
         }
     }
 }
-void moveTilesUp(int(*arr[]),  int n) {
+void moveTilesUp(int(*arr[]), int n) {
     for (int c = 0; c < n; c++) {
         int row = 0;
         for (int r = 0; r < n; r++) {
@@ -212,39 +210,39 @@ void moveTilesDown(int(*arr[]), int n) {
         }
     }
 }
-void upArrow(int(*arr[]), int n, int multi, int& scoreValue) {
-    copyBoard(arr, n);
+void upArrow(int(*prevArr[]), int(*arr[]), int n, int multi, int& scoreValue) {
+    copyBoard(prevArr, arr, n);
     moveTilesUp(arr, n);
     mergeTilesud(arr, n, multi, scoreValue);
     moveTilesUp(arr, n);
-    if (boardChanged(arr, n)) {
+    if (boardChanged(prevArr, arr, n)) {
         random1(arr, n, multi);
     }
 }
-void leftArrow(int(*arr[]), int n, int multi, int& scoreValue) {
-    copyBoard(arr, n);
+void leftArrow(int(*prevArr[]), int(*arr[]), int n, int multi, int& scoreValue) {
+    copyBoard(prevArr, arr, n);
     moveTilesLeft(arr, n);
     mergeTilesrl(arr, n, multi, scoreValue);
     moveTilesLeft(arr, n);
-    if (boardChanged(arr, n)) {
+    if (boardChanged(prevArr, arr, n)) {
         random1(arr, n, multi);
     }
 }
-void rightArrow(int(*arr[]), int n, int multi, int& scoreValue) {
-    copyBoard(arr, n);
+void rightArrow(int(*prevArr[]), int(*arr[]), int n, int multi, int& scoreValue) {
+    copyBoard(prevArr, arr, n);
     moveTilesRight(arr, n);
     mergeTilesrl(arr, n, multi, scoreValue);
     moveTilesRight(arr, n);
-    if (boardChanged(arr, n)) {
+    if (boardChanged(prevArr, arr, n)) {
         random1(arr, n, multi);
     }
 }
-void downArrow(int(*arr[]), int n, int multi, int& scoreValue) {
-    copyBoard(arr, n);
+void downArrow(int(*prevArr[]), int(*arr[]), int n, int multi, int& scoreValue) {
+    copyBoard(prevArr, arr, n);
     moveTilesDown(arr, n);
     mergeTilesud(arr, n, multi, scoreValue);
     moveTilesDown(arr, n);
-    if (boardChanged(arr, n)) {
+    if (boardChanged(prevArr, arr, n)) {
         random1(arr, n, multi);
     }
 }
@@ -302,6 +300,14 @@ int main() {
         arr[i] = new int[4];
         for (int j = 0; j < 4; ++j) {
             arr[i][j] = 0;
+        }
+    }
+    
+    int** prevArr = new int* [4];
+    for (int i = 0; i < 4; ++i) {
+        prevArr[i] = new int[4];
+        for (int j = 0; j < 4; ++j) {
+            prevArr[i][j] = 0;
         }
     }
 
@@ -409,26 +415,26 @@ int main() {
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow(arr, 4, multi, scoreValue);
+                    upArrow(prevArr, arr, 4, multi, scoreValue);
                     if (isGameOver(arr, 4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow(arr, 4, multi, scoreValue);
+                    downArrow(prevArr, arr, 4, multi, scoreValue);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                     if (isGameOver(arr, 4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow(arr, 4, multi, scoreValue);
+                    leftArrow(prevArr, arr, 4, multi, scoreValue);
                     if (isGameOver(arr, 4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow(arr, 4, multi, scoreValue);
+                    rightArrow(prevArr, arr, 4, multi, scoreValue);
                     if (isGameOver(arr, 4)) {
                         gameover = true;
                     }
