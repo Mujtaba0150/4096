@@ -178,8 +178,24 @@ int main() {
                         //Shd call a functions with all the variables.
 
                         // Check if the required conditions are met
-                        if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty()) {
+                        if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty()) 
+                        {
                                 toCheckSelections=true;
+
+                            if(grid==4)
+                            {
+                                //Shd go to 4x4 board. 
+                            }
+
+                            else if(grid==6)
+                            {
+                                //Shd go to 6x6 board.
+                            }
+
+                            else if(grid==8)
+                            {
+                                //Shd go to 8x8 board.
+                            }
                         
                             RenderWindow nextWindow(screenSize, "2048 Game");  // Create a nextWindow using the screen dimensions
                             sf::Texture texture;
