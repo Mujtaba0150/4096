@@ -13,7 +13,6 @@ RenderWindow window(screenSize, "Game Board");
 
 int arr[4][4] = { 0 };
 int prevArr[4][4] = { 0 }; // Temporary copy of the board
-int scoreValue = 0;
 
 class Button {
 public:
@@ -69,9 +68,9 @@ private:
 int scorefunc(int base, int merged) {
     int power = 0;
 
-    while (base * (pow(2,power))  <= merged) {
+    while (base * (pow(2, power)) <= merged) {
         if (base * (pow(2, power)) == merged)
-            return 2 * (pow(2,power));
+            return 2 * (pow(2, power));
         power++;
     }
 
@@ -136,7 +135,7 @@ void random1(int n, int multi) {
         }
     }
 }
-void mergeTilesud(int n, int multi) {
+void mergeTilesud(int n, int multi, int &scoreValue) {
     for (int c = 0; c < n; ++c) {
         for (int r = 0; r < n - 1; ++r) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
@@ -147,7 +146,7 @@ void mergeTilesud(int n, int multi) {
         }
     }
 }
-void mergeTilesrl(int n, int multi) {
+void mergeTilesrl(int n, int multi, int &scoreValue) {
     for (int r = 0; r < n; ++r) {
         for (int c = 0; c < n - 1; ++c) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
@@ -214,37 +213,37 @@ void moveTilesDown(int n) {
         }
     }
 }
-void upArrow(int n, int multi) {
+void upArrow(int n, int multi, int &scoreValue) {
     copyBoard(n);
     moveTilesUp(n);
-    mergeTilesud(n, multi);
+    mergeTilesud(n, multi, scoreValue);
     moveTilesUp(n);
     if (boardChanged(n)) {
         random1(n, multi);
     }
 }
-void leftArrow(int n, int multi) {
+void leftArrow(int n, int multi, int &scoreValue) {
     copyBoard(n);
     moveTilesLeft(n);
-    mergeTilesrl(n, multi);
+    mergeTilesrl(n, multi, scoreValue);
     moveTilesLeft(n);
     if (boardChanged(n)) {
         random1(n, multi);
     }
 }
-void rightArrow(int n, int multi) {
+void rightArrow(int n, int multi, int &scoreValue) {
     copyBoard(n);
     moveTilesRight(n);
-    mergeTilesrl(n, multi);
+    mergeTilesrl(n, multi, scoreValue);
     moveTilesRight(n);
     if (boardChanged(n)) {
         random1(n, multi);
     }
 }
-void downArrow(int n, int multi) {
+void downArrow(int n, int multi, int &scoreValue) {
     copyBoard(n);
     moveTilesDown(n);
-    mergeTilesud(n, multi);
+    mergeTilesud(n, multi, scoreValue);
     moveTilesDown(n);
     if (boardChanged(n)) {
         random1(n, multi);
@@ -297,14 +296,14 @@ string boardValues(int gridValue) {
 }
 
 int main() {
-    bool gameover;
     srand(time(0));
 
-    int n = 4;
+    int r = rand() % 4;
+    int c = rand() % 4;
+    bool gameover;
     int multi = 5;
+    int scoreValue = 0;
 
-    int r = rand() % n;
-    int c = rand() % n;
     arr[r][c] = multi;
     window.setFramerateLimit(60);
 
@@ -399,31 +398,31 @@ int main() {
                         window.close(); // Closes the window
                     }
                 }
-            } 
+            }
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow(n, multi);
-                    if (isGameOver(n)) {
+                    upArrow(4, multi, scoreValue);
+                    if (isGameOver(4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow(n, multi);
+                    downArrow(4, multi, scoreValue);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                    if (isGameOver(n)) {
+                    if (isGameOver(4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow(n, multi);
-                    if (isGameOver(n)) {
+                    leftArrow(4, multi, scoreValue);
+                    if (isGameOver(4)) {
                         gameover = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow(n, multi);
-                    if (isGameOver(n)) {
+                    rightArrow(4, multi, scoreValue);
+                    if (isGameOver(4)) {
                         gameover = true;
                     }
                 }
