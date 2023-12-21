@@ -71,7 +71,7 @@ int scorefunc(int base, int merged) {
 
     while (base * (pow(2,power))  <= merged) {
         if (base * (pow(2, power)) == merged)
-            return 4 * (pow(2,power));
+            return 2 * (pow(2,power));
         power++;
     }
 
@@ -131,28 +131,28 @@ void random1(int n, int multi) {
         int r = rand() % n;
         int c = rand() % n;
         if (arr[r][c] == 0) {
-            arr[r][c] = 2;
+            arr[r][c] = multi;
             break;
         }
     }
 }
-void mergeTilesud(int n) {
+void mergeTilesud(int n, int multi) {
     for (int c = 0; c < n; ++c) {
         for (int r = 0; r < n - 1; ++r) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                 arr[r][c] *= 2;
-                scoreValue += scorefunc(n, arr[r][c]);
+                scoreValue += scorefunc(multi, arr[r][c]);
                 arr[r + 1][c] = 0;
             }
         }
     }
 }
-void mergeTilesrl(int n) {
+void mergeTilesrl(int n, int multi) {
     for (int r = 0; r < n; ++r) {
         for (int c = 0; c < n - 1; ++c) {
             if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                 arr[r][c] *= 2;
-                scoreValue += scorefunc(n, arr[r][c]);
+                scoreValue += scorefunc(multi, arr[r][c]);
                 arr[r][c + 1] = 0;
             }
         }
@@ -217,7 +217,7 @@ void moveTilesDown(int n) {
 void upArrow(int n, int multi) {
     copyBoard(n);
     moveTilesUp(n);
-    mergeTilesud(n);
+    mergeTilesud(n, multi);
     moveTilesUp(n);
     if (boardChanged(n)) {
         random1(n, multi);
@@ -226,7 +226,7 @@ void upArrow(int n, int multi) {
 void leftArrow(int n, int multi) {
     copyBoard(n);
     moveTilesLeft(n);
-    mergeTilesrl(n);
+    mergeTilesrl(n, multi);
     moveTilesLeft(n);
     if (boardChanged(n)) {
         random1(n, multi);
@@ -235,7 +235,7 @@ void leftArrow(int n, int multi) {
 void rightArrow(int n, int multi) {
     copyBoard(n);
     moveTilesRight(n);
-    mergeTilesrl(n);
+    mergeTilesrl(n, multi);
     moveTilesRight(n);
     if (boardChanged(n)) {
         random1(n, multi);
@@ -244,34 +244,34 @@ void rightArrow(int n, int multi) {
 void downArrow(int n, int multi) {
     copyBoard(n);
     moveTilesDown(n);
-    mergeTilesud(n);
+    mergeTilesud(n, multi);
     moveTilesDown(n);
     if (boardChanged(n)) {
         random1(n, multi);
     }
 }
-Color tileColor4x4(int r, int c, int n) {
-    if (arr[r][c] == n * pow(2, 0))
+Color tileColor4x4(int r, int c, int multi) {
+    if (arr[r][c] == multi * pow(2, 0))
         return Color(158, 174, 190);
-    else if (arr[r][c] == n * pow(2, 1))
+    else if (arr[r][c] == multi * pow(2, 1))
         return Color(136, 160, 176);
-    else if (arr[r][c] == n * pow(2, 2))
+    else if (arr[r][c] == multi * pow(2, 2))
         return Color(100, 124, 148);
-    else if (arr[r][c] == n * pow(2, 3))
+    else if (arr[r][c] == multi * pow(2, 3))
         return Color(84, 108, 132);
-    else if (arr[r][c] == n * pow(2, 4))
+    else if (arr[r][c] == multi * pow(2, 4))
         return Color(68, 100, 124);
-    else if (arr[r][c] == n * pow(2, 5))
+    else if (arr[r][c] == multi * pow(2, 5))
         return Color(60, 84, 108);
-    else if (arr[r][c] == n * pow(2, 6))
+    else if (arr[r][c] == multi * pow(2, 6))
         return Color(36, 68, 100);
-    else if (arr[r][c] == n * pow(2, 7))
+    else if (arr[r][c] == multi * pow(2, 7))
         return Color(28, 60, 84);
-    else if (arr[r][c] == n * pow(2, 8))
+    else if (arr[r][c] == multi * pow(2, 8))
         return Color(20, 44, 68);
-    else if (arr[r][c] == n * pow(2, 9))
+    else if (arr[r][c] == multi * pow(2, 9))
         return Color(4, 36, 68);
-    else if (arr[r][c] == n * pow(2, 10))
+    else if (arr[r][c] == multi * pow(2, 10))
         return Color(16, 20, 52);
     else
         return Color(212, 220, 220);
@@ -301,11 +301,11 @@ int main() {
     srand(time(0));
 
     int n = 4;
-    int multi = 2;
+    int multi = 5;
 
     int r = rand() % n;
     int c = rand() % n;
-    arr[r][c] = 2;
+    arr[r][c] = multi;
     window.setFramerateLimit(60);
 
 
