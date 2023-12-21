@@ -103,10 +103,10 @@ int main() {
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
 
     // Creating an object of the Button class named "button" and specifying its properties
-    Button four("4 X 4", Vector2f(150, 50), 24, Color::Blue, Color::White);
-    Button six("6 X 6", Vector2f(150, 50), 24, Color::Blue, Color::White);
-    Button eight("8 X 8", Vector2f(150, 50), 24, Color::Blue, Color::White);
-    Button back("Back", Vector2f(100,45), 24, Color::Blue, Color::White);
+    Button four("4 X 4", Vector2f(150, 50), 24, Color(6, 46, 81), Color::White);
+    Button six("6 X 6", Vector2f(150, 50), 24, Color(60, 52, 124), Color::White);
+    Button eight("8 X 8", Vector2f(150, 50), 24, Color(125, 13, 13), Color::White);
+    Button back("Back", Vector2f(100, 45), 24, Color(3, 85, 97), Color::White);
 
     
     // Making an object of the Font class called "font"
