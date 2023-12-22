@@ -63,6 +63,79 @@ private:
     float offset;
 };
 
+void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
+    std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
+
+    if (!highscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+
+    std::string line[5];
+    int lineNumber = 1;
+
+    while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
+        if (std::stoi(line[0]) == highscore)
+            return;
+
+        if (std::stoi(line[0]) < highscore)
+            break;
+
+        lineNumber++;
+    }
+
+    highscoreFile.seekg(0);
+
+    for (int i = 0; i < 5; i++) {
+        std::getline(highscoreFile, line[i]);
+    }
+
+    lineNumber--;
+
+    if (lineNumber >= 1 && lineNumber <= 5)
+        line[lineNumber] = std::to_string(highscore);
+
+    highscoreFile.close();
+
+    highscoreFile.open(filename, std::ios::out | std::ios::trunc);
+
+    for (int i = 0; i < 5; i++) {
+        highscoreFile << line[i] << std::endl;
+    }
+    highscoreFile.close();
+
+    std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
+
+    if (!namedHighscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+    namedHighscoreFile.seekp(0);
+    for (int i = 0; i < 5; i++) {
+        line[i].clear();  // Clear the contents of the string
+    }
+
+    for (int i = 0; i < 5; i++) {
+        getline(namedHighscoreFile, line[i]);
+    }
+
+    namedHighscoreFile.close();
+
+    namedHighscoreFile.open(namedscoretxt, std::ios::out | std::ios::trunc);
+
+    namedHighscoreFile.seekp(0);
+    namedHighscoreFile << std::fixed << std::setprecision(2);  // Set formatting for floating-point numbers
+
+    for (int i = 0; i < 5; i++) {
+        if (lineNumber != i)
+            namedHighscoreFile << line[i] << std::endl;
+        else
+            namedHighscoreFile << std::left << std::setw(20) << name << std::right << std::setw(10) << highscore << std::endl;
+    }
+
+    namedHighscoreFile.close();
+}
+
 int scorefunc(int base, int merged) {
     int power = 0;
 
@@ -306,7 +379,13 @@ string boardValues(int gridValue) {
 
 int main() {
     srand(time(0));
-
+    string username = "Hi";
+    int multi = 2;
+    ifstream file("highscores/unnamedhighscore6x6.txt");
+    string highscore;
+    getline(file, highscore);
+    file.close();
+    
     int** arr = new int* [6];
     for (int i = 0; i < 6; ++i) {
         arr[i] = new int[6];
@@ -323,15 +402,16 @@ int main() {
         }
     }
 
-    bool gameover = false;
-    int multi = 2;
+    bool isGameover = false;
+    bool runHighscore =  false;
     int scoreValue = 0;
+    
     int r = rand() % 6;
     int c = rand() % 6;
 
     arr[r][c] = multi;
-    window.setFramerateLimit(60);
 
+    window.setFramerateLimit(60);
 
     while (window.isOpen()) {
         Event event; // Making an object "event" of the Event class
@@ -387,7 +467,7 @@ int main() {
             Button b36(boardValues(arr[5][5]), Vector2f(60, 70), calculateFontSize(arr[5][5]), tileColor6x6(arr, 5, 5, multi), Color::Black, 16.0f);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
             Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-            Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
 
             Font font;
             font.loadFromFile("LEMONMILK.otf");
@@ -508,28 +588,32 @@ int main() {
 
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
-                    upArrow(prevArr, arr, 6, multi, scoreValue);
-                    if (isGameOver(arr, 6)) {
-                        gameover = true;
+                    upArrow(prevArr, arr, 8, multi, scoreValue);
+                    if (isGameOver(arr, 8)) {
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
-                    downArrow(prevArr, arr, 6, multi, scoreValue);
+                    downArrow(prevArr, arr, 8, multi, scoreValue);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                    if (isGameOver(arr, 6)) {
-                        gameover = true;
+                    if (isGameOver(arr, 8)) {
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
-                    leftArrow(prevArr, arr, 6, multi, scoreValue);
-                    if (isGameOver(arr, 6)) {
-                        gameover = true;
+                    leftArrow(prevArr, arr, 8, multi, scoreValue);
+                    if (isGameOver(arr, 8)) {
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
-                    rightArrow(prevArr, arr, 6, multi, scoreValue);
-                    if (isGameOver(arr, 6)) {
-                        gameover = true;
+                    rightArrow(prevArr, arr, 8, multi, scoreValue);
+                    if (isGameOver(arr, 8)) {
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
             }
@@ -577,8 +661,12 @@ int main() {
             newgame.drawTo(window);
             score.drawTo(window);
             best.drawTo(window);
-            if (gameover) {
+            if (isGameover) {
                 gameOver.drawTo(window);
+            }
+            if(runHighscore){
+                highScore("highscores/unnamedhighscore6x6.txt", "highscores/highscore6x6.txt", username, scoreValue);
+                runHighscore = false;
             }
             window.display();
         }
