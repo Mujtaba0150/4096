@@ -304,9 +304,87 @@ string boardValues(int gridValue) {
 
 
 }
-int main() {
-    srand(time(0));
+void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
+    std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
 
+    if (!highscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+
+    std::string line[5];
+    int lineNumber = 1;
+
+    while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
+        if (std::stoi(line[0]) == highscore)
+            return;
+
+        if (std::stoi(line[0]) < highscore)
+            break;
+
+        lineNumber++;
+    }
+
+    highscoreFile.seekg(0);
+
+    for (int i = 0; i < 5; i++) {
+        std::getline(highscoreFile, line[i]);
+    }
+    
+    lineNumber--;
+
+    if (lineNumber >= 1 && lineNumber <= 5)
+        line[lineNumber] = std::to_string(highscore);
+
+    highscoreFile.close();
+
+    highscoreFile.open(filename, std::ios::out | std::ios::trunc);
+
+    for (int i = 0; i < 5; i++) {
+        highscoreFile << line[i] << std::endl;
+    }
+    highscoreFile.close();
+
+    std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
+
+    if (!namedHighscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+    namedHighscoreFile.seekp(0);
+    for (int i = 0; i < 5; i++) {
+        line[i].clear();  // Clear the contents of the string
+    }
+
+    for (int i = 0; i < 5; i++) {
+        getline(namedHighscoreFile, line[i]);
+    }
+
+    namedHighscoreFile.close();
+
+    namedHighscoreFile.open(namedscoretxt, std::ios::out | std::ios::trunc);
+    
+    namedHighscoreFile.seekp(0);
+    namedHighscoreFile << std::fixed << std::setprecision(2);  // Set formatting for floating-point numbers
+
+    for (int i = 0; i < 5; i++) {
+        if (lineNumber != i)
+            namedHighscoreFile << line[i] << std::endl;
+        else
+            namedHighscoreFile << std::left << std::setw(20) << name << std::right << std::setw(10) << highscore << std::endl;
+    }
+
+    namedHighscoreFile.close();
+}
+
+int main() {
+    ifstream file("highscore.txt");
+    string username = "Hi";
+    string highscore;
+    getline(file, highscore);
+    file.close();
+
+    srand(time(0));
     int** arr = new int* [8];
     for (int i = 0; i < 8; ++i) {
         arr[i] = new int[8];
@@ -321,7 +399,9 @@ int main() {
             prevArr[i][j] = 0;
         }
     }
-    bool gameover = false;
+
+    bool isGameover = false;
+    bool runHighscore = false;
     int r = rand() % 8;
     int c = rand() % 8;
     int multi = 2;
@@ -341,8 +421,8 @@ int main() {
             Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(405, 512), 90, Color(80, 0, 8), Color::Black);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-            Button score("Score\n2334", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-            Button best("Best\n 2356", Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+            Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
             Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             //Row 1
             Button b1(boardValues(arr[0][0]), Vector2f(45, 55), calculateFontSize(arr[0][0]), tileColor8x8(arr, 0, 0, multi), Color::Black, 16.0f);
@@ -599,26 +679,30 @@ int main() {
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                     upArrow(prevArr, arr, 8, multi, scoreValue);
                     if (isGameOver(arr, 8)) {
-                        gameover = true;
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                     downArrow(prevArr, arr, 8, multi, scoreValue);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                     if (isGameOver(arr, 8)) {
-                        gameover = true;
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                     leftArrow(prevArr, arr, 8, multi, scoreValue);
                     if (isGameOver(arr, 8)) {
-                        gameover = true;
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                     rightArrow(prevArr, arr, 8, multi, scoreValue);
                     if (isGameOver(arr, 8)) {
-                        gameover = true;
+                        isGameover = true;
+                        runHighscore = true;
                     }
                 }
             }
@@ -695,8 +779,11 @@ int main() {
             newgame.drawTo(window);
             score.drawTo(window);
             best.drawTo(window);
-
-            if (gameover) {
+            if(runHighscore){
+            highScore("highscores/unnamedhighscore8x8.txt", "highscores/highscore8x8.txt", username, scoreValue);
+            runHighscore = false;
+        }
+            if (isGameover) {
                 gameOver.drawTo(window);
             }
 
