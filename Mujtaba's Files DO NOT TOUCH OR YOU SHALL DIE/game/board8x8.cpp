@@ -440,7 +440,7 @@ int main() {
         {
 
 
-            Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+            Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(405, 512), 90, Color(80, 0, 8), Color::Black);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
             Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
