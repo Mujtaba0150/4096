@@ -427,7 +427,7 @@ int main() {
         {
 
 
-            Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+            Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(395, 465), 90, Color(16, 8, 56), Color::Black);
             Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             Button b1(boardValues(arr[0][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor6x6(0, 0, multi), Color::Black, 16.0f);
