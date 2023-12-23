@@ -387,8 +387,7 @@ int main() {
     getline(board, username);
     board >> multi;
     board.close();
-    username = "Hi";
-    multi = 2;
+    
     VideoMode screenSize = VideoMode::getDesktopMode(); // Get screen dimensions
     RenderWindow window(screenSize, "SFML");            // Create a window using the screen dimensions
     ifstream file("leaderboards/leaderboard4x4.txt");
@@ -419,22 +418,22 @@ int main() {
             Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
             Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
             Button boardbackground(" ", Vector2f(395, 440), 90, Color(8, 24, 56), Color::Black);
-            Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, 2), Color::Black, 16.0f);
-            Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, 2), Color::Black, 16.0f);
-            Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, 2), Color::Black, 16.0f);
-            Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor4x4(0, 3, 2), Color::Black, 16.0f);
-            Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor4x4(1, 0, 2), Color::Black, 16.0f);
-            Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor4x4(1, 1, 2), Color::Black, 16.0f);
-            Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor4x4(1, 2, 2), Color::Black, 16.0f);
-            Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor4x4(1, 3, 2), Color::Black, 16.0f);
-            Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor4x4(2, 0, 2), Color::Black, 16.0f);
-            Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor4x4(2, 1, 2), Color::Black, 16.0f);
-            Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor4x4(2, 2, 2), Color::Black, 16.0f);
-            Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor4x4(2, 3, 2), Color::Black, 16.0f);
-            Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor4x4(3, 0, 2), Color::Black, 16.0f);
-            Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor4x4(3, 1, 2), Color::Black, 16.0f);
-            Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, 2), Color::Black, 16.0f);
-            Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, 2), Color::Black, 16.0f);
+            Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, multi), Color::Black, 16.0f);
+            Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, multi), Color::Black, 16.0f);
+            Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, multi), Color::Black, 16.0f);
+            Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor4x4(0, 3, multi), Color::Black, 16.0f);
+            Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor4x4(1, 0, multi), Color::Black, 16.0f);
+            Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor4x4(1, 1, multi), Color::Black, 16.0f);
+            Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor4x4(1, 2, multi), Color::Black, 16.0f);
+            Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor4x4(1, 3, multi), Color::Black, 16.0f);
+            Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor4x4(2, 0, multi), Color::Black, 16.0f);
+            Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor4x4(2, 1, multi), Color::Black, 16.0f);
+            Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor4x4(2, 2, multi), Color::Black, 16.0f);
+            Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor4x4(2, 3, multi), Color::Black, 16.0f);
+            Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor4x4(3, 0, multi), Color::Black, 16.0f);
+            Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor4x4(3, 1, multi), Color::Black, 16.0f);
+            Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, multi), Color::Black, 16.0f);
+            Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, multi), Color::Black, 16.0f);
             Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
             Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
             Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
@@ -520,6 +519,7 @@ int main() {
                 else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                     downArrow(4, multi, scoreValue);
                     Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                    
                     if (isGameOver(4)) {
                         isGameover = true;
                         runHighscore = true;
