@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <math.h>
+#include <algorithm>
 
 
 using namespace std;
@@ -2606,7 +2607,7 @@ void mainMenu(RenderWindow &window)
                                 _4 game;
                                 while (newGame)
                                 {
-                                    game.arr[4][4] = {0}
+                                    fill(begin(game.arr),end(game.arr),0);
                                     newGame = game.board(window, input, multi);
                                 }
                             }
@@ -2616,7 +2617,7 @@ void mainMenu(RenderWindow &window)
                                 _6 game;
                                 while (newGame)
                                 {
-                                    game.arr[6][6] = {0}
+                                    fill(begin(game.arr),end(game.arr),0);
                                     newGame = game.board(window, input, multi);
                                 }
                             }
@@ -2626,7 +2627,7 @@ void mainMenu(RenderWindow &window)
                             _8 game;
                             while (newGame)
                             {
-                                game.arr[8][8] = {0}
+                                fill(begin(game.arr),end(game.arr),0);
                                 newGame = game.board(window, input, multi);
                             }
                         }
