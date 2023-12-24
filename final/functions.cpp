@@ -392,7 +392,7 @@ struct _4
             }
         }
     }
-    void mergeTilesud(int n, int multi, int &scoreValue)
+    void mergeTilesUp(int n, int multi, int &scoreValue)
     {
         for (int c = 0; c < n; ++c)
         {
@@ -407,9 +407,39 @@ struct _4
             }
         }
     }
-    void mergeTilesrl(int n, int multi, int &scoreValue)
+    void mergeTilesDown(int n, int multi, int &scoreValue)
+    {
+        for (int c = n - 1; c > 0; c++)
+        {
+            for (int r = 0; r < n - 1; ++r)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r + 1][c] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesLeft(int n, int multi, int &scoreValue)
     {
         for (int r = 0; r < n; ++r)
+        {
+            for (int c = 0; c < n - 1; ++c)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r][c + 1] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesRight(int n, int multi, int &scoreValue)
+    {
+        for (int r = n - 1; r > 0; r--)
         {
             for (int c = 0; c < n - 1; ++c)
             {
@@ -502,7 +532,7 @@ struct _4
     {
         copyBoard(n);
         moveTilesUp(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesUp(n, multi, scoreValue);
         moveTilesUp(n);
         if (boardChanged(n))
         {
@@ -513,7 +543,7 @@ struct _4
     {
         copyBoard(n);
         moveTilesLeft(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesLeft(n, multi, scoreValue);
         moveTilesLeft(n);
         if (boardChanged(n))
         {
@@ -524,7 +554,7 @@ struct _4
     {
         copyBoard(n);
         moveTilesRight(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesRight(n, multi, scoreValue);
         moveTilesRight(n);
         if (boardChanged(n))
         {
@@ -535,7 +565,7 @@ struct _4
     {
         copyBoard(n);
         moveTilesDown(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesDown(n, multi, scoreValue);
         moveTilesDown(n);
         if (boardChanged(n))
         {
@@ -983,7 +1013,7 @@ struct _6
             }
         }
     }
-    void mergeTilesud(int n, int multi, int &scoreValue)
+    void mergeTilesUp(int n, int multi, int &scoreValue)
     {
         for (int c = 0; c < n; ++c)
         {
@@ -998,9 +1028,39 @@ struct _6
             }
         }
     }
-    void mergeTilesrl(int n, int multi, int &scoreValue)
+    void mergeTilesDown(int n, int multi, int &scoreValue)
+    {
+        for (int c = n - 1; c > 0; c++)
+        {
+            for (int r = 0; r < n - 1; ++r)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r + 1][c] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesLeft(int n, int multi, int &scoreValue)
     {
         for (int r = 0; r < n; ++r)
+        {
+            for (int c = 0; c < n - 1; ++c)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r][c + 1] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesRight(int n, int multi, int &scoreValue)
+    {
+        for (int r = n - 1; r > 0; r--)
         {
             for (int c = 0; c < n - 1; ++c)
             {
@@ -1093,7 +1153,7 @@ struct _6
     {
         copyBoard(n);
         moveTilesUp(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesUp(n, multi, scoreValue);
         moveTilesUp(n);
         if (boardChanged(n))
         {
@@ -1104,7 +1164,7 @@ struct _6
     {
         copyBoard(n);
         moveTilesLeft(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesLeft(n, multi, scoreValue);
         moveTilesLeft(n);
         if (boardChanged(n))
         {
@@ -1115,7 +1175,7 @@ struct _6
     {
         copyBoard(n);
         moveTilesRight(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesRight(n, multi, scoreValue);
         moveTilesRight(n);
         if (boardChanged(n))
         {
@@ -1126,7 +1186,7 @@ struct _6
     {
         copyBoard(n);
         moveTilesDown(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesDown(n, multi, scoreValue);
         moveTilesDown(n);
         if (boardChanged(n))
         {
@@ -1682,7 +1742,7 @@ struct _8
             }
         }
     }
-    void mergeTilesud(int n, int multi, int &scoreValue)
+    void mergeTilesUp(int n, int multi, int &scoreValue)
     {
         for (int c = 0; c < n; ++c)
         {
@@ -1697,9 +1757,39 @@ struct _8
             }
         }
     }
-    void mergeTilesrl(int n, int multi, int &scoreValue)
+    void mergeTilesDown(int n, int multi, int &scoreValue)
+    {
+        for (int c = n - 1; c > 0; c++)
+        {
+            for (int r = 0; r < n - 1; ++r)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r + 1][c] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesLeft(int n, int multi, int &scoreValue)
     {
         for (int r = 0; r < n; ++r)
+        {
+            for (int c = 0; c < n - 1; ++c)
+            {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
+                {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r][c + 1] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesRight(int n, int multi, int &scoreValue)
+    {
+        for (int r = n - 1; r > 0; r--)
         {
             for (int c = 0; c < n - 1; ++c)
             {
@@ -1792,7 +1882,7 @@ struct _8
     {
         copyBoard(n);
         moveTilesUp(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesUp(n, multi, scoreValue);
         moveTilesUp(n);
         if (boardChanged(n))
         {
@@ -1803,7 +1893,7 @@ struct _8
     {
         copyBoard(n);
         moveTilesLeft(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesLeft(n, multi, scoreValue);
         moveTilesLeft(n);
         if (boardChanged(n))
         {
@@ -1814,7 +1904,7 @@ struct _8
     {
         copyBoard(n);
         moveTilesRight(n);
-        mergeTilesrl(n, multi, scoreValue);
+        mergeTilesRight(n, multi, scoreValue);
         moveTilesRight(n);
         if (boardChanged(n))
         {
@@ -1825,7 +1915,7 @@ struct _8
     {
         copyBoard(n);
         moveTilesDown(n);
-        mergeTilesud(n, multi, scoreValue);
+        mergeTilesDown(n, multi, scoreValue);
         moveTilesDown(n);
         if (boardChanged(n))
         {
