@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+f#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
 #include <string>
@@ -697,10 +697,7 @@ struct _4
                         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
                         if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
-                             system("./mainMenu");
-                        window.close();
-                        exit(0);
-                        return 0; // Closes the window
+                             return false;
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -1371,10 +1368,7 @@ struct _6
                         if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
 
-                             system("./mainMenu");
-                        window.close();
-                        exit(0);
-                        return 0; // Closes the window
+                             return false;
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -2154,10 +2148,7 @@ struct _8
                         if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
 
-                            system("./mainMenu");
-                        window.close();
-                        exit(0);
-                        return 0; // Closes the window
+                            return false;
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -2393,7 +2384,7 @@ void mainMenu(RenderWindow &window)
 {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
-
+    bool newGame = true;
     string gSize = " ";
 
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
@@ -2491,13 +2482,13 @@ void mainMenu(RenderWindow &window)
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty())
                         {
-                            bool newGame = true;
+                            
                             toCheckSelections = true;
 
                             if (grid == 4)
                             {
                                 _4 game;
-                                while (newGame == true)
+                                while (newGame)
                                 {
                                     newGame = game.board(window, input, multi);
                                 }
@@ -2506,7 +2497,7 @@ void mainMenu(RenderWindow &window)
                             else if (grid == 6)
                             {
                                 _6 game;
-                                while (newGame == true)
+                                while (newGame)
                                 {
                                     newGame = game.board(window, input, multi);
                                 }
@@ -2515,7 +2506,7 @@ void mainMenu(RenderWindow &window)
                         else if (grid == 8)
                         {
                             _8 game;
-                            while (newGame == true)
+                            while (newGame)
                             {
                                 newGame = game.board(window, input, multi);
                             }
