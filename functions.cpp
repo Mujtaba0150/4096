@@ -1,7 +1,11 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+
 
 using namespace std;
 using namespace sf;
@@ -611,6 +615,7 @@ struct _4
                 Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                 Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
                 Button boardbackground(" ", Vector2f(395, 440), 90, Color(8, 24, 56), Color::Black);
+                Button back("Main Menu", Vector2f(100, 45), 15, Color(160,82,45), Color::White);
                 Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, multi), Color::Black, 16.0f);
                 Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, multi), Color::Black, 16.0f);
                 Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, multi), Color::Black, 16.0f);
@@ -636,6 +641,7 @@ struct _4
                 gameOver.setFont(font);
                 name.setFont(font);
                 boardbackground.setFont(font);
+                back.setFont(font);
                 b1.setFont(font);
                 b2.setFont(font);
                 b3.setFont(font);
@@ -659,6 +665,7 @@ struct _4
                 // Assigning the positions...
                 gameOver.setPosition(Vector2f(200, 200));
                 boardbackground.setPosition(Vector2f(370, 200));
+                back.setPosition(Vector2f(560,150));
                 name.setPosition(Vector2f(370, 70));
                 b1.setPosition(Vector2f(378, 210));
                 b2.setPosition(Vector2f(474, 210));
@@ -688,13 +695,16 @@ struct _4
                     if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                     {
                         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-                        if (name.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
-                            window.close(); // Closes the window
+                             system("./mainMenu");
+                        window.close();
+                        exit(0);
+                        return 0; // Closes the window
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
-                            return true;
+                           return true;
                         }
                     }
                 }
@@ -743,6 +753,7 @@ struct _4
                 window.clear(Color::White);
                 name.drawTo(window);
                 boardbackground.drawTo(window);
+                back.drawTo(window);
                 b1.drawTo(window);
                 b2.drawTo(window);
                 b3.drawTo(window);
@@ -758,6 +769,7 @@ struct _4
                 b13.drawTo(window);
                 b14.drawTo(window);
                 b15.drawTo(window);
+                back.drawTo(window);
                 b16.drawTo(window);
                 newgame.drawTo(window);
                 score.drawTo(window);
@@ -777,7 +789,7 @@ struct _4
         }
         return false;
     }
-}
+};
 
 // Gameboard 6x6
 struct _6
@@ -1198,6 +1210,7 @@ struct _6
 
                 Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
                 Button boardbackground(" ", Vector2f(395, 465), 90, Color(16, 8, 56), Color::Black);
+                Button back("Main Menu", Vector2f(100, 45), 15, Color(160,82,45), Color::White);
                 Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                 Button b1(boardValues(arr[0][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor6x6(0, 0, multi), Color::Black, 16.0f);
                 Button b2(boardValues(arr[0][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor6x6(0, 1, multi), Color::Black, 16.0f);
@@ -1249,6 +1262,7 @@ struct _6
                 name.setFont(font);
                 gameOver.setFont(font);
                 boardbackground.setFont(font);
+                back.setFont(font);
                 b1.setFont(font);
                 b2.setFont(font);
                 b3.setFont(font);
@@ -1294,6 +1308,7 @@ struct _6
                 // Assigning the positions...
                 boardbackground.setPosition(Vector2f(370, 200));
                 name.setPosition(Vector2f(370, 70));
+                back.setPosition(Vector2f(560,150));
                 // Row 1
                 b1.setPosition(Vector2f(378, 210));
                 b2.setPosition(Vector2f(442, 210));
@@ -1353,10 +1368,13 @@ struct _6
 
                         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 
-                        if (name.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
 
-                            window.close(); // Closes the window
+                             system("./mainMenu");
+                        window.close();
+                        exit(0);
+                        return 0; // Closes the window
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -1409,6 +1427,7 @@ struct _6
                 window.clear(Color::White);
                 name.drawTo(window);
                 boardbackground.drawTo(window);
+                back.drawTo(window);
                 b1.drawTo(window);
                 b2.drawTo(window);
                 b3.drawTo(window);
@@ -1462,14 +1481,14 @@ struct _6
         }
         return false;
     }
-}
+};
 
 // Gameboard 8x8:
 struct _8
 {
 
-    int arr[8][8];
-    int prevArr[8][8];
+    int arr[8][8]={0};
+    int prevArr[8][8]={0};
 
     void highScore(const std::string &filename, const std::string &namedscoretxt, const std::string &name, int highscore)
     {
@@ -1881,12 +1900,14 @@ struct _8
             while (window.pollEvent(event)) // Loop to manage when something changes in the console
             {
 
-                Button name("2048", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+                Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
                 Button boardbackground(" ", Vector2f(405, 512), 90, Color(80, 0, 8), Color::Black);
                 Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+                Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
                 Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
                 Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
                 Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+
                 // Row 1
                 Button b1(boardValues(arr[0][0]), Vector2f(45, 55), calculateFontSize(arr[0][0]), tileColor8x8(0, 0, multi), Color::Black, 16.0f);
                 Button b2(boardValues(arr[0][1]), Vector2f(45, 55), calculateFontSize(arr[0][1]), tileColor8x8(0, 1, multi), Color::Black, 16.0f);
@@ -1968,6 +1989,7 @@ struct _8
                 b1.setFont(font);
                 b2.setFont(font);
                 b3.setFont(font);
+                back.setFont(font);
                 b4.setFont(font);
                 b5.setFont(font);
                 b6.setFont(font);
@@ -2038,80 +2060,80 @@ struct _8
                 boardbackground.setPosition(Vector2f(370, 200));
                 name.setPosition(Vector2f(370, 70));
                 gameOver.setPosition(Vector2f(200, 200));
-                // Row 1
-                b1.setPosition(Vector2f(378, 210));
-                b2.setPosition(Vector2f(427, 210));
-                b3.setPosition(Vector2f(476, 210));
-                b4.setPosition(Vector2f(525, 210));
-                b5.setPosition(Vector2f(575, 210));
-                b6.setPosition(Vector2f(624, 210));
-                b7.setPosition(Vector2f(673, 210));
-                b8.setPosition(Vector2f(722, 210));
-                // Row 2
+                //Row 1
+            b1.setPosition(Vector2f(378, 210));
+            b2.setPosition(Vector2f(427, 210));
+            b3.setPosition(Vector2f(476, 210));
+            b4.setPosition(Vector2f(525, 210));
+            b5.setPosition(Vector2f(574, 210));
+            b6.setPosition(Vector2f(623, 210));
+            b7.setPosition(Vector2f(672, 210));
+            b8.setPosition(Vector2f(721, 210));
+            //Row 2
 
-                b9.setPosition(Vector2f(378, 272));
-                b10.setPosition(Vector2f(427, 272));
-                b11.setPosition(Vector2f(476, 272));
-                b12.setPosition(Vector2f(525, 272));
-                b13.setPosition(Vector2f(575, 272));
-                b14.setPosition(Vector2f(624, 272));
-                b15.setPosition(Vector2f(673, 272));
-                b16.setPosition(Vector2f(722, 272));
-                // Row 3
+            b9.setPosition(Vector2f(378, 272));
+            b10.setPosition(Vector2f(427, 272));
+            b11.setPosition(Vector2f(476, 272));
+            b12.setPosition(Vector2f(525, 272));
+            b13.setPosition(Vector2f(574, 272));
+            b14.setPosition(Vector2f(623, 272));
+            b15.setPosition(Vector2f(672, 272));
+            b16.setPosition(Vector2f(721, 272));
+            //Row 3
 
-                b17.setPosition(Vector2f(378, 334));
-                b18.setPosition(Vector2f(427, 334));
-                b19.setPosition(Vector2f(476, 334));
-                b20.setPosition(Vector2f(525, 334));
-                b21.setPosition(Vector2f(575, 334));
-                b22.setPosition(Vector2f(624, 334));
-                b23.setPosition(Vector2f(673, 334));
-                b24.setPosition(Vector2f(722, 334));
-                // Row 4
-                b25.setPosition(Vector2f(378, 396));
-                b26.setPosition(Vector2f(427, 396));
-                b27.setPosition(Vector2f(476, 396));
-                b28.setPosition(Vector2f(525, 396));
-                b29.setPosition(Vector2f(575, 396));
-                b30.setPosition(Vector2f(624, 396));
-                b31.setPosition(Vector2f(673, 396));
-                b32.setPosition(Vector2f(722, 396));
-                // Row 5
-                b33.setPosition(Vector2f(378, 458));
-                b34.setPosition(Vector2f(427, 458));
-                b35.setPosition(Vector2f(476, 458));
-                b36.setPosition(Vector2f(525, 458));
-                b37.setPosition(Vector2f(575, 458));
-                b38.setPosition(Vector2f(624, 458));
-                b39.setPosition(Vector2f(673, 458));
-                b40.setPosition(Vector2f(722, 458));
-                // Row 6
-                b41.setPosition(Vector2f(378, 520));
-                b42.setPosition(Vector2f(427, 520));
-                b43.setPosition(Vector2f(476, 520));
-                b44.setPosition(Vector2f(525, 520));
-                b45.setPosition(Vector2f(575, 520));
-                b46.setPosition(Vector2f(624, 520));
-                b47.setPosition(Vector2f(673, 520));
-                b48.setPosition(Vector2f(722, 520));
-                // Row 7
-                b49.setPosition(Vector2f(378, 585));
-                b50.setPosition(Vector2f(427, 585));
-                b51.setPosition(Vector2f(476, 585));
-                b52.setPosition(Vector2f(525, 585));
-                b53.setPosition(Vector2f(575, 585));
-                b54.setPosition(Vector2f(624, 585));
-                b55.setPosition(Vector2f(673, 585));
-                b56.setPosition(Vector2f(722, 585));
-                // Row 8
-                b57.setPosition(Vector2f(378, 647));
-                b58.setPosition(Vector2f(427, 647));
-                b59.setPosition(Vector2f(476, 647));
-                b60.setPosition(Vector2f(525, 647));
-                b61.setPosition(Vector2f(575, 647));
-                b62.setPosition(Vector2f(624, 647));
-                b63.setPosition(Vector2f(673, 647));
-                b64.setPosition(Vector2f(722, 647));
+            b17.setPosition(Vector2f(378, 334));
+            b18.setPosition(Vector2f(427, 334));
+            b19.setPosition(Vector2f(476, 334));
+            b20.setPosition(Vector2f(525, 334));
+            b21.setPosition(Vector2f(574, 334));
+            b22.setPosition(Vector2f(623, 334));
+            b23.setPosition(Vector2f(672, 334));
+            b24.setPosition(Vector2f(721, 334));
+            //Row 4
+            b25.setPosition(Vector2f(378, 396));
+            b26.setPosition(Vector2f(427, 396));
+            b27.setPosition(Vector2f(476, 396));
+            b28.setPosition(Vector2f(525, 396));
+            b29.setPosition(Vector2f(574, 396));
+            b30.setPosition(Vector2f(623, 396));
+            b31.setPosition(Vector2f(672, 396));
+            b32.setPosition(Vector2f(721, 396));
+            //Row 5
+            b33.setPosition(Vector2f(378, 458));
+            b34.setPosition(Vector2f(427, 458));
+            b35.setPosition(Vector2f(476, 458));
+            b36.setPosition(Vector2f(525, 458));
+            b37.setPosition(Vector2f(574, 458));
+            b38.setPosition(Vector2f(623, 458));
+            b39.setPosition(Vector2f(672, 458));
+            b40.setPosition(Vector2f(721, 458));
+            //Row 6
+            b41.setPosition(Vector2f(378, 520));
+            b42.setPosition(Vector2f(427, 520));
+            b43.setPosition(Vector2f(476, 520));
+            b44.setPosition(Vector2f(525, 520));
+            b45.setPosition(Vector2f(574, 520));
+            b46.setPosition(Vector2f(623, 520));
+            b47.setPosition(Vector2f(672, 520));
+            b48.setPosition(Vector2f(721, 520));
+            //Row 7
+            b49.setPosition(Vector2f(378, 582));
+            b50.setPosition(Vector2f(427, 582));
+            b51.setPosition(Vector2f(476, 582));
+            b52.setPosition(Vector2f(525, 582));
+            b53.setPosition(Vector2f(574, 582));
+            b54.setPosition(Vector2f(623, 582));
+            b55.setPosition(Vector2f(672, 582));
+            b56.setPosition(Vector2f(721, 582));
+            //Row 8
+            b57.setPosition(Vector2f(378, 644));
+            b58.setPosition(Vector2f(427, 644));
+            b59.setPosition(Vector2f(476, 644));
+            b60.setPosition(Vector2f(525, 644));
+            b61.setPosition(Vector2f(574, 644));
+            b62.setPosition(Vector2f(623, 644));
+            b63.setPosition(Vector2f(672, 644));
+            b64.setPosition(Vector2f(721, 644));
 
                 newgame.setPosition(Vector2f(666, 150));
                 score.setPosition(Vector2f(566, 50));
@@ -2129,10 +2151,13 @@ struct _8
 
                         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 
-                        if (name.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
 
-                            window.close(); // Closes the window
+                            system("./mainMenu");
+                        window.close();
+                        exit(0);
+                        return 0; // Closes the window
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -2185,6 +2210,7 @@ struct _8
                 window.clear(Color::White);
                 name.drawTo(window);
                 boardbackground.drawTo(window);
+                back.drawTo(window);
                 b1.drawTo(window);
                 b2.drawTo(window);
                 b3.drawTo(window);
@@ -2268,7 +2294,7 @@ struct _8
         }
         return false;
     }
-}
+};
 void beforeLeaderboard(RenderWindow &window)
 {
 
@@ -2331,15 +2357,15 @@ void beforeLeaderboard(RenderWindow &window)
 
                     if (four.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
-                        Leaderboard("leaderboards/namedLeaderboard4x4.txt");
+                        Leaderboard(window,"leaderboards/namedLeaderboard4x4.txt");
                     }
                     if (six.buttonClicked(window))
                     {
-                        Leaderboard("leaderboards/namedLeaderboard6x6.txt");
+                        Leaderboard(window,"leaderboards/namedLeaderboard6x6.txt");
                     }
                     if (eight.buttonClicked(window))
                     {
-                        Leaderboard("leaderboards/namedLeaderboard8x8.txt");
+                        Leaderboard(window,"leaderboards/namedLeaderboard8x8.txt");
                     }
                     if (back.buttonClicked(window))
                     {
