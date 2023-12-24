@@ -374,13 +374,21 @@ struct _4
     void random1(int n, int multi)
     {
         while (true)
-        {
+        {    
+            int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
             if (arr[r][c] == 0)
             {
-                arr[r][c] = multi;
-                break;
+                if(!(n % 2) 
+                {
+                    arr[r][c] = multi;
+                    break;
+                }
+                else 
+                {
+                    arr[r][c] = multi * 2;
+                    break;
             }
         }
     }
@@ -956,13 +964,22 @@ struct _6
     void random1(int n, int multi)
     {
         while (true)
-        {
+        {    
+            int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
             if (arr[r][c] == 0)
             {
-                arr[r][c] = multi;
-                break;
+                if(!(n % 2) 
+                {
+                    arr[r][c] = multi;
+                    break;
+                }
+                else 
+                {
+                    arr[r][c] = multi * 2;
+                    break;
+                }
             }
         }
     }
@@ -1646,13 +1663,22 @@ struct _8
     void random1(int n, int multi)
     {
         while (true)
-        {
+        {    
+            int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
             if (arr[r][c] == 0)
             {
-                arr[r][c] = multi;
-                break;
+                if(!(n % 2) 
+                {
+                    arr[r][c] = multi;
+                    break;
+                }
+                else 
+                {
+                    arr[r][c] = multi * 2;
+                    break;
+                }
             }
         }
     }
