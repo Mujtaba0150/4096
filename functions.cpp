@@ -6,39 +6,52 @@
 using namespace std;
 using namespace sf;
 
-class Button
-{
+class Button {
 public:
-    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor)
-    {
+    Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
+        : offset(offset) {
         text.setString(t);
         text.setFillColor(textColor);
         text.setCharacterSize(charSize);
-
         button.setSize(size);
         button.setFillColor(bgColor);
     }
-    void setFont(sf::Font &font)
-    {
+    void setFont(sf::Font& font) {
         text.setFont(font);
     }
-    void setBackColor(sf::Color color)
-    {
+    void setBackColor(sf::Color color) {
         button.setFillColor(color);
     }
-    void setTextColor(sf::Color color)
-    {
+    void setTextColor(sf::Color color) {
         text.setFillColor(color);
     }
-    void setPosition(sf::Vector2f pos)
-    {
+    void setPosition(sf::Vector2f pos) {
         button.setPosition(pos);
-
-        float xPos = (pos.x + button.getLocalBounds().width / 2) - (text.getLocalBounds().width / 2);
-        float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
+        float xPos = pos.x + (button.getLocalBounds().width - text.getLocalBounds().width) / 2;
+        float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
+        // Adjusts the vertical position by subtracting a specific offset (e.g., 5.0f)
+        yPos -= offset; // You can adjust this offset as needed
         text.setPosition(xPos, yPos);
     }
-    void leftalign(sf::Vector2f pos, float textOffset)
+    Vector2f getPosition() const {
+        return button.getPosition();
+    }
+    Vector2f getSize() const {
+        return button.getSize();
+    }
+    void drawTo(sf::RenderWindow& window) {
+        window.draw(button);
+        window.draw(text);
+    }
+    bool buttonClicked(sf::RenderWindow& window) {
+        Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+void leftalign(sf::Vector2f pos, float textOffset)
     {
         button.setPosition(pos);
 
@@ -46,35 +59,10 @@ public:
         float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
         text.setPosition(xPos, yPos);
     }
-    Vector2f getPosition() const
-    {
-        return button.getPosition();
-    }
-
-    Vector2f getSize() const
-    {
-        return button.getSize();
-    }
-    void drawTo(sf::RenderWindow &window)
-    {
-        window.draw(button);
-        window.draw(text);
-    }
-    bool buttonClicked(sf::RenderWindow &window)
-    {
-
-        Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y)
-        {
-            return 1;
-        }
-        else
-            return 0;
-    }
-
 private:
     sf::RectangleShape button;
     sf::Text text;
+    float offset;
 };
 
 class Picture
