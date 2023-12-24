@@ -156,9 +156,6 @@ void Leaderboard(RenderWindow &window, string file)
     rank5.leftalign(sf::Vector2f(345.0f, 365.0f), 50.0f);
     back.setPosition(Vector2f(550, 500));
 
-    VideoMode screenSize = VideoMode::getDesktopMode(); // Get screen dimensions
-    RenderWindow window(screenSize, "SFML");            // Create a window using the screen dimensions
-
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
     while (window.isOpen())
@@ -2271,7 +2268,8 @@ struct _8
         }
         return false;
     }
-} int beforeLeaderboard(RenderWindow &window)
+}
+void beforeLeaderboard(RenderWindow &window)
 {
 
     Picture preview4x4("grid4_preview.png");
@@ -2309,9 +2307,6 @@ struct _8
     preview4x4.setScale(Vector2f(250, 250));
     preview6x6.setScale(Vector2f(250, 250));
     preview8x8.setScale(Vector2f(250, 250));
-
-    VideoMode screenSize = VideoMode::getDesktopMode(); // Get screen dimensions
-    RenderWindow window(screenSize, "SFML");            // Create a window using the screen dimensions
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
