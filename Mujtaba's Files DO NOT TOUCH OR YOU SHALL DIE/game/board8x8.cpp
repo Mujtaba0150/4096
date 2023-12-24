@@ -3,11 +3,15 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include <iomanip>
-#include <math.h>
+#include<iomanip>
+#include<math.h>
 
 using namespace std;
 using namespace sf;
+
+VideoMode screenSize = VideoMode::getDesktopMode();
+RenderWindow window(screenSize, "Game Board");
+
 class Button {
 public:
     Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
@@ -53,96 +57,14 @@ public:
         else
             return 0;
     }
-    void leftalign(sf::Vector2f pos, float textOffset) {
-        button.setPosition(pos);
-
-        float xPos = pos.x + textOffset; // Set the x-position with the offset
-        float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
-        text.setPosition(xPos, yPos);
-
-    }
 private:
     sf::RectangleShape button;
     sf::Text text;
     float offset;
 };
 
-int arr[8][8];
-int prevArr[8][8];
-
-void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
-    std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
-
-    if (!highscoreFile.is_open()) {
-        std::cerr << "Error opening file!" << std::endl;
-        return;
-    }
-
-    std::string line[5];
-    int lineNumber = 1;
-
-    while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
-        if (std::stoi(line[0]) == highscore)
-            return;
-
-        if (std::stoi(line[0]) < highscore)
-            break;
-
-        lineNumber++;
-    }
-
-    highscoreFile.seekg(0);
-
-    for (int i = 0; i < 5; i++) {
-        std::getline(highscoreFile, line[i]);
-    }
-
-    lineNumber--;
-
-    if (lineNumber >= 1 && lineNumber <= 5)
-        line[lineNumber] = std::to_string(highscore);
-
-    highscoreFile.close();
-
-    highscoreFile.open(filename, std::ios::out | std::ios::trunc);
-
-    for (int i = 0; i < 5; i++) {
-        highscoreFile << line[i] << std::endl;
-    }
-    highscoreFile.close();
-
-    std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
-
-    if (!namedHighscoreFile.is_open()) {
-        std::cerr << "Error opening file!" << std::endl;
-        return;
-    }
-    namedHighscoreFile.seekp(0);
-    for (int i = 0; i < 5; i++) {
-        line[i].clear();  // Clear the contents of the string
-    }
-
-    for (int i = 0; i < 5; i++) {
-        getline(namedHighscoreFile, line[i]);
-    }
-
-    namedHighscoreFile.close();
-
-    namedHighscoreFile.open(namedscoretxt, std::ios::out | std::ios::trunc);
-
-    namedHighscoreFile.seekp(0);
-    namedHighscoreFile << std::fixed << std::setprecision(2);  // Set formatting for floating-point numbers
-
-    for (int i = 0; i < 5; i++) {
-        if (lineNumber != i)
-            namedHighscoreFile << std::setw(20) << line[i] << std::endl;
-        else
-            namedHighscoreFile << std::setw(20) << std::left << std::setw(20) << name << std::right << std::setw(10) << highscore << std::endl;
-    }
-
-
-    namedHighscoreFile.close();
-}
+int arr[8][8] = { 0 };
+int prevArr[8][8] = { 0 };
 
 int scorefunc(int base, int merged) {
     int power = 0;
@@ -328,6 +250,7 @@ void downArrow(int n, int multi, int& scoreValue) {
         random1(n, multi);
     }
 }
+
 int calculateFontSize(int value) {
     // Define a base font size
     int baseFontSize = 50;
@@ -383,6 +306,80 @@ Color tileColor8x8(int r, int c, int multi) {
         return Color(84, 28, 28);
     else
         return Color(228, 196, 196);
+
+
+}
+void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
+    std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
+
+    if (!highscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+
+    std::string line[5];
+    int lineNumber = 1;
+
+    while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
+        if (std::stoi(line[0]) == highscore)
+            return;
+
+        if (std::stoi(line[0]) < highscore)
+            break;
+
+        lineNumber++;
+    }
+
+    highscoreFile.seekg(0);
+
+    for (int i = 0; i < 5; i++) {
+        std::getline(highscoreFile, line[i]);
+    }
+
+    lineNumber--;
+
+    if (lineNumber >= 1 && lineNumber <= 5)
+        line[lineNumber] = std::to_string(highscore);
+
+    highscoreFile.close();
+
+    highscoreFile.open(filename, std::ios::out | std::ios::trunc);
+
+    for (int i = 0; i < 5; i++) {
+        highscoreFile << line[i] << std::endl;
+    }
+    highscoreFile.close();
+
+    std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
+
+    if (!namedHighscoreFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return;
+    }
+    namedHighscoreFile.seekp(0);
+    for (int i = 0; i < 5; i++) {
+        line[i].clear();  // Clear the contents of the string
+    }
+
+    for (int i = 0; i < 5; i++) {
+        getline(namedHighscoreFile, line[i]);
+    }
+
+    namedHighscoreFile.close();
+
+    namedHighscoreFile.open(namedscoretxt, std::ios::out | std::ios::trunc);
+
+    namedHighscoreFile.seekp(0);
+    namedHighscoreFile << std::fixed << std::setprecision(2);  // Set formatting for floating-point numbers
+
+    for (int i = 0; i < 5; i++) {
+        if (lineNumber != i)
+            namedHighscoreFile << line[i] << std::endl;
+        else
+            namedHighscoreFile << std::left << std::setw(20) << name << std::right << std::setw(10) << highscore << std::endl;
+    }
+
+    namedHighscoreFile.close();
 }
 
 int main() {
@@ -399,32 +396,15 @@ int main() {
     board >> multi;
     board.close();
 
-    VideoMode screenSize = VideoMode::getDesktopMode(); // Get screen dimensions
-    RenderWindow window(screenSize, "SFML");            // Create a window using the screen dimensions
-    ifstream file("leaderboards/leaderboard8x8.txt");
+    ifstream file("highscore.txt");
     string highscore;
     getline(file, highscore);
     file.close();
 
     srand(time(0));
-    int** arr = new int* [8];
-    for (int i = 0; i < 8; ++i) {
-        arr[i] = new int[8];
-        for (int j = 0; j < 8; ++j) {
-            arr[i][j] = 0;
-        }
-    }
-    int** prevArr = new int* [8];
-    for (int i = 0; i < 8; ++i) {
-        prevArr[i] = new int[8];
-        for (int j = 0; j < 8; ++j) {
-            prevArr[i][j] = 0;
-        }
-    }
 
     bool isGameover = false;
     bool runHighscore = false;
-
     int r = rand() % 8;
     int c = rand() % 8;
     int scoreValue = 0;
@@ -694,13 +674,6 @@ int main() {
 
                         window.close(); // Closes the window
                     }
-                    else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
-                    {
-                        system("./board8x8");
-                        window.close();
-                        exit(0);
-                        return 0;
-                    }
                 }
             }
 
@@ -809,7 +782,7 @@ int main() {
             score.drawTo(window);
             best.drawTo(window);
             if (runHighscore) {
-                highScore("leaderboards/leaderboard8x8.txt", "leaderboards/namedLeaderboard8x8.txt", username, scoreValue);
+                highScore("highscores/unnamedhighscore8x8.txt", "highscores/highscore8x8.txt", username, scoreValue);
                 runHighscore = false;
             }
             if (isGameover) {
