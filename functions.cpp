@@ -1,4 +1,4 @@
-f#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <fstream>
 #include <string>
@@ -2289,9 +2289,9 @@ struct _8
 void beforeLeaderboard(RenderWindow &window)
 {
 
-    Picture preview4x4("grid4_preview.png");
+    Picture preview4x4("grid4_preview.PNG");
     Picture preview6x6("grid6_preview.png");
-    Picture preview8x8("grid8_preview.png");
+    Picture preview8x8("grid8_preview.PNG");
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
 
     // Creating an object of the Button class named "button" and specifying its properties
