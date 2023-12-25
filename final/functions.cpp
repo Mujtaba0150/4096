@@ -633,7 +633,7 @@ struct _4
         file.close();
 
         srand(time(0));
-
+        fill(begin(arr),end(arr),0);
         int r = rand() % 4;
         int c = rand() % 4;
 
@@ -1257,13 +1257,15 @@ struct _6
     bool board(RenderWindow &window, string username, int multi)
     {
 
-        srand(time(0));
-
         ifstream file("leaderboards/leaderboard6x6.txt");
         string highscore;
         getline(file, highscore);
         file.close();
 
+        srand(time(0));
+        
+        fill(begin(arr),end(arr),0);
+        
         bool isGameover = false;
         bool runHighscore = false;
         int scoreValue = 0;
@@ -1994,6 +1996,8 @@ struct _8
 
         srand(time(0));
 
+        fill(begin(arr),end(arr),0);
+
         bool isGameover = false;
         bool runHighscore = false;
         int r = rand() % 8;
@@ -2607,7 +2611,7 @@ void mainMenu(RenderWindow &window)
                                 _4 game;
                                 while (newGame)
                                 {
-                                    fill(begin(game.arr),end(game.arr),0);
+                                    
                                     newGame = game.board(window, input, multi);
                                 }
                             }
@@ -2617,7 +2621,7 @@ void mainMenu(RenderWindow &window)
                                 _6 game;
                                 while (newGame)
                                 {
-                                    fill(begin(game.arr),end(game.arr),0);
+                                    
                                     newGame = game.board(window, input, multi);
                                 }
                             }
@@ -2627,7 +2631,6 @@ void mainMenu(RenderWindow &window)
                             _8 game;
                             while (newGame)
                             {
-                                fill(begin(game.arr),end(game.arr),0);
                                 newGame = game.board(window, input, multi);
                             }
                         }
