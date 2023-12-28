@@ -7,30 +7,35 @@
 #include <math.h>
 #include <algorithm>
 
-
 using namespace std;
 using namespace sf;
 
-class Button {
+class Button
+{
 public:
     Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
-        : offset(offset) {
+        : offset(offset)
+    {
         text.setString(t);
         text.setFillColor(textColor);
         text.setCharacterSize(charSize);
         button.setSize(size);
         button.setFillColor(bgColor);
     }
-    void setFont(sf::Font& font) {
+    void setFont(sf::Font &font)
+    {
         text.setFont(font);
     }
-    void setBackColor(sf::Color color) {
+    void setBackColor(sf::Color color)
+    {
         button.setFillColor(color);
     }
-    void setTextColor(sf::Color color) {
+    void setTextColor(sf::Color color)
+    {
         text.setFillColor(color);
     }
-    void setPosition(sf::Vector2f pos) {
+    void setPosition(sf::Vector2f pos)
+    {
         button.setPosition(pos);
         float xPos = pos.x + (button.getLocalBounds().width - text.getLocalBounds().width) / 2;
         float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
@@ -38,25 +43,30 @@ public:
         yPos -= offset; // You can adjust this offset as needed
         text.setPosition(xPos, yPos);
     }
-    Vector2f getPosition() const {
+    Vector2f getPosition() const
+    {
         return button.getPosition();
     }
-    Vector2f getSize() const {
+    Vector2f getSize() const
+    {
         return button.getSize();
     }
-    void drawTo(sf::RenderWindow& window) {
+    void drawTo(sf::RenderWindow &window)
+    {
         window.draw(button);
         window.draw(text);
     }
-    bool buttonClicked(sf::RenderWindow& window) {
+    bool buttonClicked(sf::RenderWindow &window)
+    {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y) {
+        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y)
+        {
             return 1;
         }
         else
             return 0;
     }
-void leftalign(sf::Vector2f pos, float textOffset)
+    void leftalign(sf::Vector2f pos, float textOffset)
     {
         button.setPosition(pos);
 
@@ -64,6 +74,7 @@ void leftalign(sf::Vector2f pos, float textOffset)
         float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
         text.setPosition(xPos, yPos);
     }
+
 private:
     sf::RectangleShape button;
     sf::Text text;
@@ -375,455 +386,456 @@ struct _4
     void random1(int n, int multi)
     {
         while (true)
-        {    
+        {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
             if (arr[r][c] == 0)
             {
-                if(!(n % 2) 
+                if (!(n % 2))
                 {
                     arr[r][c] = multi;
                     break;
                 }
-                else 
+                else
                 {
                     arr[r][c] = multi * 2;
                     break;
-            }
-        }
-    }
-    void mergeTilesUp(int n, int multi, int &scoreValue)
-    {
-        for (int c = 0; c < n; ++c)
-        {
-            for (int r = 0; r < n - 1; ++r)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                {
-                    arr[r][c] *= 2;
-                    scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r + 1][c] = 0;
                 }
             }
         }
-    }
-    void mergeTilesDown(int n, int multi, int &scoreValue)
-    {
-        for (int c = n - 1; c > 0; c++)
+        void mergeTilesUp(int n, int multi, int &scoreValue)
         {
-            for (int r = 0; r < n - 1; ++r)
+            for (int c = 0; c < n; ++c)
             {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
+                for (int r = 0; r < n - 1; ++r)
                 {
-                    arr[r][c] *= 2;
-                    scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r + 1][c] = 0;
-                }
-            }
-        }
-    }
-    void mergeTilesLeft(int n, int multi, int &scoreValue)
-    {
-        for (int r = 0; r < n; ++r)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
-                    arr[r][c] *= 2;
-                    scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r][c + 1] = 0;
-                }
-            }
-        }
-    }
-    void mergeTilesRight(int n, int multi, int &scoreValue)
-    {
-        for (int r = n - 1; r > 0; r--)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
-                    arr[r][c] *= 2;
-                    scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r][c + 1] = 0;
-                }
-            }
-        }
-    }
-    void moveTilesRight(int n)
-    {
-        for (int r = 0; r < n; r++)
-        {
-            int column = n - 1;
-            for (int c = n - 1; c >= 0; c--)
-            {
-                if (arr[r][c] != 0)
-                {
-                    arr[r][column] = arr[r][c];
-                    if (column != c)
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
                     {
-                        arr[r][c] = 0;
+                        arr[r][c] *= 2;
+                        scoreValue += scorefunc(multi, arr[r][c]);
+                        arr[r + 1][c] = 0;
                     }
-                    column--;
                 }
             }
         }
-    }
-    void moveTilesLeft(int n)
-    {
-        for (int r = 0; r < n; ++r)
+        void mergeTilesDown(int n, int multi, int &scoreValue)
         {
-            int column = 0;
-            for (int c = 0; c < n; c++)
+            for (int c = n - 1; c > 0; c++)
             {
-                if (arr[r][c] != 0)
+                for (int r = 0; r < n - 1; ++r)
                 {
-                    arr[r][column] = arr[r][c];
-                    if (column != c)
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
                     {
-                        arr[r][c] = 0;
+                        arr[r][c] *= 2;
+                        scoreValue += scorefunc(multi, arr[r][c]);
+                        arr[r + 1][c] = 0;
                     }
-                    column++;
                 }
             }
         }
-    }
-    void moveTilesUp(int n)
-    {
-        for (int c = 0; c < n; c++)
+        void mergeTilesLeft(int n, int multi, int &scoreValue)
         {
-            int row = 0;
+            for (int r = 0; r < n; ++r)
+            {
+                for (int c = 0; c < n - 1; ++c)
+                {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
+                    {
+                        arr[r][c] *= 2;
+                        scoreValue += scorefunc(multi, arr[r][c]);
+                        arr[r][c + 1] = 0;
+                    }
+                }
+            }
+        }
+        void mergeTilesRight(int n, int multi, int &scoreValue)
+        {
+            for (int r = n - 1; r > 0; r--)
+            {
+                for (int c = 0; c < n - 1; ++c)
+                {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
+                    {
+                        arr[r][c] *= 2;
+                        scoreValue += scorefunc(multi, arr[r][c]);
+                        arr[r][c + 1] = 0;
+                    }
+                }
+            }
+        }
+        void moveTilesRight(int n)
+        {
             for (int r = 0; r < n; r++)
             {
-                if (arr[r][c] != 0)
+                int column = n - 1;
+                for (int c = n - 1; c >= 0; c--)
                 {
-                    arr[row][c] = arr[r][c];
-                    if (row != r)
+                    if (arr[r][c] != 0)
                     {
-                        arr[r][c] = 0;
-                    };
-                    row++;
+                        arr[r][column] = arr[r][c];
+                        if (column != c)
+                        {
+                            arr[r][c] = 0;
+                        }
+                        column--;
+                    }
                 }
             }
         }
-    }
-    void moveTilesDown(int n)
-    {
-        for (int c = 0; c < n; c++)
+        void moveTilesLeft(int n)
         {
-            int row = n - 1;
-            for (int r = n - 1; r >= 0; r--)
+            for (int r = 0; r < n; ++r)
             {
-                if (arr[r][c] != 0)
+                int column = 0;
+                for (int c = 0; c < n; c++)
                 {
-                    arr[row][c] = arr[r][c];
-                    if (row != r)
+                    if (arr[r][c] != 0)
                     {
-                        arr[r][c] = 0;
+                        arr[r][column] = arr[r][c];
+                        if (column != c)
+                        {
+                            arr[r][c] = 0;
+                        }
+                        column++;
                     }
-                    row--;
                 }
             }
         }
-    }
-    void upArrow(int n, int multi, int &scoreValue)
-    {
-        copyBoard(n);
-        moveTilesUp(n);
-        mergeTilesUp(n, multi, scoreValue);
-        moveTilesUp(n);
-        if (boardChanged(n))
+        void moveTilesUp(int n)
         {
-            random1(n, multi);
-        }
-    }
-    void leftArrow(int n, int multi, int &scoreValue)
-    {
-        copyBoard(n);
-        moveTilesLeft(n);
-        mergeTilesLeft(n, multi, scoreValue);
-        moveTilesLeft(n);
-        if (boardChanged(n))
-        {
-            random1(n, multi);
-        }
-    }
-    void rightArrow(int n, int multi, int &scoreValue)
-    {
-        copyBoard(n);
-        moveTilesRight(n);
-        mergeTilesRight(n, multi, scoreValue);
-        moveTilesRight(n);
-        if (boardChanged(n))
-        {
-            random1(n, multi);
-        }
-    }
-    void downArrow(int n, int multi, int &scoreValue)
-    {
-        copyBoard(n);
-        moveTilesDown(n);
-        mergeTilesDown(n, multi, scoreValue);
-        moveTilesDown(n);
-        if (boardChanged(n))
-        {
-            random1(n, multi);
-        }
-    }
-    Color tileColor4x4(int r, int c, int multi)
-    {
-        if (arr[r][c] == multi * pow(2, 0))
-            return Color(158, 174, 190);
-        else if (arr[r][c] == multi * pow(2, 1))
-            return Color(136, 160, 176);
-        else if (arr[r][c] == multi * pow(2, 2))
-            return Color(100, 124, 148);
-        else if (arr[r][c] == multi * pow(2, 3))
-            return Color(84, 108, 132);
-        else if (arr[r][c] == multi * pow(2, 4))
-            return Color(68, 100, 124);
-        else if (arr[r][c] == multi * pow(2, 5))
-            return Color(60, 84, 108);
-        else if (arr[r][c] == multi * pow(2, 6))
-            return Color(36, 68, 100);
-        else if (arr[r][c] == multi * pow(2, 7))
-            return Color(28, 60, 84);
-        else if (arr[r][c] == multi * pow(2, 8))
-            return Color(20, 44, 68);
-        else if (arr[r][c] == multi * pow(2, 9))
-            return Color(4, 36, 68);
-        else if (arr[r][c] == multi * pow(2, 10))
-            return Color(16, 20, 52);
-        else
-            return Color(212, 220, 220);
-    }
-    int calculateFontSize(int value)
-    {
-        // Define a base font size
-        int baseFontSize = 50;
-        // Calculate a dynamic font size based on the value
-        int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
-        // Ensure the font size doesn't become too small
-        if (fontSize < 15)
-        {
-            fontSize = 15; // Set a minimum font size to maintain readability
-        }
-        return fontSize;
-    }
-
-    string boardValues(int gridValue)
-    {
-
-        if (gridValue != 0)
-            return to_string(gridValue);
-        else
-            return "";
-    }
-
-    bool board(RenderWindow &window, string username, int multi)
-    {
-
-        ifstream file("leaderboards/leaderboard4x4.txt");
-        string highscore;
-        getline(file, highscore);
-
-        file.close();
-
-        srand(time(0));
-        fill(begin(arr),end(arr),0);
-        int r = rand() % 4;
-        int c = rand() % 4;
-
-        bool isGameover = false;
-        bool runHighscore = false;
-        int scoreValue = 0;
-
-        arr[r][c] = multi;
-        window.setFramerateLimit(60);
-
-        while (window.isOpen())
-        {
-            Event event; // Making an object "event" of the Event class
-            window.clear();
-            while (window.pollEvent(event)) // Loop to manage when something changes in the console
+            for (int c = 0; c < n; c++)
             {
-
-                Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-                Button boardbackground(" ", Vector2f(395, 440), 90, Color(8, 24, 56), Color::Black);
-                Button back("Main Menu", Vector2f(100, 45), 15, Color(160,82,45), Color::White);
-                Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, multi), Color::Black, 16.0f);
-                Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, multi), Color::Black, 16.0f);
-                Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, multi), Color::Black, 16.0f);
-                Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor4x4(0, 3, multi), Color::Black, 16.0f);
-                Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor4x4(1, 0, multi), Color::Black, 16.0f);
-                Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor4x4(1, 1, multi), Color::Black, 16.0f);
-                Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor4x4(1, 2, multi), Color::Black, 16.0f);
-                Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor4x4(1, 3, multi), Color::Black, 16.0f);
-                Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor4x4(2, 0, multi), Color::Black, 16.0f);
-                Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor4x4(2, 1, multi), Color::Black, 16.0f);
-                Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor4x4(2, 2, multi), Color::Black, 16.0f);
-                Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor4x4(2, 3, multi), Color::Black, 16.0f);
-                Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor4x4(3, 0, multi), Color::Black, 16.0f);
-                Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor4x4(3, 1, multi), Color::Black, 16.0f);
-                Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, multi), Color::Black, 16.0f);
-                Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, multi), Color::Black, 16.0f);
-                Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-                Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-                Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-
-                Font font;
-                font.loadFromFile("LEMONMILK.otf");
-                gameOver.setFont(font);
-                name.setFont(font);
-                boardbackground.setFont(font);
-                back.setFont(font);
-                b1.setFont(font);
-                b2.setFont(font);
-                b3.setFont(font);
-                b4.setFont(font);
-                b5.setFont(font);
-                b6.setFont(font);
-                b7.setFont(font);
-                b8.setFont(font);
-                b9.setFont(font);
-                b10.setFont(font);
-                b11.setFont(font);
-                b12.setFont(font);
-                b13.setFont(font);
-                b14.setFont(font);
-                b15.setFont(font);
-                b16.setFont(font);
-                newgame.setFont(font);
-                score.setFont(font);
-                best.setFont(font);
-
-                // Assigning the positions...
-                gameOver.setPosition(Vector2f(200, 200));
-                boardbackground.setPosition(Vector2f(370, 200));
-                back.setPosition(Vector2f(560,150));
-                name.setPosition(Vector2f(370, 70));
-                b1.setPosition(Vector2f(378, 210));
-                b2.setPosition(Vector2f(474, 210));
-                b3.setPosition(Vector2f(570, 210));
-                b4.setPosition(Vector2f(666, 210));
-                b5.setPosition(Vector2f(378, 316));
-                b6.setPosition(Vector2f(474, 316));
-                b7.setPosition(Vector2f(570, 316));
-                b8.setPosition(Vector2f(666, 316));
-                b9.setPosition(Vector2f(378, 422));
-                b10.setPosition(Vector2f(474, 422));
-                b11.setPosition(Vector2f(570, 422));
-                b12.setPosition(Vector2f(666, 422));
-                b13.setPosition(Vector2f(378, 528));
-                b14.setPosition(Vector2f(474, 528));
-                b15.setPosition(Vector2f(570, 528));
-                b16.setPosition(Vector2f(666, 528));
-                newgame.setPosition(Vector2f(666, 150));
-                score.setPosition(Vector2f(566, 50));
-                best.setPosition(Vector2f(672, 50));
-                if (event.type == Event::Closed)
+                int row = 0;
+                for (int r = 0; r < n; r++)
                 {
-                    window.close();
-                }
-                else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
-                {
-                    if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
+                    if (arr[r][c] != 0)
                     {
-                        Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        arr[row][c] = arr[r][c];
+                        if (row != r)
                         {
-                             return false;
-                        }
-                        else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
-                        {
-                           return true;
-                        }
+                            arr[r][c] = 0;
+                        };
+                        row++;
                     }
                 }
-
-                else if (event.type == sf::Event::KeyPressed)
-                {
-                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
-                    {
-                        upArrow(4, multi, scoreValue);
-                        if (isGameOver(4))
-                        {
-                            isGameover = true;
-                            runHighscore = true;
-                        }
-                    }
-                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
-                    {
-                        downArrow(4, multi, scoreValue);
-                        Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                        if (isGameOver(4))
-                        {
-                            isGameover = true;
-                            runHighscore = true;
-                        }
-                    }
-                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
-                    {
-                        leftArrow(4, multi, scoreValue);
-                        if (isGameOver(4))
-                        {
-                            isGameover = true;
-                            runHighscore = true;
-                        }
-                    }
-                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
-                    {
-                        rightArrow(4, multi, scoreValue);
-                        if (isGameOver(4))
-                        {
-                            isGameover = true;
-                            runHighscore = true;
-                        }
-                    }
-                }
-
-                window.clear(Color::White);
-                name.drawTo(window);
-                boardbackground.drawTo(window);
-                back.drawTo(window);
-                b1.drawTo(window);
-                b2.drawTo(window);
-                b3.drawTo(window);
-                b4.drawTo(window);
-                b5.drawTo(window);
-                b6.drawTo(window);
-                b7.drawTo(window);
-                b8.drawTo(window);
-                b9.drawTo(window);
-                b10.drawTo(window);
-                b11.drawTo(window);
-                b12.drawTo(window);
-                b13.drawTo(window);
-                b14.drawTo(window);
-                b15.drawTo(window);
-                back.drawTo(window);
-                b16.drawTo(window);
-                newgame.drawTo(window);
-                score.drawTo(window);
-                best.drawTo(window);
-
-                if (isGameover)
-                {
-                    gameOver.drawTo(window);
-                }
-                if (runHighscore)
-                {
-                    highScore("leaderboards/leaderboard4x4.txt", "leaderboards/namedLeaderboard4x4.txt", username, scoreValue);
-                    runHighscore = false;
-                }
-                window.display();
             }
         }
-        return false;
+        void moveTilesDown(int n)
+        {
+            for (int c = 0; c < n; c++)
+            {
+                int row = n - 1;
+                for (int r = n - 1; r >= 0; r--)
+                {
+                    if (arr[r][c] != 0)
+                    {
+                        arr[row][c] = arr[r][c];
+                        if (row != r)
+                        {
+                            arr[r][c] = 0;
+                        }
+                        row--;
+                    }
+                }
+            }
+        }
+        void upArrow(int n, int multi, int &scoreValue)
+        {
+            copyBoard(n);
+            moveTilesUp(n);
+            mergeTilesUp(n, multi, scoreValue);
+            moveTilesUp(n);
+            if (boardChanged(n))
+            {
+                random1(n, multi);
+            }
+        }
+        void leftArrow(int n, int multi, int &scoreValue)
+        {
+            copyBoard(n);
+            moveTilesLeft(n);
+            mergeTilesLeft(n, multi, scoreValue);
+            moveTilesLeft(n);
+            if (boardChanged(n))
+            {
+                random1(n, multi);
+            }
+        }
+        void rightArrow(int n, int multi, int &scoreValue)
+        {
+            copyBoard(n);
+            moveTilesRight(n);
+            mergeTilesRight(n, multi, scoreValue);
+            moveTilesRight(n);
+            if (boardChanged(n))
+            {
+                random1(n, multi);
+            }
+        }
+        void downArrow(int n, int multi, int &scoreValue)
+        {
+            copyBoard(n);
+            moveTilesDown(n);
+            mergeTilesDown(n, multi, scoreValue);
+            moveTilesDown(n);
+            if (boardChanged(n))
+            {
+                random1(n, multi);
+            }
+        }
+        Color tileColor4x4(int r, int c, int multi)
+        {
+            if (arr[r][c] == multi * pow(2, 0))
+                return Color(158, 174, 190);
+            else if (arr[r][c] == multi * pow(2, 1))
+                return Color(136, 160, 176);
+            else if (arr[r][c] == multi * pow(2, 2))
+                return Color(100, 124, 148);
+            else if (arr[r][c] == multi * pow(2, 3))
+                return Color(84, 108, 132);
+            else if (arr[r][c] == multi * pow(2, 4))
+                return Color(68, 100, 124);
+            else if (arr[r][c] == multi * pow(2, 5))
+                return Color(60, 84, 108);
+            else if (arr[r][c] == multi * pow(2, 6))
+                return Color(36, 68, 100);
+            else if (arr[r][c] == multi * pow(2, 7))
+                return Color(28, 60, 84);
+            else if (arr[r][c] == multi * pow(2, 8))
+                return Color(20, 44, 68);
+            else if (arr[r][c] == multi * pow(2, 9))
+                return Color(4, 36, 68);
+            else if (arr[r][c] == multi * pow(2, 10))
+                return Color(16, 20, 52);
+            else
+                return Color(212, 220, 220);
+        }
+        int calculateFontSize(int value)
+        {
+            // Define a base font size
+            int baseFontSize = 50;
+            // Calculate a dynamic font size based on the value
+            int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
+            // Ensure the font size doesn't become too small
+            if (fontSize < 15)
+            {
+                fontSize = 15; // Set a minimum font size to maintain readability
+            }
+            return fontSize;
+        }
+
+        string boardValues(int gridValue)
+        {
+
+            if (gridValue != 0)
+                return to_string(gridValue);
+            else
+                return "";
+        }
+
+        bool board(RenderWindow & window, string username, int multi)
+        {
+
+            ifstream file("leaderboards/leaderboard4x4.txt");
+            string highscore;
+            getline(file, highscore);
+
+            file.close();
+
+            srand(time(0));
+            fill(begin(arr), end(arr), 0);
+            int r = rand() % 4;
+            int c = rand() % 4;
+
+            bool isGameover = false;
+            bool runHighscore = false;
+            int scoreValue = 0;
+
+            arr[r][c] = multi;
+            window.setFramerateLimit(60);
+
+            while (window.isOpen())
+            {
+                Event event; // Making an object "event" of the Event class
+                window.clear();
+                while (window.pollEvent(event)) // Loop to manage when something changes in the console
+                {
+
+                    Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                    Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+                    Button boardbackground(" ", Vector2f(395, 440), 90, Color(8, 24, 56), Color::Black);
+                    Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+                    Button b1(boardValues(arr[0][0]), Vector2f(90, 100), calculateFontSize(arr[0][0]), tileColor4x4(0, 0, multi), Color::Black, 16.0f);
+                    Button b2(boardValues(arr[0][1]), Vector2f(90, 100), calculateFontSize(arr[0][1]), tileColor4x4(0, 1, multi), Color::Black, 16.0f);
+                    Button b3(boardValues(arr[0][2]), Vector2f(90, 100), calculateFontSize(arr[0][2]), tileColor4x4(0, 2, multi), Color::Black, 16.0f);
+                    Button b4(boardValues(arr[0][3]), Vector2f(90, 100), calculateFontSize(arr[0][3]), tileColor4x4(0, 3, multi), Color::Black, 16.0f);
+                    Button b5(boardValues(arr[1][0]), Vector2f(90, 100), calculateFontSize(arr[1][0]), tileColor4x4(1, 0, multi), Color::Black, 16.0f);
+                    Button b6(boardValues(arr[1][1]), Vector2f(90, 100), calculateFontSize(arr[1][1]), tileColor4x4(1, 1, multi), Color::Black, 16.0f);
+                    Button b7(boardValues(arr[1][2]), Vector2f(90, 100), calculateFontSize(arr[1][2]), tileColor4x4(1, 2, multi), Color::Black, 16.0f);
+                    Button b8(boardValues(arr[1][3]), Vector2f(90, 100), calculateFontSize(arr[1][3]), tileColor4x4(1, 3, multi), Color::Black, 16.0f);
+                    Button b9(boardValues(arr[2][0]), Vector2f(90, 100), calculateFontSize(arr[2][0]), tileColor4x4(2, 0, multi), Color::Black, 16.0f);
+                    Button b10(boardValues(arr[2][1]), Vector2f(90, 100), calculateFontSize(arr[2][1]), tileColor4x4(2, 1, multi), Color::Black, 16.0f);
+                    Button b11(boardValues(arr[2][2]), Vector2f(90, 100), calculateFontSize(arr[2][2]), tileColor4x4(2, 2, multi), Color::Black, 16.0f);
+                    Button b12(boardValues(arr[2][3]), Vector2f(90, 100), calculateFontSize(arr[2][3]), tileColor4x4(2, 3, multi), Color::Black, 16.0f);
+                    Button b13(boardValues(arr[3][0]), Vector2f(90, 100), calculateFontSize(arr[3][0]), tileColor4x4(3, 0, multi), Color::Black, 16.0f);
+                    Button b14(boardValues(arr[3][1]), Vector2f(90, 100), calculateFontSize(arr[3][1]), tileColor4x4(3, 1, multi), Color::Black, 16.0f);
+                    Button b15(boardValues(arr[3][2]), Vector2f(90, 100), calculateFontSize(arr[3][2]), tileColor4x4(3, 2, multi), Color::Black, 16.0f);
+                    Button b16(boardValues(arr[3][3]), Vector2f(90, 100), calculateFontSize(arr[3][3]), tileColor4x4(3, 3, multi), Color::Black, 16.0f);
+                    Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+                    Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+                    Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+
+                    Font font;
+                    font.loadFromFile("LEMONMILK.otf");
+                    gameOver.setFont(font);
+                    name.setFont(font);
+                    boardbackground.setFont(font);
+                    back.setFont(font);
+                    b1.setFont(font);
+                    b2.setFont(font);
+                    b3.setFont(font);
+                    b4.setFont(font);
+                    b5.setFont(font);
+                    b6.setFont(font);
+                    b7.setFont(font);
+                    b8.setFont(font);
+                    b9.setFont(font);
+                    b10.setFont(font);
+                    b11.setFont(font);
+                    b12.setFont(font);
+                    b13.setFont(font);
+                    b14.setFont(font);
+                    b15.setFont(font);
+                    b16.setFont(font);
+                    newgame.setFont(font);
+                    score.setFont(font);
+                    best.setFont(font);
+
+                    // Assigning the positions...
+                    gameOver.setPosition(Vector2f(200, 200));
+                    boardbackground.setPosition(Vector2f(370, 200));
+                    back.setPosition(Vector2f(560, 150));
+                    name.setPosition(Vector2f(370, 70));
+                    b1.setPosition(Vector2f(378, 210));
+                    b2.setPosition(Vector2f(474, 210));
+                    b3.setPosition(Vector2f(570, 210));
+                    b4.setPosition(Vector2f(666, 210));
+                    b5.setPosition(Vector2f(378, 316));
+                    b6.setPosition(Vector2f(474, 316));
+                    b7.setPosition(Vector2f(570, 316));
+                    b8.setPosition(Vector2f(666, 316));
+                    b9.setPosition(Vector2f(378, 422));
+                    b10.setPosition(Vector2f(474, 422));
+                    b11.setPosition(Vector2f(570, 422));
+                    b12.setPosition(Vector2f(666, 422));
+                    b13.setPosition(Vector2f(378, 528));
+                    b14.setPosition(Vector2f(474, 528));
+                    b15.setPosition(Vector2f(570, 528));
+                    b16.setPosition(Vector2f(666, 528));
+                    newgame.setPosition(Vector2f(666, 150));
+                    score.setPosition(Vector2f(566, 50));
+                    best.setPosition(Vector2f(672, 50));
+                    if (event.type == Event::Closed)
+                    {
+                        window.close();
+                    }
+                    else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
+                    {
+                        if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
+                        {
+                            Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+                            if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                            {
+                                return false;
+                            }
+                            else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                    else if (event.type == sf::Event::KeyPressed)
+                    {
+                        if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
+                        {
+                            upArrow(4, multi, scoreValue);
+                            if (isGameOver(4))
+                            {
+                                isGameover = true;
+                                runHighscore = true;
+                            }
+                        }
+                        else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
+                        {
+                            downArrow(4, multi, scoreValue);
+                            Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                            if (isGameOver(4))
+                            {
+                                isGameover = true;
+                                runHighscore = true;
+                            }
+                        }
+                        else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
+                        {
+                            leftArrow(4, multi, scoreValue);
+                            if (isGameOver(4))
+                            {
+                                isGameover = true;
+                                runHighscore = true;
+                            }
+                        }
+                        else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
+                        {
+                            rightArrow(4, multi, scoreValue);
+                            if (isGameOver(4))
+                            {
+                                isGameover = true;
+                                runHighscore = true;
+                            }
+                        }
+                    }
+
+                    window.clear(Color::White);
+                    name.drawTo(window);
+                    boardbackground.drawTo(window);
+                    back.drawTo(window);
+                    b1.drawTo(window);
+                    b2.drawTo(window);
+                    b3.drawTo(window);
+                    b4.drawTo(window);
+                    b5.drawTo(window);
+                    b6.drawTo(window);
+                    b7.drawTo(window);
+                    b8.drawTo(window);
+                    b9.drawTo(window);
+                    b10.drawTo(window);
+                    b11.drawTo(window);
+                    b12.drawTo(window);
+                    b13.drawTo(window);
+                    b14.drawTo(window);
+                    b15.drawTo(window);
+                    back.drawTo(window);
+                    b16.drawTo(window);
+                    newgame.drawTo(window);
+                    score.drawTo(window);
+                    best.drawTo(window);
+
+                    if (isGameover)
+                    {
+                        gameOver.drawTo(window);
+                    }
+                    if (runHighscore)
+                    {
+                        highScore("leaderboards/leaderboard4x4.txt", "leaderboards/namedLeaderboard4x4.txt", username, scoreValue);
+                        runHighscore = false;
+                    }
+                    window.display();
+                }
+            }
+            return false;
+        }
     }
 };
 
@@ -995,7 +1007,7 @@ struct _6
     void random1(int n, int multi)
     {
         while (true)
-        {    
+        {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
@@ -1263,9 +1275,9 @@ struct _6
         file.close();
 
         srand(time(0));
-        
-        fill(begin(arr),end(arr),0);
-        
+
+        fill(begin(arr), end(arr), 0);
+
         bool isGameover = false;
         bool runHighscore = false;
         int scoreValue = 0;
@@ -1287,7 +1299,7 @@ struct _6
 
                 Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
                 Button boardbackground(" ", Vector2f(395, 465), 90, Color(16, 8, 56), Color::Black);
-                Button back("Main Menu", Vector2f(100, 45), 15, Color(160,82,45), Color::White);
+                Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
                 Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                 Button b1(boardValues(arr[0][0]), Vector2f(60, 70), calculateFontSize(arr[0][0]), tileColor6x6(0, 0, multi), Color::Black, 16.0f);
                 Button b2(boardValues(arr[0][1]), Vector2f(60, 70), calculateFontSize(arr[0][1]), tileColor6x6(0, 1, multi), Color::Black, 16.0f);
@@ -1385,7 +1397,7 @@ struct _6
                 // Assigning the positions...
                 boardbackground.setPosition(Vector2f(370, 200));
                 name.setPosition(Vector2f(370, 70));
-                back.setPosition(Vector2f(560,150));
+                back.setPosition(Vector2f(560, 150));
                 // Row 1
                 b1.setPosition(Vector2f(378, 210));
                 b2.setPosition(Vector2f(442, 210));
@@ -1448,7 +1460,7 @@ struct _6
                         if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
 
-                             return false;
+                            return false;
                         }
                         else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
@@ -1561,8 +1573,8 @@ struct _6
 struct _8
 {
 
-    int arr[8][8]={0};
-    int prevArr[8][8]={0};
+    int arr[8][8] = {0};
+    int prevArr[8][8] = {0};
 
     void highScore(const std::string &filename, const std::string &namedscoretxt, const std::string &name, int highscore)
     {
@@ -1726,18 +1738,18 @@ struct _8
     void random1(int n, int multi)
     {
         while (true)
-        {    
+        {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
             if (arr[r][c] == 0)
             {
-                if(!(n % 2) 
+                if (!(n % 2))
                 {
                     arr[r][c] = multi;
                     break;
                 }
-                else 
+                else
                 {
                     arr[r][c] = multi * 2;
                     break;
@@ -1996,7 +2008,7 @@ struct _8
 
         srand(time(0));
 
-        fill(begin(arr),end(arr),0);
+        fill(begin(arr), end(arr), 0);
 
         bool isGameover = false;
         bool runHighscore = false;
@@ -2176,79 +2188,79 @@ struct _8
                 name.setPosition(Vector2f(370, 70));
                 gameOver.setPosition(Vector2f(200, 200));
                 //Row 1
-            b1.setPosition(Vector2f(378, 210));
-            b2.setPosition(Vector2f(427, 210));
-            b3.setPosition(Vector2f(476, 210));
-            b4.setPosition(Vector2f(525, 210));
-            b5.setPosition(Vector2f(574, 210));
-            b6.setPosition(Vector2f(623, 210));
-            b7.setPosition(Vector2f(672, 210));
-            b8.setPosition(Vector2f(721, 210));
-            //Row 2
+                b1.setPosition(Vector2f(378, 210));
+                b2.setPosition(Vector2f(427, 210));
+                b3.setPosition(Vector2f(476, 210));
+                b4.setPosition(Vector2f(525, 210));
+                b5.setPosition(Vector2f(574, 210));
+                b6.setPosition(Vector2f(623, 210));
+                b7.setPosition(Vector2f(672, 210));
+                b8.setPosition(Vector2f(721, 210));
+                //Row 2
 
-            b9.setPosition(Vector2f(378, 272));
-            b10.setPosition(Vector2f(427, 272));
-            b11.setPosition(Vector2f(476, 272));
-            b12.setPosition(Vector2f(525, 272));
-            b13.setPosition(Vector2f(574, 272));
-            b14.setPosition(Vector2f(623, 272));
-            b15.setPosition(Vector2f(672, 272));
-            b16.setPosition(Vector2f(721, 272));
-            //Row 3
+                b9.setPosition(Vector2f(378, 272));
+                b10.setPosition(Vector2f(427, 272));
+                b11.setPosition(Vector2f(476, 272));
+                b12.setPosition(Vector2f(525, 272));
+                b13.setPosition(Vector2f(574, 272));
+                b14.setPosition(Vector2f(623, 272));
+                b15.setPosition(Vector2f(672, 272));
+                b16.setPosition(Vector2f(721, 272));
+                //Row 3
 
-            b17.setPosition(Vector2f(378, 334));
-            b18.setPosition(Vector2f(427, 334));
-            b19.setPosition(Vector2f(476, 334));
-            b20.setPosition(Vector2f(525, 334));
-            b21.setPosition(Vector2f(574, 334));
-            b22.setPosition(Vector2f(623, 334));
-            b23.setPosition(Vector2f(672, 334));
-            b24.setPosition(Vector2f(721, 334));
-            //Row 4
-            b25.setPosition(Vector2f(378, 396));
-            b26.setPosition(Vector2f(427, 396));
-            b27.setPosition(Vector2f(476, 396));
-            b28.setPosition(Vector2f(525, 396));
-            b29.setPosition(Vector2f(574, 396));
-            b30.setPosition(Vector2f(623, 396));
-            b31.setPosition(Vector2f(672, 396));
-            b32.setPosition(Vector2f(721, 396));
-            //Row 5
-            b33.setPosition(Vector2f(378, 458));
-            b34.setPosition(Vector2f(427, 458));
-            b35.setPosition(Vector2f(476, 458));
-            b36.setPosition(Vector2f(525, 458));
-            b37.setPosition(Vector2f(574, 458));
-            b38.setPosition(Vector2f(623, 458));
-            b39.setPosition(Vector2f(672, 458));
-            b40.setPosition(Vector2f(721, 458));
-            //Row 6
-            b41.setPosition(Vector2f(378, 520));
-            b42.setPosition(Vector2f(427, 520));
-            b43.setPosition(Vector2f(476, 520));
-            b44.setPosition(Vector2f(525, 520));
-            b45.setPosition(Vector2f(574, 520));
-            b46.setPosition(Vector2f(623, 520));
-            b47.setPosition(Vector2f(672, 520));
-            b48.setPosition(Vector2f(721, 520));
-            //Row 7
-            b49.setPosition(Vector2f(378, 582));
-            b50.setPosition(Vector2f(427, 582));
-            b51.setPosition(Vector2f(476, 582));
-            b52.setPosition(Vector2f(525, 582));
-            b53.setPosition(Vector2f(574, 582));
-            b54.setPosition(Vector2f(623, 582));
-            b55.setPosition(Vector2f(672, 582));
-            b56.setPosition(Vector2f(721, 582));
-            //Row 8
-            b57.setPosition(Vector2f(378, 644));
-            b58.setPosition(Vector2f(427, 644));
-            b59.setPosition(Vector2f(476, 644));
-            b60.setPosition(Vector2f(525, 644));
-            b61.setPosition(Vector2f(574, 644));
-            b62.setPosition(Vector2f(623, 644));
-            b63.setPosition(Vector2f(672, 644));
-            b64.setPosition(Vector2f(721, 644));
+                b17.setPosition(Vector2f(378, 334));
+                b18.setPosition(Vector2f(427, 334));
+                b19.setPosition(Vector2f(476, 334));
+                b20.setPosition(Vector2f(525, 334));
+                b21.setPosition(Vector2f(574, 334));
+                b22.setPosition(Vector2f(623, 334));
+                b23.setPosition(Vector2f(672, 334));
+                b24.setPosition(Vector2f(721, 334));
+                //Row 4
+                b25.setPosition(Vector2f(378, 396));
+                b26.setPosition(Vector2f(427, 396));
+                b27.setPosition(Vector2f(476, 396));
+                b28.setPosition(Vector2f(525, 396));
+                b29.setPosition(Vector2f(574, 396));
+                b30.setPosition(Vector2f(623, 396));
+                b31.setPosition(Vector2f(672, 396));
+                b32.setPosition(Vector2f(721, 396));
+                //Row 5
+                b33.setPosition(Vector2f(378, 458));
+                b34.setPosition(Vector2f(427, 458));
+                b35.setPosition(Vector2f(476, 458));
+                b36.setPosition(Vector2f(525, 458));
+                b37.setPosition(Vector2f(574, 458));
+                b38.setPosition(Vector2f(623, 458));
+                b39.setPosition(Vector2f(672, 458));
+                b40.setPosition(Vector2f(721, 458));
+                //Row 6
+                b41.setPosition(Vector2f(378, 520));
+                b42.setPosition(Vector2f(427, 520));
+                b43.setPosition(Vector2f(476, 520));
+                b44.setPosition(Vector2f(525, 520));
+                b45.setPosition(Vector2f(574, 520));
+                b46.setPosition(Vector2f(623, 520));
+                b47.setPosition(Vector2f(672, 520));
+                b48.setPosition(Vector2f(721, 520));
+                //Row 7
+                b49.setPosition(Vector2f(378, 582));
+                b50.setPosition(Vector2f(427, 582));
+                b51.setPosition(Vector2f(476, 582));
+                b52.setPosition(Vector2f(525, 582));
+                b53.setPosition(Vector2f(574, 582));
+                b54.setPosition(Vector2f(623, 582));
+                b55.setPosition(Vector2f(672, 582));
+                b56.setPosition(Vector2f(721, 582));
+                //Row 8
+                b57.setPosition(Vector2f(378, 644));
+                b58.setPosition(Vector2f(427, 644));
+                b59.setPosition(Vector2f(476, 644));
+                b60.setPosition(Vector2f(525, 644));
+                b61.setPosition(Vector2f(574, 644));
+                b62.setPosition(Vector2f(623, 644));
+                b63.setPosition(Vector2f(672, 644));
+                b64.setPosition(Vector2f(721, 644));
 
                 newgame.setPosition(Vector2f(666, 150));
                 score.setPosition(Vector2f(566, 50));
@@ -2469,15 +2481,15 @@ void beforeLeaderboard(RenderWindow &window)
 
                     if (four.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
-                        Leaderboard(window,"leaderboards/namedLeaderboard4x4.txt");
+                        Leaderboard(window, "leaderboards/namedLeaderboard4x4.txt");
                     }
                     if (six.buttonClicked(window))
                     {
-                        Leaderboard(window,"leaderboards/namedLeaderboard6x6.txt");
+                        Leaderboard(window, "leaderboards/namedLeaderboard6x6.txt");
                     }
                     if (eight.buttonClicked(window))
                     {
-                        Leaderboard(window,"leaderboards/namedLeaderboard8x8.txt");
+                        Leaderboard(window, "leaderboards/namedLeaderboard8x8.txt");
                     }
                     if (back.buttonClicked(window))
                     {
@@ -2603,7 +2615,7 @@ void mainMenu(RenderWindow &window)
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty())
                         {
-                            
+
                             toCheckSelections = true;
 
                             if (grid == 4)
@@ -2611,7 +2623,7 @@ void mainMenu(RenderWindow &window)
                                 _4 game;
                                 while (newGame)
                                 {
-                                    
+
                                     newGame = game.board(window, input, multi);
                                 }
                             }
@@ -2621,100 +2633,99 @@ void mainMenu(RenderWindow &window)
                                 _6 game;
                                 while (newGame)
                                 {
-                                    
+
                                     newGame = game.board(window, input, multi);
                                 }
                             }
 
-                        else if (grid == 8)
-                        {
-                            _8 game;
-                            while (newGame)
+                            else if (grid == 8)
                             {
-                                newGame = game.board(window, input, multi);
+                                _8 game;
+                                while (newGame)
+                                {
+                                    newGame = game.board(window, input, multi);
+                                }
                             }
                         }
-                        }
                     }
-            
 
-            else if (grid4button.buttonClicked(window))
-            {
+                    else if (grid4button.buttonClicked(window))
+                    {
 
-                backbutton.setBackColor(Color(77, 143, 186));
-                nextbutton.setBackColor(Color(77, 143, 186));
-                multiple2button.setBackColor(Color(77, 143, 186));
-                multiple3button.setBackColor(Color(77, 143, 186));
-                multiple6button.setBackColor(Color(77, 143, 186));
-                multiple7button.setBackColor(Color(77, 143, 186));
-                gdisplaybutton.setBackColor(gdc = Color(6, 46, 81));
-                gSize = "4x4";
-                grid = 4;
-            }
-            else if (grid6button.buttonClicked(window))
-            {
+                        backbutton.setBackColor(Color(77, 143, 186));
+                        nextbutton.setBackColor(Color(77, 143, 186));
+                        multiple2button.setBackColor(Color(77, 143, 186));
+                        multiple3button.setBackColor(Color(77, 143, 186));
+                        multiple6button.setBackColor(Color(77, 143, 186));
+                        multiple7button.setBackColor(Color(77, 143, 186));
+                        gdisplaybutton.setBackColor(gdc = Color(6, 46, 81));
+                        gSize = "4x4";
+                        grid = 4;
+                    }
+                    else if (grid6button.buttonClicked(window))
+                    {
 
-                backbutton.setBackColor(Color(132, 108, 188));
-                nextbutton.setBackColor(Color(132, 108, 188));
-                multiple2button.setBackColor(Color(132, 108, 188));
-                multiple3button.setBackColor(Color(132, 108, 188));
-                multiple6button.setBackColor(Color(132, 108, 188));
-                multiple7button.setBackColor(Color(132, 108, 188));
-                gdisplaybutton.setBackColor(gdc = Color(60, 52, 124));
-                gSize = "6x6";
-                grid = 6;
-            }
-            else if (grid8button.buttonClicked(window))
-            {
+                        backbutton.setBackColor(Color(132, 108, 188));
+                        nextbutton.setBackColor(Color(132, 108, 188));
+                        multiple2button.setBackColor(Color(132, 108, 188));
+                        multiple3button.setBackColor(Color(132, 108, 188));
+                        multiple6button.setBackColor(Color(132, 108, 188));
+                        multiple7button.setBackColor(Color(132, 108, 188));
+                        gdisplaybutton.setBackColor(gdc = Color(60, 52, 124));
+                        gSize = "6x6";
+                        grid = 6;
+                    }
+                    else if (grid8button.buttonClicked(window))
+                    {
 
-                backbutton.setBackColor(Color(236, 46, 27));
-                nextbutton.setBackColor(Color(236, 46, 27));
-                multiple2button.setBackColor(Color(236, 46, 27));
-                multiple3button.setBackColor(Color(236, 46, 27));
-                multiple6button.setBackColor(Color(236, 46, 27));
-                multiple7button.setBackColor(Color(236, 46, 27));
-                gdisplaybutton.setBackColor(gdc = Color(125, 13, 13));
-                gSize = "8x8";
-                grid = 8;
-            }
-            else if (multiple2button.buttonClicked(window))
-            {
+                        backbutton.setBackColor(Color(236, 46, 27));
+                        nextbutton.setBackColor(Color(236, 46, 27));
+                        multiple2button.setBackColor(Color(236, 46, 27));
+                        multiple3button.setBackColor(Color(236, 46, 27));
+                        multiple6button.setBackColor(Color(236, 46, 27));
+                        multiple7button.setBackColor(Color(236, 46, 27));
+                        gdisplaybutton.setBackColor(gdc = Color(125, 13, 13));
+                        gSize = "8x8";
+                        grid = 8;
+                    }
+                    else if (multiple2button.buttonClicked(window))
+                    {
 
-                multi = 2;
-            }
-            else if (multiple3button.buttonClicked(window))
-            {
+                        multi = 2;
+                    }
+                    else if (multiple3button.buttonClicked(window))
+                    {
 
-                multi = 3;
-            }
-            else if (multiple6button.buttonClicked(window))
-            {
+                        multi = 3;
+                    }
+                    else if (multiple6button.buttonClicked(window))
+                    {
 
-                multi = 6;
-            }
-            else if (multiple7button.buttonClicked(window))
-            {
+                        multi = 6;
+                    }
+                    else if (multiple7button.buttonClicked(window))
+                    {
 
-                multi = 7;
-            }
-        }
-        }
-        else if (event.type == Event::TextEntered)
-        {
-            if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ')
-            {
-                if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding (10) as needed
-                {
-                    input += static_cast<char>(event.text.unicode);
+                        multi = 7;
+                    }
                 }
             }
-
-            else if (event.text.unicode == 8 && !input.empty())
+            else if (event.type == Event::TextEntered)
             {
-                input.pop_back();
+                if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ')
+                {
+                    if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding (10) as needed
+                    {
+                        input += static_cast<char>(event.text.unicode);
+                    }
+                }
+
+                else if (event.text.unicode == 8 && !input.empty())
+                {
+                    input.pop_back();
+                }
+                inputText.setString(input);
             }
-            inputText.setString(input);
-        }
         }
 
         window.clear(Color::White);
