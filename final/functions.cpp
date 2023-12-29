@@ -369,7 +369,7 @@ struct _4 {
                     if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
-                        arr[r + 1][c] = 0;
+                        arr[r - 1][c] = 0;
                     }
                 }
             }
@@ -391,7 +391,7 @@ struct _4 {
                     if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
-                        arr[r][c + 1] = 0;
+                        arr[r][c - 1] = 0;
                     }
                 }
             }
@@ -900,7 +900,7 @@ struct _6 {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r + 1][c] = 0;
+                    arr[r - 1][c] = 0;
                 }
             }
         }
@@ -922,7 +922,7 @@ struct _6 {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r][c + 1] = 0;
+                    arr[r][c - 1] = 0;
                 }
             }
         }
@@ -1541,7 +1541,7 @@ struct _8 {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r + 1][c] = 0;
+                    arr[r - 1][c] = 0;
                 }
             }
         }
@@ -1563,7 +1563,7 @@ struct _8 {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
-                    arr[r][c + 1] = 0;
+                    arr[r][c - 1] = 0;
                 }
             }
         }
