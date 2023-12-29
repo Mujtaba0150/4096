@@ -5,37 +5,31 @@
 #include <iostream>
 #include <iomanip>
 #include <math.h>
-#include <algorithm>
+
 
 using namespace std;
 using namespace sf;
 
-class Button
-{
+class Button {
 public:
     Button(std::string t, sf::Vector2f size, int charSize, sf::Color bgColor, sf::Color textColor, float offset = 1)
-        : offset(offset)
-    {
+        : offset(offset) {
         text.setString(t);
         text.setFillColor(textColor);
         text.setCharacterSize(charSize);
         button.setSize(size);
         button.setFillColor(bgColor);
     }
-    void setFont(sf::Font &font)
-    {
+    void setFont(sf::Font& font) {
         text.setFont(font);
     }
-    void setBackColor(sf::Color color)
-    {
+    void setBackColor(sf::Color color) {
         button.setFillColor(color);
     }
-    void setTextColor(sf::Color color)
-    {
+    void setTextColor(sf::Color color) {
         text.setFillColor(color);
     }
-    void setPosition(sf::Vector2f pos)
-    {
+    void setPosition(sf::Vector2f pos) {
         button.setPosition(pos);
         float xPos = pos.x + (button.getLocalBounds().width - text.getLocalBounds().width) / 2;
         float yPos = pos.y + (button.getLocalBounds().height - text.getLocalBounds().height) / 2;
@@ -43,31 +37,25 @@ public:
         yPos -= offset; // You can adjust this offset as needed
         text.setPosition(xPos, yPos);
     }
-    Vector2f getPosition() const
-    {
+    Vector2f getPosition() const {
         return button.getPosition();
     }
-    Vector2f getSize() const
-    {
+    Vector2f getSize() const {
         return button.getSize();
     }
-    void drawTo(sf::RenderWindow &window)
-    {
+    void drawTo(sf::RenderWindow& window) {
         window.draw(button);
         window.draw(text);
     }
-    bool buttonClicked(sf::RenderWindow &window)
-    {
+    bool buttonClicked(sf::RenderWindow& window) {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y)
-        {
+        if (button.getPosition().x <= mousePos.x && mousePos.x <= button.getPosition().x + button.getSize().x && button.getPosition().y <= mousePos.y && mousePos.y <= button.getPosition().y + button.getSize().y) {
             return 1;
         }
         else
             return 0;
     }
-    void leftalign(sf::Vector2f pos, float textOffset)
-    {
+    void leftalign(sf::Vector2f pos, float textOffset) {
         button.setPosition(pos);
 
         float xPos = pos.x + textOffset; // Set the x-position with the offset
@@ -81,29 +69,24 @@ private:
     float offset;
 };
 
-class Picture
-{
+class Picture {
 
 public:
-    Picture(std::string filePath)
-    {
+    Picture(std::string filePath) {
         texture.loadFromFile(filePath);
         sprite.setTexture(texture);
     }
 
-    void setScale(sf::Vector2f scale)
-    {
+    void setScale(sf::Vector2f scale) {
 
         sf::Vector2f Aspectratio(scale.x / texture.getSize().x, scale.y / texture.getSize().y);
         sprite.setScale(Aspectratio);
     }
-    void setPosition(sf::Vector2f position)
-    {
+    void setPosition(sf::Vector2f position) {
 
         sprite.setPosition(position);
     }
-    void drawTo(sf::RenderWindow &window)
-    {
+    void drawTo(sf::RenderWindow& window) {
 
         window.draw(sprite);
     }
@@ -112,12 +95,10 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
 };
-void Leaderboard(RenderWindow &window, string file)
-{
+void Leaderboard(RenderWindow& window, string file) {
     string l1, l2, l3, l4, l5;
     ifstream leaderboard(file);
-    if (leaderboard.is_open())
-    {
+    if (leaderboard.is_open()) {
         getline(leaderboard, l1);
         getline(leaderboard, l2);
         getline(leaderboard, l3);
@@ -126,8 +107,7 @@ void Leaderboard(RenderWindow &window, string file)
 
         leaderboard.close();
     }
-    else
-    {
+    else {
         cerr << "Unable To Open The File!" << endl;
     }
 
@@ -174,24 +154,22 @@ void Leaderboard(RenderWindow &window, string file)
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         Event event; // Making an object "event" of the Event class
 
         while (window.pollEvent(event)) // Loop to manage when something changes in the console
         {
-            if (event.type == Event::Closed)
-            {
+            if (event.type == Event::Closed) {
                 window.close();
             }
 
-            else if (event.type == Event ::MouseButtonPressed) // Checking if mouse was clicked
+            else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
             {
 
-                if (event.mouseButton.button == Mouse ::Left) // Checking if the left mouse button was clicked
+                if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                 {
 
-                    Vector2f mousePos = window.mapPixelToCoords(Mouse ::getPosition(window));
+                    Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 
                     if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
@@ -218,17 +196,14 @@ void Leaderboard(RenderWindow &window, string file)
     }
 }
 // Gameboard 4x4
-struct _4
-{
-    int arr[4][4] = {0};
-    int prevArr[4][4] = {0};
+struct _4 {
+    int arr[4][4] = { 0 };
+    int prevArr[4][4] = { 0 };
 
-    void highScore(const std::string &filename, const std::string &namedscoretxt, const std::string &name, int highscore)
-    {
+    void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
         std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
 
-        if (!highscoreFile.is_open())
-        {
+        if (!highscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
@@ -236,8 +211,7 @@ struct _4
         std::string line[5];
         int lineNumber = 1;
 
-        while (lineNumber <= 5 && std::getline(highscoreFile, line[0]))
-        {
+        while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
             if (std::stoi(line[0]) == highscore)
                 return;
 
@@ -249,8 +223,7 @@ struct _4
 
         highscoreFile.seekg(0);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             std::getline(highscoreFile, line[i]);
         }
 
@@ -263,27 +236,23 @@ struct _4
 
         highscoreFile.open(filename, std::ios::out | std::ios::trunc);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             highscoreFile << line[i] << std::endl;
         }
         highscoreFile.close();
 
         std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
 
-        if (!namedHighscoreFile.is_open())
-        {
+        if (!namedHighscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
         namedHighscoreFile.seekp(0);
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             line[i].clear(); // Clear the contents of the string
         }
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             getline(namedHighscoreFile, line[i]);
         }
 
@@ -294,8 +263,7 @@ struct _4
         namedHighscoreFile.seekp(0);
         namedHighscoreFile << std::fixed << std::setprecision(2); // Set formatting for floating-point numbers
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             if (lineNumber != i)
                 namedHighscoreFile << std::setw(20) << line[i] << std::endl;
             else
@@ -305,12 +273,10 @@ struct _4
         namedHighscoreFile.close();
     }
 
-    int scorefunc(int base, int merged)
-    {
+    int scorefunc(int base, int merged) {
         int power = 0;
 
-        while (base * (pow(2, power)) <= merged)
-        {
+        while (base * (pow(2, power)) <= merged) {
             if (base * (pow(2, power)) == merged)
                 return 2 * (pow(2, power));
             power++;
@@ -320,28 +286,21 @@ struct _4
         return 0;
     }
 
-    bool isGameOver(int n)
-    {
+    bool isGameOver(int n) {
         // Check if the board is entirely filled
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (arr[i][j] == 0)
-                {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (arr[i][j] == 0) {
                     return false; // If any empty cell found, the game is not over
                 }
             }
         }
 
         // Check if any adjacent elements in the same row/column are the same
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n - 1; ++j)
-            {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
                 // Check row-wise
-                if (arr[i][j] == arr[i][j + 1])
-                {
+                if (arr[i][j] == arr[i][j + 1]) {
                     return false; // If any adjacent elements are the same, the game is not over
                 }
                 // Check column-wise
@@ -358,60 +317,45 @@ struct _4
     }
 
     // Function to copy the current board to prevArr
-    void copyBoard(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+    void copyBoard(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
                 prevArr[i][j] = arr[i][j];
             }
         }
     }
     // Function to check if the board has changed after movement
-    bool boardChanged(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (prevArr[i][j] != arr[i][j])
-                {
+    bool boardChanged(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (prevArr[i][j] != arr[i][j]) {
                     return true; // Board has changed
                 }
             }
         }
         return false; // Board remains the same
     }
-    void random1(int n, int multi)
-    {
-        while (true)
-        {
+    void random1(int n, int multi) {
+        while (true) {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
-            if (arr[r][c] == 0)
-            {
-                if (!(n % 2))
-                {
+            if (arr[r][c] == 0) {
+                if (!(n % 2)) {
                     arr[r][c] = multi;
                     break;
                 }
-                else
-                {
+                else {
                     arr[r][c] = multi * 2;
                     break;
                 }
             }
         }
-        void mergeTilesUp(int n, int multi, int &scoreValue)
-        {
-            for (int c = 0; c < n; ++c)
-            {
-                for (int r = 0; r < n - 1; ++r)
-                {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                    {
+    }
+        void mergeTilesUp(int n, int multi, int& scoreValue) {
+            for (int c = 0; c < n; ++c) {
+                for (int r = 0; r < n - 1; ++r) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r + 1][c] = 0;
@@ -419,14 +363,10 @@ struct _4
                 }
             }
         }
-        void mergeTilesDown(int n, int multi, int &scoreValue)
-        {
-            for (int c = n - 1; c > 0; c++)
-            {
-                for (int r = 0; r < n - 1; ++r)
-                {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                    {
+        void mergeTilesDown(int n, int multi, int& scoreValue) {
+            for (int c = n - 1; c > 0; c++) {
+                for (int r = 0; r < n - 1; ++r) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r + 1][c] = 0;
@@ -434,14 +374,10 @@ struct _4
                 }
             }
         }
-        void mergeTilesLeft(int n, int multi, int &scoreValue)
-        {
-            for (int r = 0; r < n; ++r)
-            {
-                for (int c = 0; c < n - 1; ++c)
-                {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                    {
+        void mergeTilesLeft(int n, int multi, int& scoreValue) {
+            for (int r = 0; r < n; ++r) {
+                for (int c = 0; c < n - 1; ++c) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r][c + 1] = 0;
@@ -449,14 +385,10 @@ struct _4
                 }
             }
         }
-        void mergeTilesRight(int n, int multi, int &scoreValue)
-        {
-            for (int r = n - 1; r > 0; r--)
-            {
-                for (int c = 0; c < n - 1; ++c)
-                {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                    {
+        void mergeTilesRight(int n, int multi, int& scoreValue) {
+            for (int r = n - 1; r > 0; r--) {
+                for (int c = 0; c < n - 1; ++c) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r][c + 1] = 0;
@@ -464,18 +396,13 @@ struct _4
                 }
             }
         }
-        void moveTilesRight(int n)
-        {
-            for (int r = 0; r < n; r++)
-            {
+        void moveTilesRight(int n) {
+            for (int r = 0; r < n; r++) {
                 int column = n - 1;
-                for (int c = n - 1; c >= 0; c--)
-                {
-                    if (arr[r][c] != 0)
-                    {
+                for (int c = n - 1; c >= 0; c--) {
+                    if (arr[r][c] != 0) {
                         arr[r][column] = arr[r][c];
-                        if (column != c)
-                        {
+                        if (column != c) {
                             arr[r][c] = 0;
                         }
                         column--;
@@ -483,18 +410,13 @@ struct _4
                 }
             }
         }
-        void moveTilesLeft(int n)
-        {
-            for (int r = 0; r < n; ++r)
-            {
+        void moveTilesLeft(int n) {
+            for (int r = 0; r < n; ++r) {
                 int column = 0;
-                for (int c = 0; c < n; c++)
-                {
-                    if (arr[r][c] != 0)
-                    {
+                for (int c = 0; c < n; c++) {
+                    if (arr[r][c] != 0) {
                         arr[r][column] = arr[r][c];
-                        if (column != c)
-                        {
+                        if (column != c) {
                             arr[r][c] = 0;
                         }
                         column++;
@@ -502,37 +424,27 @@ struct _4
                 }
             }
         }
-        void moveTilesUp(int n)
-        {
-            for (int c = 0; c < n; c++)
-            {
+        void moveTilesUp(int n) {
+            for (int c = 0; c < n; c++) {
                 int row = 0;
-                for (int r = 0; r < n; r++)
-                {
-                    if (arr[r][c] != 0)
-                    {
+                for (int r = 0; r < n; r++) {
+                    if (arr[r][c] != 0) {
                         arr[row][c] = arr[r][c];
-                        if (row != r)
-                        {
+                        if (row != r) {
                             arr[r][c] = 0;
-                        };
+                        }
                         row++;
                     }
                 }
             }
         }
-        void moveTilesDown(int n)
-        {
-            for (int c = 0; c < n; c++)
-            {
+        void moveTilesDown(int n) {
+            for (int c = 0; c < n; c++) {
                 int row = n - 1;
-                for (int r = n - 1; r >= 0; r--)
-                {
-                    if (arr[r][c] != 0)
-                    {
+                for (int r = n - 1; r >= 0; r--) {
+                    if (arr[r][c] != 0) {
                         arr[row][c] = arr[r][c];
-                        if (row != r)
-                        {
+                        if (row != r) {
                             arr[r][c] = 0;
                         }
                         row--;
@@ -540,52 +452,43 @@ struct _4
                 }
             }
         }
-        void upArrow(int n, int multi, int &scoreValue)
-        {
+        void upArrow(int n, int multi, int& scoreValue) {
             copyBoard(n);
             moveTilesUp(n);
             mergeTilesUp(n, multi, scoreValue);
             moveTilesUp(n);
-            if (boardChanged(n))
-            {
+            if (boardChanged(n)) {
                 random1(n, multi);
             }
         }
-        void leftArrow(int n, int multi, int &scoreValue)
-        {
+        void leftArrow(int n, int multi, int& scoreValue) {
             copyBoard(n);
             moveTilesLeft(n);
             mergeTilesLeft(n, multi, scoreValue);
             moveTilesLeft(n);
-            if (boardChanged(n))
-            {
+            if (boardChanged(n)) {
                 random1(n, multi);
             }
         }
-        void rightArrow(int n, int multi, int &scoreValue)
-        {
+        void rightArrow(int n, int multi, int& scoreValue) {
             copyBoard(n);
             moveTilesRight(n);
             mergeTilesRight(n, multi, scoreValue);
             moveTilesRight(n);
-            if (boardChanged(n))
-            {
+            if (boardChanged(n)) {
                 random1(n, multi);
             }
         }
-        void downArrow(int n, int multi, int &scoreValue)
-        {
+        void downArrow(int n, int multi, int& scoreValue) {
             copyBoard(n);
             moveTilesDown(n);
             mergeTilesDown(n, multi, scoreValue);
             moveTilesDown(n);
-            if (boardChanged(n))
-            {
+            if (boardChanged(n)) {
                 random1(n, multi);
             }
         }
-        Color tileColor4x4(int r, int c, int multi)
-        {
+        Color tileColor4x4(int r, int c, int multi) {
             if (arr[r][c] == multi * pow(2, 0))
                 return Color(158, 174, 190);
             else if (arr[r][c] == multi * pow(2, 1))
@@ -611,22 +514,19 @@ struct _4
             else
                 return Color(212, 220, 220);
         }
-        int calculateFontSize(int value)
-        {
+        int calculateFontSize(int value) {
             // Define a base font size
             int baseFontSize = 50;
             // Calculate a dynamic font size based on the value
             int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
             // Ensure the font size doesn't become too small
-            if (fontSize < 15)
-            {
+            if (fontSize < 15) {
                 fontSize = 15; // Set a minimum font size to maintain readability
             }
             return fontSize;
         }
 
-        string boardValues(int gridValue)
-        {
+        string boardValues(int gridValue) {
 
             if (gridValue != 0)
                 return to_string(gridValue);
@@ -634,8 +534,7 @@ struct _4
                 return "";
         }
 
-        bool board(RenderWindow & window, string username, int multi)
-        {
+        bool board(RenderWindow & window, string username, int multi) {
 
             ifstream file("leaderboards/leaderboard4x4.txt");
             string highscore;
@@ -644,7 +543,11 @@ struct _4
             file.close();
 
             srand(time(0));
-            fill(begin(arr), end(arr), 0);
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    arr[i][j] = 0;
+                }
+            }
             int r = rand() % 4;
             int c = rand() % 4;
 
@@ -655,8 +558,7 @@ struct _4
             arr[r][c] = multi;
             window.setFramerateLimit(60);
 
-            while (window.isOpen())
-            {
+            while (window.isOpen()) {
                 Event event; // Making an object "event" of the Event class
                 window.clear();
                 while (window.pollEvent(event)) // Loop to manage when something changes in the console
@@ -736,8 +638,7 @@ struct _4
                     newgame.setPosition(Vector2f(666, 150));
                     score.setPosition(Vector2f(566, 50));
                     best.setPosition(Vector2f(672, 50));
-                    if (event.type == Event::Closed)
-                    {
+                    if (event.type == Event::Closed) {
                         window.close();
                     }
                     else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
@@ -756,41 +657,32 @@ struct _4
                         }
                     }
 
-                    else if (event.type == sf::Event::KeyPressed)
-                    {
-                        if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
-                        {
+                    else if (event.type == sf::Event::KeyPressed) {
+                        if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                             upArrow(4, multi, scoreValue);
-                            if (isGameOver(4))
-                            {
+                            if (isGameOver(4)) {
                                 isGameover = true;
                                 runHighscore = true;
                             }
                         }
-                        else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
-                        {
+                        else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                             downArrow(4, multi, scoreValue);
                             Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                            if (isGameOver(4))
-                            {
+                            if (isGameOver(4)) {
                                 isGameover = true;
                                 runHighscore = true;
                             }
                         }
-                        else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
-                        {
+                        else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                             leftArrow(4, multi, scoreValue);
-                            if (isGameOver(4))
-                            {
+                            if (isGameOver(4)) {
                                 isGameover = true;
                                 runHighscore = true;
                             }
                         }
-                        else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
-                        {
+                        else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                             rightArrow(4, multi, scoreValue);
-                            if (isGameOver(4))
-                            {
+                            if (isGameOver(4)) {
                                 isGameover = true;
                                 runHighscore = true;
                             }
@@ -822,12 +714,10 @@ struct _4
                     score.drawTo(window);
                     best.drawTo(window);
 
-                    if (isGameover)
-                    {
+                    if (isGameover) {
                         gameOver.drawTo(window);
                     }
-                    if (runHighscore)
-                    {
+                    if (runHighscore) {
                         highScore("leaderboards/leaderboard4x4.txt", "leaderboards/namedLeaderboard4x4.txt", username, scoreValue);
                         runHighscore = false;
                     }
@@ -836,21 +726,17 @@ struct _4
             }
             return false;
         }
-    }
-};
+    };
 
 // Gameboard 6x6
-struct _6
-{
-    int arr[6][6] = {0};
-    int prevArr[6][6] = {0};
+struct _6 {
+    int arr[6][6] = { 0 };
+    int prevArr[6][6] = { 0 };
 
-    void highScore(const std::string &filename, const std::string &namedscoretxt, const std::string &name, int highscore)
-    {
+    void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
         std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
 
-        if (!highscoreFile.is_open())
-        {
+        if (!highscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
@@ -858,8 +744,7 @@ struct _6
         std::string line[5];
         int lineNumber = 1;
 
-        while (lineNumber <= 5 && std::getline(highscoreFile, line[0]))
-        {
+        while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
             if (std::stoi(line[0]) == highscore)
                 return;
 
@@ -871,8 +756,7 @@ struct _6
 
         highscoreFile.seekg(0);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             std::getline(highscoreFile, line[i]);
         }
 
@@ -885,27 +769,23 @@ struct _6
 
         highscoreFile.open(filename, std::ios::out | std::ios::trunc);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             highscoreFile << line[i] << std::endl;
         }
         highscoreFile.close();
 
         std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
 
-        if (!namedHighscoreFile.is_open())
-        {
+        if (!namedHighscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
         namedHighscoreFile.seekp(0);
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             line[i].clear(); // Clear the contents of the string
         }
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             getline(namedHighscoreFile, line[i]);
         }
 
@@ -916,8 +796,7 @@ struct _6
         namedHighscoreFile.seekp(0);
         namedHighscoreFile << std::fixed << std::setprecision(2); // Set formatting for floating-point numbers
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             if (lineNumber != i)
                 namedHighscoreFile << std::setw(20) << line[i] << std::endl;
             else
@@ -927,12 +806,10 @@ struct _6
         namedHighscoreFile.close();
     }
 
-    int scorefunc(int base, int merged)
-    {
+    int scorefunc(int base, int merged) {
         int power = 0;
 
-        while (base * (pow(2, power)) <= merged)
-        {
+        while (base * (pow(2, power)) <= merged) {
             if (base * (pow(2, power)) == merged)
                 return 2 * (pow(2, power));
             power++;
@@ -942,33 +819,25 @@ struct _6
         return 0;
     }
 
-    bool isGameOver(int n)
-    {
+    bool isGameOver(int n) {
         // Check if the board is entirely filled
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (arr[i][j] == 0)
-                {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (arr[i][j] == 0) {
                     return false; // If any empty cell found, the game is not over
                 }
             }
         }
 
         // Check if any adjacent elements in the same row/column are the same
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n - 1; ++j)
-            {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
                 // Check row-wise
-                if (arr[i][j] == arr[i][j + 1])
-                {
+                if (arr[i][j] == arr[i][j + 1]) {
                     return false; // If any adjacent elements are the same, the game is not over
                 }
                 // Check column-wise
-                if (arr[j][i] == arr[j + 1][i])
-                {
+                if (arr[j][i] == arr[j + 1][i]) {
                     return false; // If any adjacent elements are the same, the game is not over
                 }
             }
@@ -979,61 +848,45 @@ struct _6
     }
 
     // Function to copy the current board to prevArr
-    void copyBoard(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+    void copyBoard(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
                 prevArr[i][j] = arr[i][j];
             }
         }
     }
     // Function to check if the board has changed after movement
-    bool boardChanged(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (prevArr[i][j] != arr[i][j])
-                {
+    bool boardChanged(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (prevArr[i][j] != arr[i][j]) {
                     return true; // Board has changed
                 }
             }
         }
         return false; // Board remains the same
     }
-    void random1(int n, int multi)
-    {
-        while (true)
-        {
+    void random1(int n, int multi) {
+        while (true) {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
-            if (arr[r][c] == 0)
-            {
-                if(!(n % 2) 
-                {
+            if (arr[r][c] == 0) {
+                if (!(n % 2)) {
                     arr[r][c] = multi;
                     break;
                 }
-                else 
-                {
+                else {
                     arr[r][c] = multi * 2;
                     break;
                 }
             }
         }
     }
-    void mergeTilesUp(int n, int multi, int &scoreValue)
-    {
-        for (int c = 0; c < n; ++c)
-        {
-            for (int r = 0; r < n - 1; ++r)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                {
+    void mergeTilesUp(int n, int multi, int& scoreValue) {
+        for (int c = 0; c < n; ++c) {
+            for (int r = 0; r < n - 1; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r + 1][c] = 0;
@@ -1041,14 +894,10 @@ struct _6
             }
         }
     }
-    void mergeTilesDown(int n, int multi, int &scoreValue)
-    {
-        for (int c = n - 1; c > 0; c++)
-        {
-            for (int r = 0; r < n - 1; ++r)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                {
+    void mergeTilesDown(int n, int multi, int& scoreValue) {
+        for (int c = n - 1; c > 0; c++) {
+            for (int r = 0; r < n - 1; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r + 1][c] = 0;
@@ -1056,14 +905,10 @@ struct _6
             }
         }
     }
-    void mergeTilesLeft(int n, int multi, int &scoreValue)
-    {
-        for (int r = 0; r < n; ++r)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
+    void mergeTilesLeft(int n, int multi, int& scoreValue) {
+        for (int r = 0; r < n; ++r) {
+            for (int c = 0; c < n - 1; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c + 1] = 0;
@@ -1071,14 +916,10 @@ struct _6
             }
         }
     }
-    void mergeTilesRight(int n, int multi, int &scoreValue)
-    {
-        for (int r = n - 1; r > 0; r--)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
+    void mergeTilesRight(int n, int multi, int& scoreValue) {
+        for (int r = n - 1; r > 0; r--) {
+            for (int c = 0; c < n - 1; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c + 1] = 0;
@@ -1086,18 +927,13 @@ struct _6
             }
         }
     }
-    void moveTilesRight(int n)
-    {
-        for (int r = 0; r < n; r++)
-        {
+    void moveTilesRight(int n) {
+        for (int r = 0; r < n; r++) {
             int column = n - 1;
-            for (int c = n - 1; c >= 0; c--)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int c = n - 1; c >= 0; c--) {
+                if (arr[r][c] != 0) {
                     arr[r][column] = arr[r][c];
-                    if (column != c)
-                    {
+                    if (column != c) {
                         arr[r][c] = 0;
                     }
                     column--;
@@ -1105,18 +941,13 @@ struct _6
             }
         }
     }
-    void moveTilesLeft(int n)
-    {
-        for (int r = 0; r < n; ++r)
-        {
+    void moveTilesLeft(int n) {
+        for (int r = 0; r < n; ++r) {
             int column = 0;
-            for (int c = 0; c < n; c++)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int c = 0; c < n; c++) {
+                if (arr[r][c] != 0) {
                     arr[r][column] = arr[r][c];
-                    if (column != c)
-                    {
+                    if (column != c) {
                         arr[r][c] = 0;
                     }
                     column++;
@@ -1124,37 +955,27 @@ struct _6
             }
         }
     }
-    void moveTilesUp(int n)
-    {
-        for (int c = 0; c < n; c++)
-        {
+    void moveTilesUp(int n) {
+        for (int c = 0; c < n; c++) {
             int row = 0;
-            for (int r = 0; r < n; r++)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int r = 0; r < n; r++) {
+                if (arr[r][c] != 0) {
                     arr[row][c] = arr[r][c];
-                    if (row != r)
-                    {
+                    if (row != r) {
                         arr[r][c] = 0;
-                    };
+                    }
                     row++;
                 }
             }
         }
     }
-    void moveTilesDown(int n)
-    {
-        for (int c = 0; c < n; c++)
-        {
+    void moveTilesDown(int n) {
+        for (int c = 0; c < n; c++) {
             int row = n - 1;
-            for (int r = n - 1; r >= 0; r--)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int r = n - 1; r >= 0; r--) {
+                if (arr[r][c] != 0) {
                     arr[row][c] = arr[r][c];
-                    if (row != r)
-                    {
+                    if (row != r) {
                         arr[r][c] = 0;
                     }
                     row--;
@@ -1162,74 +983,62 @@ struct _6
             }
         }
     }
-    void upArrow(int n, int multi, int &scoreValue)
-    {
+    void upArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesUp(n);
         mergeTilesUp(n, multi, scoreValue);
         moveTilesUp(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void leftArrow(int n, int multi, int &scoreValue)
-    {
+    void leftArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesLeft(n);
         mergeTilesLeft(n, multi, scoreValue);
         moveTilesLeft(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void rightArrow(int n, int multi, int &scoreValue)
-    {
+    void rightArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesRight(n);
         mergeTilesRight(n, multi, scoreValue);
         moveTilesRight(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void downArrow(int n, int multi, int &scoreValue)
-    {
+    void downArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesDown(n);
         mergeTilesDown(n, multi, scoreValue);
         moveTilesDown(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    int calculateFontSize(int value)
-    {
+    int calculateFontSize(int value) {
         // Define a base font size
         int baseFontSize = 50;
         // Calculate a dynamic font size based on the value
         int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
         // Ensure the font size doesn't become too small
-        if (fontSize < 15)
-        {
+        if (fontSize < 15) {
             fontSize = 15; // Set a minimum font size to maintain readability
         }
         return fontSize;
     }
 
-    string boardValues(int gridValue)
-    {
+    string boardValues(int gridValue) {
 
         if (gridValue != 0)
             return to_string(gridValue);
         else
             return "";
     }
-    Color tileColor6x6(int r, int c, int multi)
-    {
+    Color tileColor6x6(int r, int c, int multi) {
 
         if (arr[r][c] == multi * pow(2, 0))
             return Color(156, 132, 212);
@@ -1266,8 +1075,7 @@ struct _6
         else
             return Color(204, 196, 228);
     }
-    bool board(RenderWindow &window, string username, int multi)
-    {
+    bool board(RenderWindow& window, string username, int multi) {
 
         ifstream file("leaderboards/leaderboard6x6.txt");
         string highscore;
@@ -1276,7 +1084,11 @@ struct _6
 
         srand(time(0));
 
-        fill(begin(arr), end(arr), 0);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                arr[i][j] = 0;
+            }
+        }
 
         bool isGameover = false;
         bool runHighscore = false;
@@ -1289,8 +1101,7 @@ struct _6
 
         window.setFramerateLimit(60);
 
-        while (window.isOpen())
-        {
+        while (window.isOpen()) {
             Event event; // Making an object "event" of the Event class
             window.clear();
 
@@ -1444,8 +1255,7 @@ struct _6
                 newgame.setPosition(Vector2f(666, 150));
                 score.setPosition(Vector2f(566, 50));
                 best.setPosition(Vector2f(672, 50));
-                if (event.type == Event::Closed)
-                {
+                if (event.type == Event::Closed) {
                     window.close();
                 }
 
@@ -1469,41 +1279,32 @@ struct _6
                     }
                 }
 
-                else if (event.type == sf::Event::KeyPressed)
-                {
-                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
-                    {
+                else if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                         upArrow(6, multi, scoreValue);
-                        if (isGameOver(6))
-                        {
+                        if (isGameOver(6)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
-                    {
+                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                         downArrow(6, multi, scoreValue);
                         Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                        if (isGameOver(6))
-                        {
+                        if (isGameOver(6)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
-                    {
+                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                         leftArrow(6, multi, scoreValue);
-                        if (isGameOver(6))
-                        {
+                        if (isGameOver(6)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
-                    {
+                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                         rightArrow(6, multi, scoreValue);
-                        if (isGameOver(6))
-                        {
+                        if (isGameOver(6)) {
                             isGameover = true;
                             runHighscore = true;
                         }
@@ -1553,12 +1354,10 @@ struct _6
                 newgame.drawTo(window);
                 score.drawTo(window);
                 best.drawTo(window);
-                if (isGameover)
-                {
+                if (isGameover) {
                     gameOver.drawTo(window);
                 }
-                if (runHighscore)
-                {
+                if (runHighscore) {
                     highScore("leaderboards/leaderboard6x6.txt", "leaderboards/namedLeaderboard6x6.txt", username, scoreValue);
                     runHighscore = false;
                 }
@@ -1570,18 +1369,15 @@ struct _6
 };
 
 // Gameboard 8x8:
-struct _8
-{
+struct _8 {
 
-    int arr[8][8] = {0};
-    int prevArr[8][8] = {0};
+    int arr[8][8] = { 0 };
+    int prevArr[8][8] = { 0 };
 
-    void highScore(const std::string &filename, const std::string &namedscoretxt, const std::string &name, int highscore)
-    {
+    void highScore(const std::string& filename, const std::string& namedscoretxt, const std::string& name, int highscore) {
         std::fstream highscoreFile(filename, std::ios::in | std::ios::out);
 
-        if (!highscoreFile.is_open())
-        {
+        if (!highscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
@@ -1589,8 +1385,7 @@ struct _8
         std::string line[5];
         int lineNumber = 1;
 
-        while (lineNumber <= 5 && std::getline(highscoreFile, line[0]))
-        {
+        while (lineNumber <= 5 && std::getline(highscoreFile, line[0])) {
             if (std::stoi(line[0]) == highscore)
                 return;
 
@@ -1602,8 +1397,7 @@ struct _8
 
         highscoreFile.seekg(0);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             std::getline(highscoreFile, line[i]);
         }
 
@@ -1616,27 +1410,23 @@ struct _8
 
         highscoreFile.open(filename, std::ios::out | std::ios::trunc);
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             highscoreFile << line[i] << std::endl;
         }
         highscoreFile.close();
 
         std::fstream namedHighscoreFile(namedscoretxt, std::ios::in); // Use std:: before ios
 
-        if (!namedHighscoreFile.is_open())
-        {
+        if (!namedHighscoreFile.is_open()) {
             std::cerr << "Error opening file!" << std::endl;
             return;
         }
         namedHighscoreFile.seekp(0);
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             line[i].clear(); // Clear the contents of the string
         }
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             getline(namedHighscoreFile, line[i]);
         }
 
@@ -1647,8 +1437,7 @@ struct _8
         namedHighscoreFile.seekp(0);
         namedHighscoreFile << std::fixed << std::setprecision(2); // Set formatting for floating-point numbers
 
-        for (int i = 0; i < 5; i++)
-        {
+        for (int i = 0; i < 5; i++) {
             if (lineNumber != i)
                 namedHighscoreFile << std::setw(20) << line[i] << std::endl;
             else
@@ -1658,12 +1447,10 @@ struct _8
         namedHighscoreFile.close();
     }
 
-    int scorefunc(int base, int merged)
-    {
+    int scorefunc(int base, int merged) {
         int power = 0;
 
-        while (base * (pow(2, power)) <= merged)
-        {
+        while (base * (pow(2, power)) <= merged) {
             if (base * (pow(2, power)) == merged)
                 return 2 * (pow(2, power));
             power++;
@@ -1673,33 +1460,25 @@ struct _8
         return 0;
     }
 
-    bool isGameOver(int n)
-    {
+    bool isGameOver(int n) {
         // Check if the board is entirely filled
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (arr[i][j] == 0)
-                {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (arr[i][j] == 0) {
                     return false; // If any empty cell found, the game is not over
                 }
             }
         }
 
         // Check if any adjacent elements in the same row/column are the same
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n - 1; ++j)
-            {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
                 // Check row-wise
-                if (arr[i][j] == arr[i][j + 1])
-                {
+                if (arr[i][j] == arr[i][j + 1]) {
                     return false; // If any adjacent elements are the same, the game is not over
                 }
                 // Check column-wise
-                if (arr[j][i] == arr[j + 1][i])
-                {
+                if (arr[j][i] == arr[j + 1][i]) {
                     return false; // If any adjacent elements are the same, the game is not over
                 }
             }
@@ -1710,61 +1489,45 @@ struct _8
     }
 
     // Function to copy the current board to prevArr
-    void copyBoard(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
+    void copyBoard(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
                 prevArr[i][j] = arr[i][j];
             }
         }
     }
     // Function to check if the board has changed after movement
-    bool boardChanged(int n)
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            for (int j = 0; j < n; ++j)
-            {
-                if (prevArr[i][j] != arr[i][j])
-                {
+    bool boardChanged(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (prevArr[i][j] != arr[i][j]) {
                     return true; // Board has changed
                 }
             }
         }
         return false; // Board remains the same
     }
-    void random1(int n, int multi)
-    {
-        while (true)
-        {
+    void random1(int n, int multi) {
+        while (true) {
             int n = rand() % 4;
             int r = rand() % n;
             int c = rand() % n;
-            if (arr[r][c] == 0)
-            {
-                if (!(n % 2))
-                {
+            if (arr[r][c] == 0) {
+                if (!(n % 2)) {
                     arr[r][c] = multi;
                     break;
                 }
-                else
-                {
+                else {
                     arr[r][c] = multi * 2;
                     break;
                 }
             }
         }
     }
-    void mergeTilesUp(int n, int multi, int &scoreValue)
-    {
-        for (int c = 0; c < n; ++c)
-        {
-            for (int r = 0; r < n - 1; ++r)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                {
+    void mergeTilesUp(int n, int multi, int& scoreValue) {
+        for (int c = 0; c < n; ++c) {
+            for (int r = 0; r < n - 1; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r + 1][c] = 0;
@@ -1772,14 +1535,10 @@ struct _8
             }
         }
     }
-    void mergeTilesDown(int n, int multi, int &scoreValue)
-    {
-        for (int c = n - 1; c > 0; c++)
-        {
-            for (int r = 0; r < n - 1; ++r)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c])
-                {
+    void mergeTilesDown(int n, int multi, int& scoreValue) {
+        for (int c = n - 1; c > 0; c++) {
+            for (int r = 0; r < n - 1; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r + 1][c] = 0;
@@ -1787,14 +1546,10 @@ struct _8
             }
         }
     }
-    void mergeTilesLeft(int n, int multi, int &scoreValue)
-    {
-        for (int r = 0; r < n; ++r)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
+    void mergeTilesLeft(int n, int multi, int& scoreValue) {
+        for (int r = 0; r < n; ++r) {
+            for (int c = 0; c < n - 1; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c + 1] = 0;
@@ -1802,14 +1557,10 @@ struct _8
             }
         }
     }
-    void mergeTilesRight(int n, int multi, int &scoreValue)
-    {
-        for (int r = n - 1; r > 0; r--)
-        {
-            for (int c = 0; c < n - 1; ++c)
-            {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1])
-                {
+    void mergeTilesRight(int n, int multi, int& scoreValue) {
+        for (int r = n - 1; r > 0; r--) {
+            for (int c = 0; c < n - 1; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c + 1] = 0;
@@ -1817,18 +1568,13 @@ struct _8
             }
         }
     }
-    void moveTilesRight(int n)
-    {
-        for (int r = 0; r < n; r++)
-        {
+    void moveTilesRight(int n) {
+        for (int r = 0; r < n; r++) {
             int column = n - 1;
-            for (int c = n - 1; c >= 0; c--)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int c = n - 1; c >= 0; c--) {
+                if (arr[r][c] != 0) {
                     arr[r][column] = arr[r][c];
-                    if (column != c)
-                    {
+                    if (column != c) {
                         arr[r][c] = 0;
                     }
                     column--;
@@ -1836,18 +1582,13 @@ struct _8
             }
         }
     }
-    void moveTilesLeft(int n)
-    {
-        for (int r = 0; r < n; ++r)
-        {
+    void moveTilesLeft(int n) {
+        for (int r = 0; r < n; ++r) {
             int column = 0;
-            for (int c = 0; c < n; c++)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int c = 0; c < n; c++) {
+                if (arr[r][c] != 0) {
                     arr[r][column] = arr[r][c];
-                    if (column != c)
-                    {
+                    if (column != c) {
                         arr[r][c] = 0;
                     }
                     column++;
@@ -1855,37 +1596,27 @@ struct _8
             }
         }
     }
-    void moveTilesUp(int n)
-    {
-        for (int c = 0; c < n; c++)
-        {
+    void moveTilesUp(int n) {
+        for (int c = 0; c < n; c++) {
             int row = 0;
-            for (int r = 0; r < n; r++)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int r = 0; r < n; r++) {
+                if (arr[r][c] != 0) {
                     arr[row][c] = arr[r][c];
-                    if (row != r)
-                    {
+                    if (row != r) {
                         arr[r][c] = 0;
-                    };
+                    }
                     row++;
                 }
             }
         }
     }
-    void moveTilesDown(int n)
-    {
-        for (int c = 0; c < n; c++)
-        {
+    void moveTilesDown(int n) {
+        for (int c = 0; c < n; c++) {
             int row = n - 1;
-            for (int r = n - 1; r >= 0; r--)
-            {
-                if (arr[r][c] != 0)
-                {
+            for (int r = n - 1; r >= 0; r--) {
+                if (arr[r][c] != 0) {
                     arr[row][c] = arr[r][c];
-                    if (row != r)
-                    {
+                    if (row != r) {
                         arr[r][c] = 0;
                     }
                     row--;
@@ -1893,74 +1624,62 @@ struct _8
             }
         }
     }
-    void upArrow(int n, int multi, int &scoreValue)
-    {
+    void upArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesUp(n);
         mergeTilesUp(n, multi, scoreValue);
         moveTilesUp(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void leftArrow(int n, int multi, int &scoreValue)
-    {
+    void leftArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesLeft(n);
         mergeTilesLeft(n, multi, scoreValue);
         moveTilesLeft(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void rightArrow(int n, int multi, int &scoreValue)
-    {
+    void rightArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesRight(n);
         mergeTilesRight(n, multi, scoreValue);
         moveTilesRight(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    void downArrow(int n, int multi, int &scoreValue)
-    {
+    void downArrow(int n, int multi, int& scoreValue) {
         copyBoard(n);
         moveTilesDown(n);
         mergeTilesDown(n, multi, scoreValue);
         moveTilesDown(n);
-        if (boardChanged(n))
-        {
+        if (boardChanged(n)) {
             random1(n, multi);
         }
     }
-    int calculateFontSize(int value)
-    {
+    int calculateFontSize(int value) {
         // Define a base font size
         int baseFontSize = 50;
         // Calculate a dynamic font size based on the value
         int fontSize = baseFontSize - log2(value + 1) * 2; // Adjust the multiplication factor for your preference
         // Ensure the font size doesn't become too small
-        if (fontSize < 15)
-        {
+        if (fontSize < 15) {
             fontSize = 15; // Set a minimum font size to maintain readability
         }
         return fontSize;
     }
 
-    string boardValues(int gridValue)
-    {
+    string boardValues(int gridValue) {
 
         if (gridValue != 0)
             return to_string(gridValue);
         else
             return "";
     }
-    Color tileColor8x8(int r, int c, int multi)
-    {
+    Color tileColor8x8(int r, int c, int multi) {
 
         if (arr[r][c] == multi * pow(2, 0))
             return Color(208, 112, 104);
@@ -1998,8 +1717,7 @@ struct _8
             return Color(228, 196, 196);
     }
 
-    bool board(RenderWindow &window, string username, int multi)
-    {
+    bool board(RenderWindow& window, string username, int multi) {
 
         ifstream file("highscore.txt");
         string highscore;
@@ -2008,7 +1726,11 @@ struct _8
 
         srand(time(0));
 
-        fill(begin(arr), end(arr), 0);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                arr[i][j] = 0;
+            }
+        }
 
         bool isGameover = false;
         bool runHighscore = false;
@@ -2019,8 +1741,7 @@ struct _8
         arr[r][c] = multi;
         window.setFramerateLimit(60);
 
-        while (window.isOpen())
-        {
+        while (window.isOpen()) {
             Event event; // Making an object "event" of the Event class
             window.clear();
 
@@ -2265,8 +1986,7 @@ struct _8
                 newgame.setPosition(Vector2f(666, 150));
                 score.setPosition(Vector2f(566, 50));
                 best.setPosition(Vector2f(672, 50));
-                if (event.type == Event::Closed)
-                {
+                if (event.type == Event::Closed) {
                     window.close();
                 }
 
@@ -2290,41 +2010,32 @@ struct _8
                     }
                 }
 
-                else if (event.type == sf::Event::KeyPressed)
-                {
-                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
-                    {
+                else if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                         upArrow(8, multi, scoreValue);
-                        if (isGameOver(8))
-                        {
+                        if (isGameOver(8)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
-                    {
+                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                         downArrow(8, multi, scoreValue);
                         Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-                        if (isGameOver(8))
-                        {
+                        if (isGameOver(8)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
-                    {
+                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                         leftArrow(8, multi, scoreValue);
-                        if (isGameOver(8))
-                        {
+                        if (isGameOver(8)) {
                             isGameover = true;
                             runHighscore = true;
                         }
                     }
-                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
-                    {
+                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                         rightArrow(8, multi, scoreValue);
-                        if (isGameOver(8))
-                        {
+                        if (isGameOver(8)) {
                             isGameover = true;
                             runHighscore = true;
                         }
@@ -2403,13 +2114,11 @@ struct _8
                 newgame.drawTo(window);
                 score.drawTo(window);
                 best.drawTo(window);
-                if (runHighscore)
-                {
+                if (runHighscore) {
                     highScore("highscores/unnamedhighscore8x8.txt", "highscores/highscore8x8.txt", username, scoreValue);
                     runHighscore = false;
                 }
-                if (isGameover)
-                {
+                if (isGameover) {
                     gameOver.drawTo(window);
                 }
 
@@ -2419,8 +2128,7 @@ struct _8
         return false;
     }
 };
-void beforeLeaderboard(RenderWindow &window)
-{
+void beforeLeaderboard(RenderWindow& window) {
 
     Picture preview4x4("grid4_preview.PNG");
     Picture preview6x6("grid6_preview.png");
@@ -2460,14 +2168,12 @@ void beforeLeaderboard(RenderWindow &window)
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         Event event; // Making an object "event" of the Event class
 
         while (window.pollEvent(event)) // Loop to manage when something changes in the console
         {
-            if (event.type == Event::Closed)
-            {
+            if (event.type == Event::Closed) {
                 window.close();
             }
 
@@ -2483,16 +2189,13 @@ void beforeLeaderboard(RenderWindow &window)
                     {
                         Leaderboard(window, "leaderboards/namedLeaderboard4x4.txt");
                     }
-                    if (six.buttonClicked(window))
-                    {
+                    if (six.buttonClicked(window)) {
                         Leaderboard(window, "leaderboards/namedLeaderboard6x6.txt");
                     }
-                    if (eight.buttonClicked(window))
-                    {
+                    if (eight.buttonClicked(window)) {
                         Leaderboard(window, "leaderboards/namedLeaderboard8x8.txt");
                     }
-                    if (back.buttonClicked(window))
-                    {
+                    if (back.buttonClicked(window)) {
                         return;
                     }
                 }
@@ -2513,8 +2216,7 @@ void beforeLeaderboard(RenderWindow &window)
     }
 }
 
-void mainMenu(RenderWindow &window)
-{
+void mainMenu(RenderWindow& window) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
     bool newGame = true;
@@ -2580,8 +2282,7 @@ void mainMenu(RenderWindow &window)
 
     bool toCheckSelections = false;
 
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         Button gdisplaybutton(gSize, Vector2f(400, 80), 30, gdc, Color::White);
         gdisplaybutton.setFont(font);
         gdisplaybutton.setPosition(Vector2f(450, 318));
@@ -2590,8 +2291,7 @@ void mainMenu(RenderWindow &window)
 
         while (window.pollEvent(event)) // Loop to manage when something changes in the console
         {
-            if (event.type == Event::Closed)
-            {
+            if (event.type == Event::Closed) {
                 window.close();
             }
 
@@ -2608,49 +2308,40 @@ void mainMenu(RenderWindow &window)
                         return;
                     }
 
-                    else if (nextbutton.buttonClicked(window))
-                    {
+                    else if (nextbutton.buttonClicked(window)) {
                         // Shd call a functions with all the variables.
 
                         // Check if the required conditions are met
-                        if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty())
-                        {
+                        if (multi > 0 && grid > 0 && !input.empty() && !gSize.empty()) {
 
                             toCheckSelections = true;
 
-                            if (grid == 4)
-                            {
+                            if (grid == 4) {
                                 _4 game;
-                                while (newGame)
-                                {
+                                while (newGame) {
 
                                     newGame = game.board(window, input, multi);
                                 }
                             }
 
-                            else if (grid == 6)
-                            {
+                            else if (grid == 6) {
                                 _6 game;
-                                while (newGame)
-                                {
+                                while (newGame) {
 
                                     newGame = game.board(window, input, multi);
                                 }
                             }
 
-                            else if (grid == 8)
-                            {
+                            else if (grid == 8) {
                                 _8 game;
-                                while (newGame)
-                                {
+                                while (newGame) {
                                     newGame = game.board(window, input, multi);
                                 }
                             }
                         }
                     }
 
-                    else if (grid4button.buttonClicked(window))
-                    {
+                    else if (grid4button.buttonClicked(window)) {
 
                         backbutton.setBackColor(Color(77, 143, 186));
                         nextbutton.setBackColor(Color(77, 143, 186));
@@ -2662,8 +2353,7 @@ void mainMenu(RenderWindow &window)
                         gSize = "4x4";
                         grid = 4;
                     }
-                    else if (grid6button.buttonClicked(window))
-                    {
+                    else if (grid6button.buttonClicked(window)) {
 
                         backbutton.setBackColor(Color(132, 108, 188));
                         nextbutton.setBackColor(Color(132, 108, 188));
@@ -2675,8 +2365,7 @@ void mainMenu(RenderWindow &window)
                         gSize = "6x6";
                         grid = 6;
                     }
-                    else if (grid8button.buttonClicked(window))
-                    {
+                    else if (grid8button.buttonClicked(window)) {
 
                         backbutton.setBackColor(Color(236, 46, 27));
                         nextbutton.setBackColor(Color(236, 46, 27));
@@ -2688,40 +2377,33 @@ void mainMenu(RenderWindow &window)
                         gSize = "8x8";
                         grid = 8;
                     }
-                    else if (multiple2button.buttonClicked(window))
-                    {
+                    else if (multiple2button.buttonClicked(window)) {
 
                         multi = 2;
                     }
-                    else if (multiple3button.buttonClicked(window))
-                    {
+                    else if (multiple3button.buttonClicked(window)) {
 
                         multi = 3;
                     }
-                    else if (multiple6button.buttonClicked(window))
-                    {
+                    else if (multiple6button.buttonClicked(window)) {
 
                         multi = 6;
                     }
-                    else if (multiple7button.buttonClicked(window))
-                    {
+                    else if (multiple7button.buttonClicked(window)) {
 
                         multi = 7;
                     }
                 }
             }
-            else if (event.type == Event::TextEntered)
-            {
-                if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ')
-                {
+            else if (event.type == Event::TextEntered) {
+                if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ') {
                     if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding (10) as needed
                     {
                         input += static_cast<char>(event.text.unicode);
                     }
                 }
 
-                else if (event.text.unicode == 8 && !input.empty())
-                {
+                else if (event.text.unicode == 8 && !input.empty()) {
                     input.pop_back();
                 }
                 inputText.setString(input);
@@ -2749,14 +2431,12 @@ void mainMenu(RenderWindow &window)
         window.display();
     }
 }
-void firstScreen(RenderWindow &window)
-{
+void firstScreen(RenderWindow& window) {
 
     window.setFramerateLimit(60);
 
     // Open the next window
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
 
         // Handle events for the next window (if needed)
         Event Event;
@@ -2772,26 +2452,20 @@ void firstScreen(RenderWindow &window)
         playbutton.setPosition(Vector2f(500, 218));
         lbbutton.setPosition(Vector2f(500, 308));
 
-        while (window.pollEvent(Event))
-        {
+        while (window.pollEvent(Event)) {
             // Handle events for the next window
-            if (Event.type == Event::Closed)
-            {
+            if (Event.type == Event::Closed) {
                 window.close();
             }
 
             // (e.g., window closing event, user interactions, etc.)
-            if (Event.type == Event::MouseButtonPressed)
-            {
-                if (Event.mouseButton.button == Mouse::Left)
-                {
-                    if (playbutton.buttonClicked(window))
-                    {
+            if (Event.type == Event::MouseButtonPressed) {
+                if (Event.mouseButton.button == Mouse::Left) {
+                    if (playbutton.buttonClicked(window)) {
 
                         mainMenu(window);
                     }
-                    else if (lbbutton.buttonClicked(window))
-                    {
+                    else if (lbbutton.buttonClicked(window)) {
                         beforeLeaderboard(window);
                     }
                 }
