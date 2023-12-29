@@ -354,7 +354,7 @@ struct _4 {
     }
         void mergeTilesUp(int n, int multi, int& scoreValue) {
             for (int c = 0; c < n; ++c) {
-                for (int r = 0; r < n - 1; ++r) {
+                for (int r = 0; r < n; ++r) {
                     if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
@@ -364,9 +364,9 @@ struct _4 {
             }
         }
         void mergeTilesDown(int n, int multi, int& scoreValue) {
-            for (int c = n - 1; c > 0; c++) {
-                for (int r = 0; r < n - 1; ++r) {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
+            for (int c = n - 1; c > 0; c--) {
+                for (int r = 0; r < n; ++r) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r - 1][c]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r - 1][c] = 0;
@@ -376,7 +376,7 @@ struct _4 {
         }
         void mergeTilesLeft(int n, int multi, int& scoreValue) {
             for (int r = 0; r < n; ++r) {
-                for (int c = 0; c < n - 1; ++c) {
+                for (int c = 0; c < n; ++c) {
                     if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
@@ -387,8 +387,8 @@ struct _4 {
         }
         void mergeTilesRight(int n, int multi, int& scoreValue) {
             for (int r = n - 1; r > 0; r--) {
-                for (int c = 0; c < n - 1; ++c) {
-                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
+                for (int c = 0; c < n; ++c) {
+                    if (arr[r][c] != 0 && arr[r][c] == arr[r][c - 1]) {
                         arr[r][c] *= 2;
                         scoreValue += scorefunc(multi, arr[r][c]);
                         arr[r][c - 1] = 0;
@@ -885,7 +885,7 @@ struct _6 {
     }
     void mergeTilesUp(int n, int multi, int& scoreValue) {
         for (int c = 0; c < n; ++c) {
-            for (int r = 0; r < n - 1; ++r) {
+            for (int r = 0; r < n; ++r) {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
@@ -895,9 +895,9 @@ struct _6 {
         }
     }
     void mergeTilesDown(int n, int multi, int& scoreValue) {
-        for (int c = n - 1; c > 0; c++) {
+        for (int c = n - 1; c > 0; c--) {
             for (int r = 0; r < n - 1; ++r) {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r - 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r - 1][c] = 0;
@@ -918,8 +918,8 @@ struct _6 {
     }
     void mergeTilesRight(int n, int multi, int& scoreValue) {
         for (int r = n - 1; r > 0; r--) {
-            for (int c = 0; c < n - 1; ++c) {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
+            for (int c = 0; c < n; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c - 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c - 1] = 0;
@@ -1526,7 +1526,7 @@ struct _8 {
     }
     void mergeTilesUp(int n, int multi, int& scoreValue) {
         for (int c = 0; c < n; ++c) {
-            for (int r = 0; r < n - 1; ++r) {
+            for (int r = 0; r < n; ++r) {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
@@ -1536,9 +1536,9 @@ struct _8 {
         }
     }
     void mergeTilesDown(int n, int multi, int& scoreValue) {
-        for (int c = n - 1; c > 0; c++) {
-            for (int r = 0; r < n - 1; ++r) {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
+        for (int c = n - 1; c > 0; c--) {
+            for (int r = 0; r < n; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r - 1][c]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r - 1][c] = 0;
@@ -1548,7 +1548,7 @@ struct _8 {
     }
     void mergeTilesLeft(int n, int multi, int& scoreValue) {
         for (int r = 0; r < n; ++r) {
-            for (int c = 0; c < n - 1; ++c) {
+            for (int c = 0; c < n; ++c) {
                 if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
@@ -1559,8 +1559,8 @@ struct _8 {
     }
     void mergeTilesRight(int n, int multi, int& scoreValue) {
         for (int r = n - 1; r > 0; r--) {
-            for (int c = 0; c < n - 1; ++c) {
-                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
+            for (int c = 0; c < n; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c - 1]) {
                     arr[r][c] *= 2;
                     scoreValue += scorefunc(multi, arr[r][c]);
                     arr[r][c - 1] = 0;
