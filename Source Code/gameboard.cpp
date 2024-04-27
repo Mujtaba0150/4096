@@ -1,0 +1,604 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <unistd.h>
+#include "classes.cpp"
+
+using namespace std;
+using namespace sf;
+
+struct gameboard {
+    gameboard(int i, string file) {
+        size = i;
+        fileName = file;
+    }
+
+    std::vector<std::vector<int>> arr;
+    std::vector<std::vector<int>> prevArr;
+
+    bool replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
+        std::ifstream inFile(filename);
+        if (!inFile) {
+            std::cerr << "Error opening input file: " << filename << std::endl;
+            return false;
+        }
+
+        std::vector<std::string> lines;
+        std::string line;
+        int currentLineNumber = 0;
+
+        // Read all lines from the file into a vector
+        while (std::getline(inFile, line)) {
+            ++currentLineNumber;
+            if (currentLineNumber == lineNumber) {
+                lines.push_back(newLine); // Replace the line at lineNumber with newLine
+            }
+            else {
+                lines.push_back(line); // Keep the original line
+            }
+        }
+
+        inFile.close();
+
+        // Write the modified content back to the file
+        std::ofstream outFile(filename);
+        if (!outFile) {
+            std::cerr << "Error opening output file: " << filename << std::endl;
+            return false;
+        }
+
+        for (const auto& l : lines) {
+            outFile << l << std::endl;
+        }
+
+        outFile.close();
+
+        return true;
+    }
+
+
+    void highScore(const std::string& fileName, const std::string& name, int score) {
+        string highscore;
+        int lineNumber = 0;
+        fstream file(fileName, ios::in);
+        file.seekp(0, ios::beg);
+        for (int i = 1; i <= 5; i++) {
+            getline(file, highscore);
+
+            if (stoi(highscore) <= score) {
+                lineNumber = i;
+                break;
+            }
+        }
+        if (!lineNumber) {
+            replaceLine(fileName, lineNumber, to_string(score));
+            replaceLine(fileName, lineNumber + 6, to_string(score));
+        }
+    }
+
+    int scorefunc(int base, int merged) {
+        int power = 0;
+
+        while (base * (pow(2, power)) <= merged) {
+            if (base * (pow(2, power)) == merged)
+                return 2 * (pow(2, power));
+            power++;
+        }
+
+        return 0;
+    }
+
+    bool isGameOver(int n) {
+        // Check if the board is entirely filled
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (arr[i][j] == 0) {
+                    return false; // If any empty cell found, the game is not over
+                }
+            }
+        }
+
+        // Check if any adjacent elements in the same row/column are the same
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
+                // Check row-wise
+                if (arr[i][j] == arr[i][j + 1]) {
+                    return false; // If any adjacent elements are the same, the game is not over
+                }
+                // Check column-wise
+                if (arr[j][i] == arr[j + 1][i])
+
+                {
+                    return false; // If any adjacent elements are the same, the game is not over
+                }
+            }
+        }
+
+        // If no empty cells and no adjacent elements found, the game is over
+        return true;
+    }
+
+    // Function to copy the current board to prevArr
+    void copyBoard(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                prevArr[i][j] = arr[i][j];
+            }
+        }
+    }
+    // Function to check if the board has changed after movement
+    bool boardChanged(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (prevArr[i][j] != arr[i][j]) {
+                    return true; // Board has changed
+                }
+            }
+        }
+        return false; // Board remains the same
+    }
+    void generateRandom(int n, int multi) {
+        while (true) {
+            int r = rand() % n;
+            int c = rand() % n;
+            int num = rand() % 2 ? multi : multi * 2;
+            if (arr[r][c] == 0) {
+                arr[r][c] = num;
+                break;
+            }
+        }
+    }
+    void mergeTilesud(int n, int multi, int& scoreValue) {
+        for (int c = 0; c < n; ++c) {
+            for (int r = 0; r < n - 1; ++r) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r + 1][c]) {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r + 1][c] = 0;
+                }
+            }
+        }
+    }
+    void mergeTilesrl(int n, int multi, int& scoreValue) {
+        for (int r = 0; r < n; ++r) {
+            for (int c = 0; c < n - 1; ++c) {
+                if (arr[r][c] != 0 && arr[r][c] == arr[r][c + 1]) {
+                    arr[r][c] *= 2;
+                    scoreValue += scorefunc(multi, arr[r][c]);
+                    arr[r][c + 1] = 0;
+                }
+            }
+        }
+    }
+    void moveTilesRight(int n) {
+        for (int r = 0; r < n; r++) {
+            int column = n - 1;
+            for (int c = n - 1; c >= 0; c--) {
+                if (arr[r][c] != 0) {
+                    arr[r][column] = arr[r][c];
+                    if (column != c) {
+                        arr[r][c] = 0;
+                    }
+                    column--;
+                }
+            }
+        }
+    }
+    void moveTilesLeft(int n) {
+        for (int r = 0; r < n; ++r) {
+            int column = 0;
+            for (int c = 0; c < n; c++) {
+                if (arr[r][c] != 0) {
+                    arr[r][column] = arr[r][c];
+                    if (column != c) {
+                        arr[r][c] = 0;
+                    }
+                    column++;
+                }
+            }
+        }
+    }
+    void moveTilesUp(int n) {
+        for (int c = 0; c < n; c++) {
+            int row = 0;
+            for (int r = 0; r < n; r++) {
+                if (arr[r][c] != 0) {
+                    arr[row][c] = arr[r][c];
+                    if (row != r) {
+                        arr[r][c] = 0;
+                    };
+                    row++;
+                }
+            }
+        }
+    }
+    void moveTilesDown(int n) {
+        for (int c = 0; c < n; c++) {
+            int row = n - 1;
+            for (int r = n - 1; r >= 0; r--) {
+                if (arr[r][c] != 0) {
+                    arr[row][c] = arr[r][c];
+                    if (row != r) {
+                        arr[r][c] = 0;
+                    }
+                    row--;
+                }
+            }
+        }
+    }
+    void upArrow(int n, int multi, int& scoreValue) {
+        copyBoard(n);
+        moveTilesUp(n);
+        mergeTilesud(n, multi, scoreValue);
+        moveTilesUp(n);
+        if (boardChanged(n)) {
+            generateRandom(n, multi);
+        }
+    }
+    void leftArrow(int n, int multi, int& scoreValue) {
+        copyBoard(n);
+        moveTilesLeft(n);
+        mergeTilesrl(n, multi, scoreValue);
+        moveTilesLeft(n);
+        if (boardChanged(n)) {
+            generateRandom(n, multi);
+        }
+    }
+    void rightArrow(int n, int multi, int& scoreValue) {
+        copyBoard(n);
+        moveTilesRight(n);
+        mergeTilesrl(n, multi, scoreValue);
+        moveTilesRight(n);
+        if (boardChanged(n)) {
+            generateRandom(n, multi);
+        }
+    }
+    void downArrow(int n, int multi, int& scoreValue) {
+        copyBoard(n);
+        moveTilesDown(n);
+        mergeTilesud(n, multi, scoreValue);
+        moveTilesDown(n);
+        if (boardChanged(n)) {
+            generateRandom(n, multi);
+        }
+    }
+    Color tileColor(int size, int r, int c, int multi) {
+        if (size == 4) {
+            if (arr[r][c] == multi * pow(2, 0))
+                return Color(158, 174, 190);
+            else if (arr[r][c] == multi * pow(2, 1))
+                return Color(136, 160, 176);
+            else if (arr[r][c] == multi * pow(2, 2))
+                return Color(100, 124, 148);
+            else if (arr[r][c] == multi * pow(2, 3))
+                return Color(84, 108, 132);
+            else if (arr[r][c] == multi * pow(2, 4))
+                return Color(68, 100, 124);
+            else if (arr[r][c] == multi * pow(2, 5))
+                return Color(60, 84, 108);
+            else if (arr[r][c] == multi * pow(2, 6))
+                return Color(36, 68, 100);
+            else if (arr[r][c] == multi * pow(2, 7))
+                return Color(28, 60, 84);
+            else if (arr[r][c] == multi * pow(2, 8))
+                return Color(20, 44, 68);
+            else if (arr[r][c] == multi * pow(2, 9))
+                return Color(size, 36, 68);
+            else if (arr[r][c] == multi * pow(2, 10))
+                return Color(16, 20, 52);
+            else
+                return Color(212, 220, 220);
+        }
+        else if (size = 6) {
+            if (arr[r][c] == multi * pow(2, 0))
+                return Color(156, 132, 212);
+
+            else if (arr[r][c] == multi * pow(2, 1))
+                return Color(132, 108, 188);
+
+            else if (arr[r][c] == multi * pow(2, 2))
+                return Color(124, 100, 172);
+
+            else if (arr[r][c] == multi * pow(2, 3))
+                return Color(116, 92, 156);
+
+            else if (arr[r][c] == multi * pow(2, 4))
+                return Color(92, 76, 164);
+
+            else if (arr[r][c] == multi * pow(2, 5))
+                return Color(84, 68, 148);
+
+            else if (arr[r][c] == multi * pow(2, 6))
+                return Color(76, 60, 116);
+
+            else if (arr[r][c] == multi * pow(2, 7))
+                return Color(60, 52, 124);
+
+            else if (arr[r][c] == multi * pow(2, 8))
+                return Color(52, 44, 108);
+
+            else if (arr[r][c] == multi * pow(2, 9))
+                return Color(36, 28, 100);
+
+            else if (arr[r][c] == multi * pow(2, 10))
+                return Color(36, 20, 84);
+            else
+                return Color(204, 196, 228);
+        }
+        else if (size == 8) {
+            if (arr[r][c] == multi * pow(2, 0))
+                return Color(208, 112, 104);
+
+            else if (arr[r][c] == multi * pow(2, 1))
+                return Color(164, 84, 76);
+
+            else if (arr[r][c] == multi * pow(2, 2))
+                return Color(164, 68, 60);
+
+            else if (arr[r][c] == multi * pow(2, 3))
+                return Color(124, 68, 68);
+
+            else if (arr[r][c] == multi * pow(2, 4))
+                return Color(155, 36, 36);
+
+            else if (arr[r][c] == multi * pow(2, 5))
+                return Color(164, 4, 20);
+
+            else if (arr[r][c] == multi * pow(2, 6))
+                return Color(135, 44, 36);
+
+            else if (arr[r][c] == multi * pow(2, 7))
+                return Color(132, 20, 28);
+
+            else if (arr[r][c] == multi * pow(2, 8))
+                return Color(108, 28, 28);
+
+            else if (arr[r][c] == multi * pow(2, 9))
+                return Color(116, 4, 4);
+
+            else if (arr[r][c] == multi * pow(2, 10))
+                return Color(84, 28, 28);
+            else
+                return Color(228, 196, 196);
+        }
+    }
+
+    string boardValues(int gridValue) {
+
+        if (gridValue != 0)
+            return to_string(gridValue);
+        else
+            return "";
+    }
+
+    Vector2f tileSize(int size) {
+        if (size == 4)
+            return Vector2f(90, 100);
+
+        else if (size == 6)
+            return Vector2f(60, 70);
+
+        else if (size == 8)
+            return Vector2f(45, 55);
+    }
+
+    Vector2f backgroundSize(int size) {
+        if (size == 4)
+            return Vector2f(395, 440);
+
+        else if (size == 6)
+            return Vector2f(395, 465);
+
+        else if (size == 8)
+            return Vector2f(405, 512);
+    }
+
+    bool board(RenderWindow& window, string username, int multi) {
+
+        ifstream file(fileName);
+        string highscore;
+        getline(file, highscore);
+
+        file.close();
+
+        arr.resize(size, std::vector<int>(size, 0));
+        prevArr.resize(size, std::vector<int>(size, 0));
+
+        srand(time(0));
+
+        int r = rand() % size;
+        int c = rand() % size;
+
+        bool isGameover = false;
+        int scoreValue = 0;
+
+        arr[r][c] = multi;
+        window.setFramerateLimit(60);
+
+
+        Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+        Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+        Button boardbackground(" ", backgroundSize(size), 90, Color(8, 24, 56), Color::Black);
+        Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+        Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
+        Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+        Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+
+        std::vector<std::vector<Button>> buttons;
+        buttons.resize(size, std::vector<Button>(size, Button("", Vector2f(0, 0), 0, Color::Transparent, Color::Transparent)));
+
+        // Initialize each button in the vector
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                buttons[i][j] = Button(
+                    boardValues(arr[i][j]),
+                    tileSize(size),
+                    30,
+                    tileColor(size, i, j, multi),
+                    Color::White,
+                    16.0f
+                );
+            }
+        }
+
+        Font font;
+        font.loadFromFile("LEMONMILK.otf");
+        gameOver.setFont(font);
+        name.setFont(font);
+        boardbackground.setFont(font);
+        back.setFont(font);
+        newgame.setFont(font);
+        score.setFont(font);
+        best.setFont(font);
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                buttons[i][j].setFont(font);
+            }
+        }
+
+        // Assigning the positions...
+        gameOver.setPosition(Vector2f(200, 200));
+        boardbackground.setPosition(Vector2f(370, 200));
+        back.setPosition(Vector2f(560, 150));
+        name.setPosition(Vector2f(370, 70));
+        newgame.setPosition(Vector2f(666, 150));
+        score.setPosition(Vector2f(566, 50));
+        best.setPosition(Vector2f(672, 50));
+
+        //! Need to make a function
+        for (int i = 0, x = 378, y = 210; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                buttons[i][j].setPosition(Vector2f(x, y));
+
+                switch (size) {
+
+                    case 4:
+                        if (j == 3) {
+                            x = 378, y += 106;
+                        }
+                        else
+                            x += 96;
+                        break;
+
+                    case 6:
+                        if (j == 5) {
+                            x = 378, y += 75;
+                        }
+                        else
+                            x += 64;
+                        break;
+
+                    case 8:
+                        if (j == 7) {
+                            x = 378, y += 62;
+                        }
+                        else
+                            x += 49;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        while (window.isOpen()) {
+            Event event; // Making an object "event" of the Event class
+            window.clear();
+
+            while (window.pollEvent(event)) // Loop to manage when something changes in the console
+            {
+                for (int i = 0; i < size; ++i) {
+                    for (int j = 0; j < size; ++j) {
+                        buttons[i][j].setText(boardValues(arr[i][j]));
+                        buttons[i][j].setBackColor(tileColor(size, i, j, multi));
+                    }
+                }
+                if (event.type == Event::Closed) {
+                    window.close();
+                }
+                else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
+                {
+                    if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
+                    {
+                        Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        {
+                            return false;
+                        }
+                        else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                else if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
+                        upArrow(size, multi, scoreValue);
+                        if (isGameOver(size)) {
+                            isGameover = true;
+                        }
+                    }
+                    else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
+                        downArrow(size, multi, scoreValue);
+                        Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+                        if (isGameOver(size)) {
+                            isGameover = true;
+                        }
+                    }
+                    else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
+                        leftArrow(size, multi, scoreValue);
+                        if (isGameOver(size)) {
+                            isGameover = true;
+                        }
+                    }
+                    else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
+                        rightArrow(size, multi, scoreValue);
+                        if (isGameOver(size)) {
+                            isGameover = true;
+                        }
+                    }
+                }
+
+                window.clear(Color::White);
+                if (isGameover) {
+                    highScore(fileName, username, scoreValue);
+                    while (true) {
+                        window.clear();
+                        gameOver.drawTo(window);
+                        window.display();
+                        if (gameOver.buttonClicked(window)) {
+                            return 1;
+                        }
+                    }
+
+                }
+                name.drawTo(window);
+                boardbackground.drawTo(window);
+                back.drawTo(window);
+                for (int i = 0; i < size; ++i) {
+                    for (int j = 0; j < size; ++j) {
+                        buttons[i][j].drawTo(window);
+                    }
+                }
+                back.drawTo(window);
+                newgame.drawTo(window);
+                score.drawTo(window);
+                best.drawTo(window);
+
+                window.display();
+            }
+        }
+        return false;
+    }
+
+    private:
+    string fileName;
+    int size = 4;
+};
