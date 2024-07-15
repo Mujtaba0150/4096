@@ -84,8 +84,6 @@ void Leaderboard(RenderWindow& window, string file) {
                 if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                 {
 
-                    Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-
                     if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
 
@@ -165,8 +163,6 @@ void beforeLeaderboard(RenderWindow& window) {
 
                 if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                 {
-
-                    Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 
                     if (four.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
@@ -263,8 +259,6 @@ void mainMenu(RenderWindow& window) {
     textBoxBackground.setSize(Vector2f(590.f, 50.f));
     textBoxBackground.setFillColor(Color(0, 0, 0, 20));
 
-    bool toCheckSelections = false;
-
     while (window.isOpen()) {
         Button gdisplaybutton(gSize, Vector2f(400, 80), 30, gdc, Color::White);
         gdisplaybutton.setFont(font);
@@ -284,8 +278,6 @@ void mainMenu(RenderWindow& window) {
                 if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                 {
 
-                    Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
-
                     if (backbutton.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {
                         return;
@@ -296,9 +288,10 @@ void mainMenu(RenderWindow& window) {
 
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !name.empty() && !gSize.empty()) {
-
+                            while(newGame){
                             gameboard* game = new gameboard(grid, "leaderboard.txt");
                             newGame = game->board(window, name, multi);
+                            }
                         }
                     }
 
