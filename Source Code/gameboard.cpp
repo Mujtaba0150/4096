@@ -60,23 +60,38 @@ struct gameboard {
         return true;
     }
 
-
     void highScore(const std::string& fileName, const std::string& name, int score) {
         string highscore;
         int lineNumber = 0;
-        fstream file(fileName, ios::in);
-        file.seekp(0, ios::beg);
-        for (int i = 1; i <= 5; i++) {
-            getline(file, highscore);
+        ifstream file(fileName);
+        if (file.good()) {
+            file.seekg(0, ios::beg);
+            if (file.is_open()) {
+                for (int i = 1; i <= 5; i++) {
+                    getline(file, highscore);
 
-            if (stoi(highscore) <= score) {
-                lineNumber = i;
-                break;
+                    if (stoi(highscore) <= score) {
+                        lineNumber = i;
+                        break;
+                    }
+                }
+                if (!lineNumber) {
+                    replaceLine(fileName, lineNumber, to_string(score));
+                    replaceLine(fileName, lineNumber + 6, to_string(score));
+                }
             }
+            else
+                std::cerr << "Unable to open file for writing: " << fileName << std::endl;
         }
-        if (!lineNumber) {
-            replaceLine(fileName, lineNumber, to_string(score));
-            replaceLine(fileName, lineNumber + 6, to_string(score));
+        else {
+            file.close();
+            std::ofstream outfile(fileName);
+            if (outfile.is_open()) {
+                outfile << score << endl;
+                outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl;
+                outfile << name;
+                outfile.close();
+            }
         }
     }
 
@@ -315,7 +330,7 @@ struct gameboard {
             else
                 return Color(212, 220, 220);
         }
-        else if (size = 6) {
+        else if (size == 6) {
             if (arr[r][c] == multi * pow(2, 0))
                 return Color(156, 132, 212);
 
@@ -547,7 +562,6 @@ struct gameboard {
                 {
                     if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                     {
-                        Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
                         if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
                         {
                             return false;
@@ -562,12 +576,14 @@ struct gameboard {
                 else if (event.type == sf::Event::KeyPressed) {
                     if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                         upArrow(size, multi, scoreValue);
+                        score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
                             isGameover = true;
                         }
                     }
                     else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                         downArrow(size, multi, scoreValue);
+                        score.setText(to_string(scoreValue));
                         Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                         if (isGameOver(size)) {
                             isGameover = true;
@@ -575,12 +591,14 @@ struct gameboard {
                     }
                     else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                         leftArrow(size, multi, scoreValue);
+                        score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
                             isGameover = true;
                         }
                     }
                     else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                         rightArrow(size, multi, scoreValue);
+                        score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
                             isGameover = true;
                         }
