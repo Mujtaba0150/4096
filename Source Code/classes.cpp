@@ -4,6 +4,14 @@
 using namespace std;
 using namespace sf;
 
+/** @brief Class for creating a rectangular button
+ * @param t Text to be displayed on the button
+ * @param size Size of the button
+ * @param charSize Size of the text
+ * @param bgColor Background color of the button
+ * @param textColor Text color of the button
+ * @param padding Padding of the text from the button edges (default = 5.0f)
+ */
 class Button {
     public:
     Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float padding = 5.0f)
