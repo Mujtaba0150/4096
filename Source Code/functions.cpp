@@ -10,17 +10,22 @@
 using namespace std;
 using namespace sf;
 
-void Leaderboard(RenderWindow& window, string file) {
+void leaderboard(RenderWindow& window, string fileName) {
     string l1, l2, l3, l4, l5;
-    ifstream leaderboard(file);
-    if (leaderboard.is_open()) {
-        getline(leaderboard, l1);
-        getline(leaderboard, l2);
-        getline(leaderboard, l3);
-        getline(leaderboard, l4);
-        getline(leaderboard, l5);
+    ifstream leaderboardFile(fileName);
+    if (leaderboardFile.is_open()) {
+        getline(leaderboardFile, l1);
+        l1 = "1.\t" + l1;
+        getline(leaderboardFile, l2);
+        l2 = "2.\t" + l2;
+        getline(leaderboardFile, l3);
+        l3 = "3.\t" + l3;
+        getline(leaderboardFile, l4);
+        l4 = "4.\t" + l4;
+        getline(leaderboardFile, l5);
+        l5 = "5.\t" + l5;
 
-        leaderboard.close();
+        leaderboardFile.close();
     }
     else {
         cerr << "Unable To Open The File!" << endl;
@@ -150,29 +155,25 @@ void beforeLeaderboard(RenderWindow& window) {
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
     while (window.isOpen()) {
-        Event event; // Making an object "event" of the Event class
+        Event event;
 
-        while (window.pollEvent(event)) // Loop to manage when something changes in the console
-        {
+        while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
             }
 
-            else if (event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
-            {
+            else if (event.type == Event::MouseButtonPressed) {
 
-                if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
-                {
+                if (event.mouseButton.button == Mouse::Left) {
 
-                    if (four.buttonClicked(window)) // Using self defined function to check if the button was clicked
-                    {
-                        Leaderboard(window, "leaderboards/namedLeaderboard4x4.txt");
+                    if (four.buttonClicked(window)) {
+                        leaderboard(window, "leaderboard4x4.dat");
                     }
                     if (six.buttonClicked(window)) {
-                        Leaderboard(window, "leaderboards/namedLeaderboard6x6.txt");
+                        leaderboard(window, "leaderboard6x6.dat");
                     }
                     if (eight.buttonClicked(window)) {
-                        Leaderboard(window, "leaderboards/namedLeaderboard8x8.txt");
+                        leaderboard(window, "leaderboard8x8.dat");
                     }
                     if (back.buttonClicked(window)) {
                         return;
@@ -199,7 +200,8 @@ void mainMenu(RenderWindow& window) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
     bool newGame = true;
-    string gSize = " ";
+    string gridButtonText = "";
+    string highscoreFile;
 
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
     Button backbutton("BACK", Vector2f(205, 50), 24, Color(114, 156, 155), Color::White); // Creating an object of the Button class named "button" and specifying its properties
@@ -251,7 +253,6 @@ void mainMenu(RenderWindow& window) {
     string name;
     int multi = 0;
     int grid = 0;
-    Color gdc = Color(3, 85, 97);
 
     inputText.setCharacterSize(25);
     inputText.setFillColor(Color::Black);
@@ -260,7 +261,7 @@ void mainMenu(RenderWindow& window) {
     textBoxBackground.setFillColor(Color(0, 0, 0, 20));
 
     while (window.isOpen()) {
-        Button gdisplaybutton(gSize, Vector2f(400, 80), 30, gdc, Color::White);
+        Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
         gdisplaybutton.setFont(font);
         gdisplaybutton.setPosition(Vector2f(450, 318));
 
@@ -284,13 +285,15 @@ void mainMenu(RenderWindow& window) {
                     }
 
                     else if (nextbutton.buttonClicked(window)) {
-                        // Shd call a functions with all the variables.
 
                         // Check if the required conditions are met
-                        if (multi > 0 && grid > 0 && !name.empty() && !gSize.empty()) {
-                            while(newGame){
-                            gameboard* game = new gameboard(grid, "leaderboard.txt");
-                            newGame = game->board(window, name, multi);
+                        if (multi > 0 && grid > 0 && !name.empty()) {
+                            newGame = true;
+                            while (newGame) {
+                                gameboard* game = new gameboard(grid, highscoreFile);
+                                newGame = game->board(window, name, multi);
+                                delete game;
+                                game = nullptr;
                             }
                         }
                     }
@@ -304,8 +307,9 @@ void mainMenu(RenderWindow& window) {
                         multiple3button.setBackColor(Color(77, 143, 186));
                         multiple6button.setBackColor(Color(77, 143, 186));
                         multiple7button.setBackColor(Color(77, 143, 186));
-                        gdisplaybutton.setBackColor(gdc = Color(6, 46, 81));
-                        gSize = "4x4";
+                        gdisplaybutton.setBackColor(Color(6, 46, 81));
+                        gridButtonText = "4x4";
+                        highscoreFile = "leaderboard4x4.dat";
                         grid = 4;
                     }
                     else if (grid6button.buttonClicked(window)) {
@@ -316,8 +320,9 @@ void mainMenu(RenderWindow& window) {
                         multiple3button.setBackColor(Color(132, 108, 188));
                         multiple6button.setBackColor(Color(132, 108, 188));
                         multiple7button.setBackColor(Color(132, 108, 188));
-                        gdisplaybutton.setBackColor(gdc = Color(60, 52, 124));
-                        gSize = "6x6";
+                        gdisplaybutton.setBackColor(Color(60, 52, 124));
+                        gridButtonText = "6x6";
+                        highscoreFile = "leaderboard6x6.dat";
                         grid = 6;
                     }
                     else if (grid8button.buttonClicked(window)) {
@@ -328,8 +333,9 @@ void mainMenu(RenderWindow& window) {
                         multiple3button.setBackColor(Color(236, 46, 27));
                         multiple6button.setBackColor(Color(236, 46, 27));
                         multiple7button.setBackColor(Color(236, 46, 27));
-                        gdisplaybutton.setBackColor(gdc = Color(125, 13, 13));
-                        gSize = "8x8";
+                        gdisplaybutton.setBackColor(Color(125, 13, 13));
+                        gridButtonText = "8x8";
+                        highscoreFile = "leaderboard8x8.dat";
                         grid = 8;
                     }
                     else if (multiple2button.buttonClicked(window)) {
@@ -397,7 +403,7 @@ void firstScreen(RenderWindow& window) {
         Event Event;
 
         Button playbutton("PLAY", Vector2f(300, 80), 24, Color(6, 46, 81), Color::White);
-        Button lbbutton("LEADER BOARD", Vector2f(300, 60), 24, Color(6, 46, 81), Color::White);
+        Button lbbutton("LEADERBOARD", Vector2f(300, 60), 24, Color(6, 46, 81), Color::White);
 
         Font font;
         font.loadFromFile("LEMONMILK.otf");
@@ -435,4 +441,4 @@ void firstScreen(RenderWindow& window) {
         window.display();
     }
 }
- 
+

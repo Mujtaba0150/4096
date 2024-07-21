@@ -545,7 +545,6 @@ struct gameboard {
 
         while (window.isOpen()) {
             Event event; // Making an object "event" of the Event class
-            window.clear();
 
             while (window.pollEvent(event)) // Loop to manage when something changes in the console
             {
@@ -632,6 +631,7 @@ struct gameboard {
                 best.drawTo(window);
 
                 window.display();
+                window.clear();
             }
         }
         return false;
