@@ -75,9 +75,9 @@ struct gameboard {
                         break;
                     }
                 }
-                if (!lineNumber) {
+                if (lineNumber) {
                     replaceLine(fileName, lineNumber, to_string(score));
-                    replaceLine(fileName, lineNumber + 6, to_string(score));
+                    replaceLine(fileName, lineNumber + 6, name);
                 }
             }
             else
@@ -463,7 +463,7 @@ struct gameboard {
         Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
         Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
         Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-        Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+        Button bestScore(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
 
         std::vector<std::vector<Button>> buttons;
         buttons.resize(size, std::vector<Button>(size, Button("", Vector2f(0, 0), 0, Color::Transparent, Color::Transparent)));
@@ -489,7 +489,7 @@ struct gameboard {
         back.setFont(font);
         newgame.setFont(font);
         score.setFont(font);
-        best.setFont(font);
+        bestScore.setFont(font);
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -504,7 +504,7 @@ struct gameboard {
         name.setPosition(Vector2f(370, 70));
         newgame.setPosition(Vector2f(666, 150));
         score.setPosition(Vector2f(566, 50));
-        best.setPosition(Vector2f(672, 50));
+        bestScore.setPosition(Vector2f(672, 50));
 
         //! Need to make a function
         for (int i = 0, x = 378, y = 210; i < size; ++i) {
@@ -628,7 +628,7 @@ struct gameboard {
                 back.drawTo(window);
                 newgame.drawTo(window);
                 score.drawTo(window);
-                best.drawTo(window);
+                bestScore.drawTo(window);
 
                 window.display();
                 window.clear();
