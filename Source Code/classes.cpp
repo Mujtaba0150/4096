@@ -14,15 +14,15 @@ using namespace sf;
  */
 class Button {
     public:
-    Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float padding = 5.0f)
-        : padding(padding), charSize(charSize) {
-        text.setString(t);
-        text.setFillColor(textColor);
-        text.setCharacterSize(charSize);
-        button.setSize(size);
-        button.setFillColor(bgColor);
-        centerText();
-    }
+        Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
+            : padding(padding), charSize(charSize), xOffset(xOffset), yOffset(yOffset) {
+            text.setString(t);
+            text.setFillColor(textColor);
+            text.setCharacterSize(charSize);
+            button.setSize(size);
+            button.setFillColor(bgColor);
+            centerText();
+        }
 
     void setFont(Font& font) {
         text.setFont(font);
@@ -88,12 +88,14 @@ class Button {
     Text text;
     float padding;
     int charSize;
+    float xOffset;
+    float yOffset;
 
     void centerText() {
         FloatRect textBounds = text.getLocalBounds();
         FloatRect buttonBounds = button.getLocalBounds();
-        float xPos = button.getPosition().x + (buttonBounds.width - textBounds.width) / 2 - textBounds.left;
-        float yPos = button.getPosition().y + (buttonBounds.height - textBounds.height) / 2 - textBounds.top;
+        float xPos = button.getPosition().x + (buttonBounds.width - textBounds.width) / 2 - textBounds.left + xOffset;
+        float yPos = button.getPosition().y + (buttonBounds.height - textBounds.height) / 2 - textBounds.top + yOffset;
         text.setPosition(xPos, yPos);
     }
 
