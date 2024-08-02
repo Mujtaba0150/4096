@@ -1,8 +1,6 @@
 #include "functions.cpp"
 
 int main() {
-
-    VideoMode screenSize = VideoMode::getDesktopMode();
-    RenderWindow window(screenSize, "4096");
+    RenderWindow window(VideoMode::getDesktopMode(), "4096", Style::Close | Style::Titlebar);
     firstScreen(window);
 }

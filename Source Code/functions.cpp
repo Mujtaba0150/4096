@@ -44,6 +44,13 @@ void leaderboard(RenderWindow& window, string fileName) {
     Button rank5(l5, Vector2f(505.8, 50), 24, Color(205, 127, 50), Color::White);
     Button back("BACK", Vector2f(100, 50), 24, Color::Blue, Color::White);
 
+    //To display bg image
+    Picture background("4096 bg.png");
+
+    background.SetTexture("4096 bg.png");
+    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setPosition(Vector2f(0, 0));
+
     // Making an object of the Font class called "font"
     Font font;
 
@@ -98,7 +105,7 @@ void leaderboard(RenderWindow& window, string fileName) {
             }
         }
 
-        window.clear(Color::White);
+        background.drawTo(window);
 
         rankButt.drawTo(window);
         nameButton.drawTo(window);
@@ -126,6 +133,13 @@ void beforeLeaderboard(RenderWindow& window) {
     Button six("6 X 6", Vector2f(150, 50), 24, Color(60, 52, 124), Color::White);
     Button eight("8 X 8", Vector2f(150, 50), 24, Color(125, 13, 13), Color::White);
     Button back("Back", Vector2f(100, 45), 24, Color(3, 85, 97), Color::White);
+
+    //To display bg image
+    Picture background("4096 bg.png");
+
+    background.SetTexture("4096 bg.png");
+    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setPosition(Vector2f(0, 0));
 
     // Making an object of the Font class called "font"
     Font font;
@@ -182,7 +196,7 @@ void beforeLeaderboard(RenderWindow& window) {
             }
         }
 
-        window.clear(Color::White);
+        background.drawTo(window);
 
         four.drawTo(window);
         six.drawTo(window);
@@ -213,6 +227,13 @@ void mainMenu(RenderWindow& window) {
     Button multiple3button("3", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
     Button multiple6button("6", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
     Button multiple7button("7", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+
+    //To display bg image
+    Picture background("4096 bg.png");
+
+    background.SetTexture("4096 bg.png");
+    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setPosition(Vector2f(0, 0));
 
     Text inputText;
 
@@ -371,7 +392,8 @@ void mainMenu(RenderWindow& window) {
             }
         }
 
-        window.clear(Color::White);
+        //Picture:
+        background.drawTo(window);
 
         // Textbox:
         window.draw(textBoxBackground);
@@ -405,6 +427,13 @@ void firstScreen(RenderWindow& window) {
         Button playbutton("PLAY", Vector2f(300, 80), 24, Color(6, 46, 81), Color::White);
         Button lbbutton("LEADERBOARD", Vector2f(300, 60), 24, Color(6, 46, 81), Color::White);
 
+        //To display bg image
+        Picture background("4096 bg.png");
+
+        background.SetTexture("4096 bg.png");
+        background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+        background.setPosition(Vector2f(0, 0));
+
         Font font;
         font.loadFromFile("LEMONMILK.otf");
         playbutton.setFont(font);
@@ -433,7 +462,7 @@ void firstScreen(RenderWindow& window) {
             }
         }
 
-        window.clear(Color(250, 247, 238));
+        background.drawTo(window);
 
         playbutton.drawTo(window);
         lbbutton.drawTo(window);

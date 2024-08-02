@@ -75,9 +75,9 @@ struct gameboard {
                         break;
                     }
                 }
-                if (lineNumber) {
+                if (!lineNumber) {
                     replaceLine(fileName, lineNumber, to_string(score));
-                    replaceLine(fileName, lineNumber + 6, name);
+                    replaceLine(fileName, lineNumber + 6, to_string(score));
                 }
             }
             else
@@ -433,6 +433,84 @@ struct gameboard {
         else if (size == 8)
             return Vector2f(405, 512);
     }
+    
+    int gameOver(RenderWindow& window, const std::string& username, int scoreValue, int size, int multi) {
+        // Save high score
+        highScore(fileName, username, scoreValue);
+
+        // Determine color based on grid size
+    Color buttonColor;
+    Color bg;
+    switch (size) {
+        case 4:
+            bg = Color(36, 68, 100, 10);
+            buttonColor = Color(16, 20, 52, 200); 
+            break;
+        case 6:
+            bg = Color(76, 60, 116, 10);
+            buttonColor = Color(36, 20, 84, 200); 
+            break;
+        case 8:
+            bg = Color(135, 44, 36, 10);
+            buttonColor = Color(84, 28, 28, 200); 
+            break;
+        default:
+            buttonColor = Color::White; // Default color if size is not matched
+            break;
+    }
+        // Create and setup the buttons
+        RectangleShape gameOverBackground(Vector2f(window.getSize().x, window.getSize().y));
+        
+        gameOverBackground.setFillColor(bg);
+        
+        gameOverBackground.setPosition(0, 0);
+
+        Button gameOver("GAME OVER", Vector2f(400, 150), 40, buttonColor, Color::White, 10, 5);
+        Button playAgain("Play Again",Vector2f(175,50),24, buttonColor, Color::White);
+        Button mainMenu("Main Menu",Vector2f(175,50),24, buttonColor, Color::White);
+
+        
+        Font font;
+        font.loadFromFile("LEMONMILK.otf");
+        gameOver.setFont(font);
+        playAgain.setFont(font);
+        mainMenu.setFont(font);
+
+        gameOver.setPosition(Vector2f(750,300));
+        playAgain.setPosition(Vector2f(770,520));
+        mainMenu.setPosition(Vector2f(960,520));
+
+        // Display the game over screen
+        while (true) {
+            
+            window.draw(gameOverBackground);
+            gameOver.drawTo(window);
+            playAgain.drawTo(window);
+            mainMenu.drawTo(window);
+            window.display();
+
+            Event event;
+            while (window.pollEvent(event)) {
+                if (event.type == Event::Closed) {
+                    window.close();
+                    return 0;
+                } else if (event.type == sf::Event::MouseButtonPressed) {
+                    if (event.mouseButton.button == Mouse::Left) {
+                        if (gameOver.buttonClicked(window)) {
+                            return 0;
+                        }
+                        else if (playAgain.buttonClicked(window)) {
+                            return 1;
+                        }
+                        else if (mainMenu.buttonClicked(window)) {
+                            return false;  
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
 
     bool board(RenderWindow& window, string username, int multi) {
 
@@ -457,13 +535,20 @@ struct gameboard {
         window.setFramerateLimit(60);
 
 
-        Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
+        //Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
         Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
         Button boardbackground(" ", backgroundSize(size), 90, Color(8, 24, 56), Color::Black);
         Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
         Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
         Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-        Button bestScore(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+        Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+
+        Picture background("4096 bg.png");
+
+        background.SetTexture("4096 bg.png");
+
+        background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+        background.setPosition(Vector2f(0, 0));
 
         std::vector<std::vector<Button>> buttons;
         buttons.resize(size, std::vector<Button>(size, Button("", Vector2f(0, 0), 0, Color::Transparent, Color::Transparent)));
@@ -483,13 +568,13 @@ struct gameboard {
 
         Font font;
         font.loadFromFile("LEMONMILK.otf");
-        gameOver.setFont(font);
+        //gameOver.setFont(font);
         name.setFont(font);
         boardbackground.setFont(font);
         back.setFont(font);
         newgame.setFont(font);
         score.setFont(font);
-        bestScore.setFont(font);
+        best.setFont(font);
 
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
@@ -498,13 +583,13 @@ struct gameboard {
         }
 
         // Assigning the positions...
-        gameOver.setPosition(Vector2f(200, 200));
+        //gameOver.setPosition(Vector2f(200, 200));
         boardbackground.setPosition(Vector2f(370, 200));
         back.setPosition(Vector2f(560, 150));
         name.setPosition(Vector2f(370, 70));
         newgame.setPosition(Vector2f(666, 150));
         score.setPosition(Vector2f(566, 50));
-        bestScore.setPosition(Vector2f(672, 50));
+        best.setPosition(Vector2f(672, 50));
 
         //! Need to make a function
         for (int i = 0, x = 378, y = 210; i < size; ++i) {
@@ -577,46 +662,37 @@ struct gameboard {
                         upArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            isGameover = true;
+                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            return newGame; // End the game
                         }
                     }
                     else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
                         downArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
-                        Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
                         if (isGameOver(size)) {
-                            isGameover = true;
+                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            return newGame; // End the game
                         }
                     }
                     else if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left) {
                         leftArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            isGameover = true;
+                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            return newGame; // End the game
                         }
                     }
                     else if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
                         rightArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            isGameover = true;
+                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            return newGame; // End the game
                         }
                     }
                 }
-
-                window.clear(Color::White);
-                if (isGameover) {
-                    highScore(fileName, username, scoreValue);
-                    while (true) {
-                        window.clear();
-                        gameOver.drawTo(window);
-                        window.display();
-                        if (gameOver.buttonClicked(window)) {
-                            return 1;
-                        }
-                    }
-
-                }
+                background.drawTo(window);
+               
                 name.drawTo(window);
                 boardbackground.drawTo(window);
                 back.drawTo(window);
@@ -625,13 +701,13 @@ struct gameboard {
                         buttons[i][j].drawTo(window);
                     }
                 }
-                back.drawTo(window);
+                
                 newgame.drawTo(window);
                 score.drawTo(window);
-                bestScore.drawTo(window);
+                best.drawTo(window);
 
                 window.display();
-                window.clear();
+                
             }
         }
         return false;
@@ -639,5 +715,6 @@ struct gameboard {
 
     private:
     string fileName;
-    int size = 4;
+    int size;
+    bool newGame = false;
 };
