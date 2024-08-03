@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/System.hpp> 
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -280,6 +281,18 @@ void mainMenu(RenderWindow& window) {
 
     textBoxBackground.setSize(Vector2f(590.f, 50.f));
     textBoxBackground.setFillColor(Color(0, 0, 0, 20));
+    textBoxBackground.setOutlineThickness(2); // Initially set outline thickness to make it visible when selected
+    textBoxBackground.setOutlineColor(Color::Transparent); // Set to transparent initially
+
+    // Cursor for the text box
+    RectangleShape cursor(Vector2f(2.f, inputText.getCharacterSize()));
+    cursor.setFillColor(Color::Black);
+    cursor.setPosition(inputText.getPosition().x + 1.f, inputText.getPosition().y + 1.f); // Adjust the position to be inside the textbox
+    bool isTextBoxSelected = false;
+    Clock cursorTimer;
+
+    // Cursor position index
+    size_t cursorIndex = name.size();
 
     while (window.isOpen()) {
         Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
@@ -301,12 +314,14 @@ void mainMenu(RenderWindow& window) {
                 {
 
                     if (backbutton.buttonClicked(window)) // Using self defined function to check if the button was clicked
-                    {
+                    {   
+                        backbutton.setBackColor(Color(58, 79, 78));
                         return;
                     }
 
                     else if (nextbutton.buttonClicked(window)) {
 
+                        nextbutton.setBackColor(Color(58, 79, 78));
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !name.empty()) {
                             newGame = true;
@@ -362,34 +377,91 @@ void mainMenu(RenderWindow& window) {
                     else if (multiple2button.buttonClicked(window)) {
 
                         multi = 2;
+                        multiple2button.setBackColor(Color(58, 79, 78));
+
+                        multiple3button.setBackColor(Color(114, 156, 155));
+                        multiple6button.setBackColor(Color(114, 156, 155));
+                        multiple7button.setBackColor(Color(114, 156, 155));
                     }
                     else if (multiple3button.buttonClicked(window)) {
 
                         multi = 3;
+                        multiple3button.setBackColor(Color(58, 79, 78));
+
+                        multiple2button.setBackColor(Color(114, 156, 155));
+                        multiple6button.setBackColor(Color(114, 156, 155));
+                        multiple7button.setBackColor(Color(114, 156, 155));
                     }
                     else if (multiple6button.buttonClicked(window)) {
 
                         multi = 6;
+                        multiple6button.setBackColor(Color(58, 79, 78));
+
+                        multiple2button.setBackColor(Color(114, 156, 155));
+                        multiple3button.setBackColor(Color(114, 156, 155));
+                        multiple7button.setBackColor(Color(114, 156, 155));
                     }
                     else if (multiple7button.buttonClicked(window)) {
 
                         multi = 7;
+                        multiple7button.setBackColor(Color(58, 79, 78));
+
+                        multiple2button.setBackColor(Color(114, 156, 155));
+                        multiple3button.setBackColor(Color(114, 156, 155));
+                        multiple6button.setBackColor(Color(114, 156, 155));
+                    }
+                    // Check if the text box was clicked
+                    if (textBoxBackground.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                        isTextBoxSelected = true;
+                        textBoxBackground.setOutlineColor(Color(6, 46, 81)); // Highlight outline color
+                    }
+                    else {
+                        isTextBoxSelected = false;
+                        textBoxBackground.setOutlineColor(Color::Transparent); // Default outline color
                     }
                 }
             }
             else if (event.type == Event::TextEntered) {
                 if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ') {
-                    if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding (10) as needed
+                    if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding 
                     {
-                        name += static_cast<char>(event.text.unicode);
+                        name.insert(name.begin() + cursorIndex, static_cast<char>(event.text.unicode));
+                        cursorIndex++;
                     }
                 }
 
-                else if (event.text.unicode == 8 && !name.empty()) {
-                    name.pop_back();
+                 else if (event.text.unicode == 8 && cursorIndex > 0) { // Backspace
+                    name.erase(name.begin() + cursorIndex - 1);
+                    cursorIndex--;
                 }
                 inputText.setString(name);
+
+                // Update cursor position based on cursorIndex
+                string textBeforeCursor = name.substr(0, cursorIndex);
+                Text tempText(textBeforeCursor, font, 25);
+                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 1.f, inputText.getPosition().y + 1.f);
+            } else if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Left && cursorIndex > 0) {
+                    cursorIndex--;
+                } else if (event.key.code == Keyboard::Right && cursorIndex < name.size()) {
+                    cursorIndex++;
+                }
+
+                // Update cursor position based on cursorIndex
+                string textBeforeCursor = name.substr(0, cursorIndex);
+                Text tempText(textBeforeCursor, font, 25);
+                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 1.f, inputText.getPosition().y + 1.f);
             }
+        }
+
+        // Blink the cursor
+        if (isTextBoxSelected) {
+            if (cursorTimer.getElapsedTime().asSeconds() >= 0.5f) {
+                cursor.setFillColor(cursor.getFillColor() == Color::Black ? Color::Transparent : Color::Black);
+                cursorTimer.restart();
+            }
+        } else {
+            cursor.setFillColor(Color::Transparent);
         }
 
         //Picture:
@@ -399,6 +471,12 @@ void mainMenu(RenderWindow& window) {
         window.draw(textBoxBackground);
         window.draw(inputText);
         window.draw(Name);
+
+        // Cursor:
+        if (isTextBoxSelected) {
+            window.draw(cursor);
+        }
+
         // Buttons:
         backbutton.drawTo(window);
         nextbutton.drawTo(window);
@@ -452,11 +530,40 @@ void firstScreen(RenderWindow& window) {
             if (Event.type == Event::MouseButtonPressed) {
                 if (Event.mouseButton.button == Mouse::Left) {
                     if (playbutton.buttonClicked(window)) {
+                        playbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate click
+                        lbbutton.setBackColor(Color(6, 46, 81));
 
+                        // Draw the updated state
+                        window.clear(); // Clear the window
+                        background.drawTo(window);
+                        playbutton.drawTo(window);
+                        lbbutton.drawTo(window);
+                        window.display(); // Display the updated state
+
+                        // Pause for 2 seconds
+                        sleep(seconds(2));
+
+                        // Call mainMenu after the pause
                         mainMenu(window);
+                        return; // Exit the current loop to prevent further events from being processed
                     }
                     else if (lbbutton.buttonClicked(window)) {
+                        lbbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate click
+                        playbutton.setBackColor(Color(6, 46, 81));
+
+                        // Draw the updated state
+                        window.clear(); // Clear the window
+                        background.drawTo(window);
+                        playbutton.drawTo(window);
+                        lbbutton.drawTo(window);
+                        window.display(); // Display the updated state
+
+                        // Pause for 2 seconds
+                        sleep(seconds(2));
+
+                        // Call beforeLeaderboard after the pause
                         beforeLeaderboard(window);
+                        return; // Exit the current loop to prevent further events from being processed
                     }
                 }
             }
