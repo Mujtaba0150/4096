@@ -11,19 +11,22 @@ int main()
     // Create a window with a title and a size of 800x600 pixels
     
     RenderWindow window(VideoMode::getDesktopMode(), "4096", Style::Close | Style::Titlebar);
-    Button settings("Settings", Vector2f(400, 150), 40, Color:: Red, Color::White, 10, 5);
-    Button sound("Sound", Vector2f(175,50),30, Color::Red, Color::White);
-    Button darkMode("Dark", Vector2f(175,50),30, Color::Red, Color::White);
+    Button settings("Settings", Vector2f(400, 150), 40, Color(6, 46, 81), Color::White, 10, 5);
+    Button sound("Sound", Vector2f(175,50),30,Color(6, 46, 81), Color::White);
+    Button darkMode("Dark", Vector2f(175,50),30,Color(6, 46, 81), Color::White);
+    Button purge("Purge high score", Vector2f(215,50),30,Color(6, 46, 81), Color::White);
     
     Font font;
-    font.loadFromFile("LEMONMILK.otf");
+    font.loadFromFile("Baloo.ttf");
     settings.setFont(font);
     sound.setFont(font);
     darkMode.setFont(font);
+    purge.setFont(font);
 
     settings.setPosition(Vector2f(750, 300));
     sound.setPosition(Vector2f(770,500));
     darkMode.setPosition(Vector2f(960,500));
+    purge.setPosition(Vector2f(845, 580));
 
     Picture background("4096 bg.png");
 
@@ -53,8 +56,9 @@ int main()
                         else if (darkMode.buttonClicked(window)) {
                             window.close();
                         }
-                        
-                        
+                        else if (purge.buttonClicked(window)) {
+                            window.close();
+                        }
                     }
                 }
 
@@ -66,6 +70,7 @@ int main()
         settings.drawTo(window);
         sound.drawTo(window);
         darkMode.drawTo(window);
+        purge.drawTo(window);
         // Display the contents of the window
         window.display();
     }

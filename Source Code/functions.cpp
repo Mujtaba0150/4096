@@ -55,7 +55,7 @@ void leaderboard(RenderWindow& window, string fileName) {
     Font font;
 
     // Loading the font for the button
-    font.loadFromFile("LEMONMILK.otf");
+    font.loadFromFile("Baloo.ttf");
 
     // Setting the font to the button
     rankButt.setFont(font);
@@ -145,7 +145,7 @@ void beforeLeaderboard(RenderWindow& window) {
     Font font;
 
     // Loading the font for the button
-    font.loadFromFile("LEMONMILK.otf");
+    font.loadFromFile("Baloo.ttf");
 
     // Setting the font to the button
     four.setFont(font);
@@ -240,7 +240,7 @@ void mainMenu(RenderWindow& window) {
     RectangleShape textBoxBackground;
 
     Font font;                          // Making an object of the Font class called "font"
-    font.loadFromFile("LEMONMILK.otf"); // Loading the font for the button
+    font.loadFromFile("Baloo.ttf"); // Loading the font for the button
     backbutton.setFont(font);           // Setting the font to the button
     nextbutton.setFont(font);
     grid4button.setFont(font);
@@ -435,7 +435,7 @@ void firstScreen(RenderWindow& window) {
         background.setPosition(Vector2f(0, 0));
 
         Font font;
-        font.loadFromFile("LEMONMILK.otf");
+        font.loadFromFile("Baloo.ttf");
         playbutton.setFont(font);
         lbbutton.setFont(font);
 

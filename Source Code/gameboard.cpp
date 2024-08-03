@@ -471,7 +471,7 @@ struct gameboard {
 
         
         Font font;
-        font.loadFromFile("LEMONMILK.otf");
+        font.loadFromFile("Baloo.ttf");
         gameOver.setFont(font);
         playAgain.setFont(font);
         mainMenu.setFont(font);
@@ -567,7 +567,7 @@ struct gameboard {
         }
 
         Font font;
-        font.loadFromFile("LEMONMILK.otf");
+        font.loadFromFile("Baloo.ttf");
         //gameOver.setFont(font);
         name.setFont(font);
         boardbackground.setFont(font);
