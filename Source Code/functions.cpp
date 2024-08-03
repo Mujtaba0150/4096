@@ -218,16 +218,21 @@ void mainMenu(RenderWindow& window) {
     string gridButtonText = "";
     string highscoreFile;
 
+    // Button colors
+    Color defaultButtonColor(114, 156, 155);
+    Color selectedButtonColor(58, 79, 78);
+
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
-    Button backbutton("BACK", Vector2f(205, 50), 24, Color(114, 156, 155), Color::White); // Creating an object of the Button class named "button" and specifying its properties
-    Button nextbutton("NEXT", Vector2f(205, 50), 24, Color(114, 156, 155), Color::White);
+    Button backbutton("BACK", Vector2f(205, 50), 24, defaultButtonColor, Color::White); // Creating an object of the Button class named "button" and specifying its properties
+    Button nextbutton("NEXT", Vector2f(205, 50), 24, defaultButtonColor, Color::White);
     Button grid4button("4 x 4", Vector2f(175, 50), 24, Color(25, 105, 174), Color::White);
     Button grid6button("6 x 6", Vector2f(175, 50), 24, Color(113, 85, 156), Color::White);
     Button grid8button("8 x 8", Vector2f(175, 50), 24, Color(205, 52, 6), Color::White);
-    Button multiple2button("2", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
-    Button multiple3button("3", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
-    Button multiple6button("6", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
-    Button multiple7button("7", Vector2f(120, 50), 24, Color(114, 156, 155), Color::White);
+    Button multiple2button("2", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
+    Button multiple3button("3", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
+    Button multiple6button("6", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
+    Button multiple7button("7", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
+    
 
     //To display bg image
     Picture background("4096 bg.png");
@@ -263,6 +268,7 @@ void mainMenu(RenderWindow& window) {
     multiple3button.setPosition(Vector2f(510, 250));
     multiple6button.setPosition(Vector2f(650, 250));
     multiple7button.setPosition(Vector2f(790, 250));
+    
 
     textBoxBackground.setPosition(350.f, 182.f);
     inputText.setPosition(356.f, 196.f);
@@ -294,8 +300,10 @@ void mainMenu(RenderWindow& window) {
     // Cursor position index
     size_t cursorIndex = name.size();
 
+    Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
+
     while (window.isOpen()) {
-        Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
+        
         gdisplaybutton.setFont(font);
         gdisplaybutton.setPosition(Vector2f(450, 318));
 
@@ -315,13 +323,13 @@ void mainMenu(RenderWindow& window) {
 
                     if (backbutton.buttonClicked(window)) // Using self defined function to check if the button was clicked
                     {   
-                        backbutton.setBackColor(Color(58, 79, 78));
+                        backbutton.setBackColor(backbutton.buttonClicked(window) ? selectedButtonColor : defaultButtonColor);
                         return;
                     }
 
                     else if (nextbutton.buttonClicked(window)) {
 
-                        nextbutton.setBackColor(Color(58, 79, 78));
+                        nextbutton.setBackColor(nextbutton.buttonClicked(window) ? selectedButtonColor : defaultButtonColor);
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !name.empty()) {
                             newGame = true;
@@ -337,83 +345,85 @@ void mainMenu(RenderWindow& window) {
 
                     else if (grid4button.buttonClicked(window)) {
 
-                        backbutton.setBackColor(Color(77, 143, 186));
-                        nextbutton.setBackColor(Color(77, 143, 186));
-                        multiple2button.setBackColor(Color(77, 143, 186));
-                        multiple3button.setBackColor(Color(77, 143, 186));
-                        multiple6button.setBackColor(Color(77, 143, 186));
-                        multiple7button.setBackColor(Color(77, 143, 186));
                         gdisplaybutton.setBackColor(Color(6, 46, 81));
-                        gridButtonText = "4x4";
+                        //gridButtonText = "4x4";
+                        gdisplaybutton.setText("4x4");
                         highscoreFile = "leaderboard4x4.dat";
                         grid = 4;
+                        // multi button colors
+                        multiple2button.setBackColor(multi == 2 ? Color(45, 84, 109) : Color(77, 143, 186));
+                        multiple3button.setBackColor(multi == 3 ? Color(45, 84, 109) : Color(77, 143, 186));
+                        multiple6button.setBackColor(multi == 6 ? Color(45, 84, 109) : Color(77, 143, 186));
+                        multiple7button.setBackColor(multi == 7 ? Color(45, 84, 109) : Color(77, 143, 186));
+                        nextbutton.setBackColor(nextbutton.buttonClicked(window) ? Color(45, 84, 109) : Color(77, 143, 186));
+                        backbutton.setBackColor(backbutton.buttonClicked(window) ? Color(45, 84, 109) : Color(77, 143, 186));
                     }
                     else if (grid6button.buttonClicked(window)) {
 
-                        backbutton.setBackColor(Color(132, 108, 188));
-                        nextbutton.setBackColor(Color(132, 108, 188));
-                        multiple2button.setBackColor(Color(132, 108, 188));
-                        multiple3button.setBackColor(Color(132, 108, 188));
-                        multiple6button.setBackColor(Color(132, 108, 188));
-                        multiple7button.setBackColor(Color(132, 108, 188));
                         gdisplaybutton.setBackColor(Color(60, 52, 124));
                         gridButtonText = "6x6";
+                        gdisplaybutton.setText("6x6");
                         highscoreFile = "leaderboard6x6.dat";
                         grid = 6;
+                        // multi button colors
+                        multiple2button.setBackColor(multi == 2 ? Color(78, 64, 111) : Color(132, 108, 188));
+                        multiple3button.setBackColor(multi == 3 ? Color(78, 64, 111) : Color(132, 108, 188));
+                        multiple6button.setBackColor(multi == 6 ? Color(78, 64, 111) : Color(132, 108, 188));
+                        multiple7button.setBackColor(multi == 7 ? Color(78, 64, 111) : Color(132, 108, 188));
+                        nextbutton.setBackColor(nextbutton.buttonClicked(window) ? Color(78, 64, 111) : Color(132, 108, 188));
+                        backbutton.setBackColor(backbutton.buttonClicked(window) ? Color(78, 64, 111) : Color(132, 108, 188));
                     }
                     else if (grid8button.buttonClicked(window)) {
 
-                        backbutton.setBackColor(Color(236, 46, 27));
-                        nextbutton.setBackColor(Color(236, 46, 27));
-                        multiple2button.setBackColor(Color(236, 46, 27));
-                        multiple3button.setBackColor(Color(236, 46, 27));
-                        multiple6button.setBackColor(Color(236, 46, 27));
-                        multiple7button.setBackColor(Color(236, 46, 27));
                         gdisplaybutton.setBackColor(Color(125, 13, 13));
                         gridButtonText = "8x8";
+                        gdisplaybutton.setText("8x8");
                         highscoreFile = "leaderboard8x8.dat";
                         grid = 8;
+                        // multi button colors
+                        multiple2button.setBackColor(multi == 2 ? Color(159, 31, 18) : Color(236, 46, 27));
+                        multiple3button.setBackColor(multi == 3 ? Color(159, 31, 18) : Color(236, 46, 27));
+                        multiple6button.setBackColor(multi == 6 ? Color(159, 31, 18) : Color(236, 46, 27));
+                        multiple7button.setBackColor(multi == 7 ? Color(159, 31, 18) : Color(236, 46, 27));
+                        nextbutton.setBackColor(nextbutton.buttonClicked(window) ? Color(159, 31, 18) : Color(236, 46, 27));
+                        backbutton.setBackColor(backbutton.buttonClicked(window) ? Color(159, 31, 18) : Color(236, 46, 27));
                     }
                     else if (multiple2button.buttonClicked(window)) {
 
                         multi = 2;
-                        multiple2button.setBackColor(Color(58, 79, 78));
-
-                        multiple3button.setBackColor(Color(114, 156, 155));
-                        multiple6button.setBackColor(Color(114, 156, 155));
-                        multiple7button.setBackColor(Color(114, 156, 155));
+                        multiple2button.setBackColor(selectedButtonColor);
+                        multiple3button.setBackColor(defaultButtonColor);
+                        multiple6button.setBackColor(defaultButtonColor);
+                        multiple7button.setBackColor(defaultButtonColor);
                     }
                     else if (multiple3button.buttonClicked(window)) {
 
                         multi = 3;
-                        multiple3button.setBackColor(Color(58, 79, 78));
-
-                        multiple2button.setBackColor(Color(114, 156, 155));
-                        multiple6button.setBackColor(Color(114, 156, 155));
-                        multiple7button.setBackColor(Color(114, 156, 155));
+                        multiple3button.setBackColor(selectedButtonColor);
+                        multiple2button.setBackColor(defaultButtonColor);
+                        multiple6button.setBackColor(defaultButtonColor);
+                        multiple7button.setBackColor(defaultButtonColor);
                     }
                     else if (multiple6button.buttonClicked(window)) {
 
                         multi = 6;
-                        multiple6button.setBackColor(Color(58, 79, 78));
-
-                        multiple2button.setBackColor(Color(114, 156, 155));
-                        multiple3button.setBackColor(Color(114, 156, 155));
-                        multiple7button.setBackColor(Color(114, 156, 155));
+                        multiple6button.setBackColor(selectedButtonColor);
+                        multiple2button.setBackColor(defaultButtonColor);
+                        multiple3button.setBackColor(defaultButtonColor);
+                        multiple7button.setBackColor(defaultButtonColor);
                     }
                     else if (multiple7button.buttonClicked(window)) {
 
                         multi = 7;
-                        multiple7button.setBackColor(Color(58, 79, 78));
-
-                        multiple2button.setBackColor(Color(114, 156, 155));
-                        multiple3button.setBackColor(Color(114, 156, 155));
-                        multiple6button.setBackColor(Color(114, 156, 155));
+                        multiple7button.setBackColor(selectedButtonColor);
+                        multiple2button.setBackColor(defaultButtonColor);
+                        multiple3button.setBackColor(defaultButtonColor);
+                        multiple6button.setBackColor(defaultButtonColor);
                     }
                     // Check if the text box was clicked
                     if (textBoxBackground.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         isTextBoxSelected = true;
-                        textBoxBackground.setOutlineColor(Color(6, 46, 81)); // Highlight outline color
+                        textBoxBackground.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
                     }
                     else {
                         isTextBoxSelected = false;
@@ -541,7 +551,7 @@ void firstScreen(RenderWindow& window) {
                         window.display(); // Display the updated state
 
                         // Pause for 2 seconds
-                        sleep(seconds(2));
+                        sleep(seconds(1));
 
                         // Call mainMenu after the pause
                         mainMenu(window);
@@ -559,7 +569,7 @@ void firstScreen(RenderWindow& window) {
                         window.display(); // Display the updated state
 
                         // Pause for 2 seconds
-                        sleep(seconds(2));
+                        sleep(seconds(1));
 
                         // Call beforeLeaderboard after the pause
                         beforeLeaderboard(window);
