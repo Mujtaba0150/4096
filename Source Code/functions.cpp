@@ -232,7 +232,7 @@ void mainMenu(RenderWindow& window) {
     Button multiple3button("3", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
     Button multiple6button("6", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
     Button multiple7button("7", Vector2f(120, 50), 24, defaultButtonColor, Color::White);
-    
+    Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
 
     //To display bg image
     Picture background("4096 bg.png");
@@ -244,6 +244,15 @@ void mainMenu(RenderWindow& window) {
     Text inputText;
 
     RectangleShape textBoxBackground;
+
+    //Audio:
+     Music bgmusic;
+    if (!bgmusic.openFromFile("bg.mp3"))
+    {
+        // Handle error if audio fails to load
+        return ;
+    }
+    bgmusic.play();
 
     Font font;                          // Making an object of the Font class called "font"
     font.loadFromFile("Baloo.ttf"); // Loading the font for the button
@@ -300,7 +309,7 @@ void mainMenu(RenderWindow& window) {
     // Cursor position index
     size_t cursorIndex = name.size();
 
-    Button gdisplaybutton(gridButtonText, Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
+    
 
     while (window.isOpen()) {
         
