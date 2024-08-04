@@ -51,7 +51,7 @@ public:
         window.draw(button);
         window.draw(text);
     }
-    bool buttonClicked(sf::RenderWindow &window)
+    bool coursorInbound(sf::RenderWindow &window)
     {
 
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
@@ -103,7 +103,7 @@ int main()
 
                     Vector2f mousePos = window.mapPixelToCoords(Mouse ::getPosition(window));
 
-                    if (button.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                    if (button.coursorInbound(window)) // Using self defined function to check if the button was clicked
                     {
 
                         window.close(); // Closes the window

@@ -67,7 +67,7 @@ class Button {
         window.draw(text);
     }
 
-    bool buttonClicked(RenderWindow& window) {
+    bool coursorInbound(RenderWindow& window) {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
         return button.getGlobalBounds().contains(mousePos);
     }
@@ -125,23 +125,24 @@ class Picture {
         sprite.setTexture(texture);
     }
     void SetTexture(string filePath) {
+        this->filePath = filePath;
         texture.loadFromFile(filePath);
         sprite.setTexture(texture);
     }
-    void setScale(sf::Vector2f scale) {
+    void setScale(Vector2f scale) {
         scale.x = std::max(scale.x, 0.1f); // Minimum scale to avoid division by zero
         scale.y = std::max(scale.y, 0.1f);
 
         // Calculate aspect ratio
-        sf::Vector2f Aspectratio(scale.x / texture.getSize().x, scale.y / texture.getSize().y);
+        Vector2f Aspectratio(scale.x / texture.getSize().x, scale.y / texture.getSize().y);
 
         // Set scale of sprite
         sprite.setScale(Aspectratio);
     }
-    void setPosition(sf::Vector2f position) {
+    void setPosition(Vector2f position) {
         sprite.setPosition(position);
     }
-    void drawTo(sf::RenderWindow& window) {
+    void drawTo(RenderWindow& window) {
         window.draw(sprite);
     }
     Vector2f getPosition() {
@@ -162,8 +163,12 @@ class Picture {
     void rotate(float angle) {
         sprite.rotate(angle);
     }
+    string getFilePath() {
+        return filePath;
+    }
 
     private:
-    sf::Texture texture;
-    sf::Sprite sprite;
+    string filePath;
+    Texture texture;
+    Sprite sprite;
 };
