@@ -75,7 +75,7 @@ struct gameboard {
                         break;
                     }
                 }
-                if (!lineNumber) {
+                if (lineNumber) {
                     replaceLine(fileName, lineNumber, to_string(score));
                     replaceLine(fileName, lineNumber + 6, to_string(score));
                 }
@@ -433,56 +433,56 @@ struct gameboard {
         else if (size == 8)
             return Vector2f(405, 512);
     }
-    
+
     int gameOver(RenderWindow& window, const std::string& username, int scoreValue, int size, int multi) {
         // Save high score
         highScore(fileName, username, scoreValue);
 
         // Determine color based on grid size
-    Color buttonColor;
-    Color bg;
-    switch (size) {
-        case 4:
-            bg = Color(36, 68, 100, 10);
-            buttonColor = Color(16, 20, 52, 200); 
-            break;
-        case 6:
-            bg = Color(76, 60, 116, 10);
-            buttonColor = Color(36, 20, 84, 200); 
-            break;
-        case 8:
-            bg = Color(135, 44, 36, 10);
-            buttonColor = Color(84, 28, 28, 200); 
-            break;
-        default:
-            buttonColor = Color::White; // Default color if size is not matched
-            break;
-    }
+        Color buttonColor;
+        Color bg;
+        switch (size) {
+            case 4:
+                bg = Color(36, 68, 100, 10);
+                buttonColor = Color(16, 20, 52, 200);
+                break;
+            case 6:
+                bg = Color(76, 60, 116, 10);
+                buttonColor = Color(36, 20, 84, 200);
+                break;
+            case 8:
+                bg = Color(135, 44, 36, 10);
+                buttonColor = Color(84, 28, 28, 200);
+                break;
+            default:
+                buttonColor = Color::White; // Default color if size is not matched
+                break;
+        }
         // Create and setup the buttons
         RectangleShape gameOverBackground(Vector2f(window.getSize().x, window.getSize().y));
-        
+
         gameOverBackground.setFillColor(bg);
-        
+
         gameOverBackground.setPosition(0, 0);
 
         Button gameOver("GAME OVER", Vector2f(400, 150), 40, buttonColor, Color::White, 10, 5);
-        Button playAgain("Play Again",Vector2f(175,50),24, buttonColor, Color::White);
-        Button mainMenu("Main Menu",Vector2f(175,50),24, buttonColor, Color::White);
+        Button playAgain("Play Again", Vector2f(175, 50), 24, buttonColor, Color::White);
+        Button mainMenu("Main Menu", Vector2f(175, 50), 24, buttonColor, Color::White);
 
-        
+
         Font font;
         font.loadFromFile("Baloo.ttf");
         gameOver.setFont(font);
         playAgain.setFont(font);
         mainMenu.setFont(font);
 
-        gameOver.setPosition(Vector2f(750,300));
-        playAgain.setPosition(Vector2f(770,520));
-        mainMenu.setPosition(Vector2f(960,520));
+        gameOver.setPosition(Vector2f(750, 300));
+        playAgain.setPosition(Vector2f(770, 520));
+        mainMenu.setPosition(Vector2f(960, 520));
 
         // Display the game over screen
         while (true) {
-            
+
             window.draw(gameOverBackground);
             gameOver.drawTo(window);
             playAgain.drawTo(window);
@@ -494,18 +494,19 @@ struct gameboard {
                 if (event.type == Event::Closed) {
                     window.close();
                     return 0;
-                } else if (event.type == sf::Event::MouseButtonPressed) {
+                }
+                else if (event.type == sf::Event::MouseButtonPressed) {
                     if (event.mouseButton.button == Mouse::Left) {
-                        if (gameOver.buttonClicked(window)) {
+                        if (gameOver.coursorInbound(window)) {
                             return 0;
                         }
-                        else if (playAgain.buttonClicked(window)) {
+                        else if (playAgain.coursorInbound(window)) {
                             return 1;
                         }
-                        else if (mainMenu.buttonClicked(window)) {
-                            return false;  
+                        else if (mainMenu.coursorInbound(window)) {
+                            return false;
                         }
-                        
+
                     }
                 }
             }
@@ -646,11 +647,11 @@ struct gameboard {
                 {
                     if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                     {
-                        if (back.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        if (back.coursorInbound(window)) // Using self defined function to check if the button was clicked
                         {
                             return false;
                         }
-                        else if (newgame.buttonClicked(window)) // Using self defined function to check if the button was clicked
+                        else if (newgame.coursorInbound(window)) // Using self defined function to check if the button was clicked
                         {
                             return true;
                         }
@@ -662,7 +663,7 @@ struct gameboard {
                         upArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            newGame = gameOver(window, username, scoreValue, size, multi); // Call gameOver function
                             return newGame; // End the game
                         }
                     }
@@ -670,7 +671,7 @@ struct gameboard {
                         downArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            newGame = gameOver(window, username, scoreValue, size, multi); // Call gameOver function
                             return newGame; // End the game
                         }
                     }
@@ -678,7 +679,7 @@ struct gameboard {
                         leftArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            newGame = gameOver(window, username, scoreValue, size, multi); // Call gameOver function
                             return newGame; // End the game
                         }
                     }
@@ -686,13 +687,13 @@ struct gameboard {
                         rightArrow(size, multi, scoreValue);
                         score.setText(to_string(scoreValue));
                         if (isGameOver(size)) {
-                            newGame = gameOver(window, username, scoreValue,size,multi); // Call gameOver function
+                            newGame = gameOver(window, username, scoreValue, size, multi); // Call gameOver function
                             return newGame; // End the game
                         }
                     }
                 }
                 background.drawTo(window);
-               
+
                 name.drawTo(window);
                 boardbackground.drawTo(window);
                 back.drawTo(window);
@@ -701,13 +702,13 @@ struct gameboard {
                         buttons[i][j].drawTo(window);
                     }
                 }
-                
+
                 newgame.drawTo(window);
                 score.drawTo(window);
                 best.drawTo(window);
 
                 window.display();
-                
+
             }
         }
         return false;
