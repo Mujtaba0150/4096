@@ -14,15 +14,15 @@ using namespace sf;
  */
 class Button {
     public:
-        Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
-            : padding(padding), charSize(charSize), xOffset(xOffset), yOffset(yOffset) {
-            text.setString(t);
-            text.setFillColor(textColor);
-            text.setCharacterSize(charSize);
-            button.setSize(size);
-            button.setFillColor(bgColor);
-            centerText();
-        }
+    Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
+        : padding(padding), charSize(charSize), xOffset(xOffset), yOffset(yOffset) {
+        text.setString(t);
+        text.setFillColor(textColor);
+        text.setCharacterSize(charSize);
+        button.setSize(size);
+        button.setFillColor(bgColor);
+        centerText();
+    }
 
     void setFont(Font& font) {
         text.setFont(font);
