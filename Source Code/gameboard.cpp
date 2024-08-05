@@ -20,11 +20,11 @@ struct gameboard {
     std::vector<std::vector<int>> arr;
     std::vector<std::vector<int>> prevArr;
 
-    bool replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
+    void replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
         std::ifstream inFile(filename);
         if (!inFile) {
             std::cerr << "Error opening input file: " << filename << std::endl;
-            return false;
+            exit(1);
         }
 
         std::vector<std::string> lines;
@@ -48,7 +48,7 @@ struct gameboard {
         std::ofstream outFile(filename);
         if (!outFile) {
             std::cerr << "Error opening output file: " << filename << std::endl;
-            return false;
+            exit(1);
         }
 
         for (const auto& l : lines) {
@@ -57,7 +57,7 @@ struct gameboard {
 
         outFile.close();
 
-        return true;
+        return;
     }
 
     void highScore(const std::string& fileName, const std::string& name, int score) {
