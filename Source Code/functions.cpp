@@ -13,23 +13,23 @@ using namespace sf;
 
 void beforeLeaderboard(RenderWindow& window) {
 
-    Picture preview4x4("grid4_preview.PNG");
+    Picture preview4x4("grid4_preview.png");
     Picture preview6x6("grid6_preview.png");
-    Picture preview8x8("grid8_preview.PNG");
+    Picture preview8x8("grid8_preview.png");
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
 
     // Creating an object of the Button class named "button" and specifying its properties
-    Button four("4 X 4", Vector2f(150, 50), 24, Color(6, 46, 81), Color::White);
-    Button six("6 X 6", Vector2f(150, 50), 24, Color(60, 52, 124), Color::White);
-    Button eight("8 X 8", Vector2f(150, 50), 24, Color(125, 13, 13), Color::White);
-    Button back("Back", Vector2f(100, 45), 24, Color(3, 85, 97), Color::White);
+    Button four(window, "4 X 4", Vector2f(12, 7), 24, Color(6, 46, 81), Color(255, 255, 255));
+    Button six(window, "6 X 6", Vector2f(12, 7), 24, Color(60, 52, 124), Color(255, 255, 255));
+    Button eight(window, "8 X 8", Vector2f(12, 7), 24, Color(125, 13, 13), Color(255, 255, 255));
+    Button back(window, "Back", Vector2f(12, 7), 24, Color(3, 85, 97), Color(255, 255, 255));
 
     //To display bg image
-    Picture background("4096 bg.png");
+    Picture background("4096 bg(light).png");
 
-    background.SetTexture("4096 bg.png");
+    // background.SetTexture("4096 bg(light).png");
     background.setScale(Vector2f(window.getSize().x, window.getSize().y));
-    background.setPosition(Vector2f(0, 0));
+    background.setPosition(window, Vector2f(0, 0));
 
     // Making an object of the Font class called "font"
     Font font;
@@ -44,14 +44,16 @@ void beforeLeaderboard(RenderWindow& window) {
     back.setFont(font);
 
     // Setting button position
-    four.setPosition(Vector2f(243, 450));
-    six.setPosition(Vector2f(573, 450));
-    eight.setPosition(Vector2f(900, 450));
-    preview4x4.setPosition(Vector2f(190, 150));
-    preview6x6.setPosition(Vector2f(520, 150));
-    preview8x8.setPosition(Vector2f(847, 150));
-    back.setPosition(Vector2f(600, 530));
-    // setting scale.......
+    four.setPosition(window, Vector2f(34.5, 55));
+    six.setPosition(window, Vector2f(50, 55));
+    eight.setPosition(window, Vector2f(65.5, 55));
+    back.setPosition(window, Vector2f(50, 67));
+
+    //Picture previews....
+    preview4x4.setPosition(window, Vector2f(30, 20));
+    preview6x6.setPosition(window, Vector2f(50, 20));
+    preview8x8.setPosition(window, Vector2f(57, 20));
+    // Setting scale.......
     preview4x4.setScale(Vector2f(250, 250));
     preview6x6.setScale(Vector2f(250, 250));
     preview8x8.setScale(Vector2f(250, 250));
@@ -86,7 +88,9 @@ void beforeLeaderboard(RenderWindow& window) {
             }
         }
 
+        window.clear();
         background.drawTo(window);
+
 
         four.drawTo(window);
         six.drawTo(window);
@@ -157,28 +161,28 @@ void mainMenu(RenderWindow& window) {
     Color selectedButtonColor(58, 79, 78);
 
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
-    Button backbutton("BACK", Vector2f(205, 50), 24, defaultButtonColor, Color::White); // Creating an object of the Button class named "button" and specifying its properties
-    Button nextbutton("NEXT", Vector2f(205, 50), 24, defaultButtonColor, Color::White);
-    Button grid4button("4 x 4", Vector2f(175, 50), 24, Color(25, 105, 174), Color::White);
-    Button grid6button("6 x 6", Vector2f(175, 50), 24, Color(113, 85, 156), Color::White);
-    Button grid8button("8 x 8", Vector2f(175, 50), 24, Color(205, 52, 6), Color::White);
-    Button gdisplaybutton("", Vector2f(400, 80), 30, Color(3, 85, 97), Color::White);
+    Button backbutton(window, "BACK", Vector2f(12, 7), 30, defaultButtonColor, Color::White); // Creating an object of the Button class named "button" and specifying its properties
+    Button nextbutton(window, "NEXT", Vector2f(12, 7), 30, defaultButtonColor, Color::White);
+    Button grid4button(window, "4 x 4", Vector2f(12, 7), 30, Color(25, 105, 174), Color::White);
+    Button grid6button(window, "6 x 6", Vector2f(12, 7), 30, Color(113, 85, 156), Color::White);
+    Button grid8button(window, "8 x 8", Vector2f(12, 7), 30, Color(205, 52, 6), Color::White);
+    Button gdisplaybutton(window, "", Vector2f(22, 16), 45, Color(3, 85, 97), Color::White);
 
-    Button multiples[4] = { Button("2", Vector2f(120, 50), 24, defaultButtonColor, Color::White),
-                        Button("3", Vector2f(120, 50), 24, defaultButtonColor, Color::White),
-                        Button("6", Vector2f(120, 50), 24, defaultButtonColor, Color::White),
-                        Button("7", Vector2f(120, 50), 24, defaultButtonColor, Color::White) };
+    Button multiples[4] = { Button(window,"2", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
+                            Button(window,"3", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
+                            Button(window,"6", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
+                            Button(window,"7", Vector2f(9, 7), 30, defaultButtonColor, Color::White) };
 
     // To display bg image
-    Picture background("4096 bg.png");
+    Picture background("4096 bg(light).png");
 
-    background.SetTexture("4096 bg.png");
+    background.SetTexture("4096 bg(light).png");
     background.setScale(Vector2f(window.getSize().x, window.getSize().y));
-    background.setPosition(Vector2f(0, 0));
+    background.setPosition(window, Vector2f(0, 0));
 
     Text inputText;
 
-    RectangleShape textBoxBackground;
+    Button textBoxBackground(window, "inputText", Vector2f(46, 8), 30, Color(0, 0, 0, 50), Color::Black);
 
     Font font;                      // Making an object of the Font class called "font"
     font.loadFromFile("Baloo.ttf"); // Loading the font for the button
@@ -188,6 +192,7 @@ void mainMenu(RenderWindow& window) {
     grid6button.setFont(font);
     grid8button.setFont(font);
     gdisplaybutton.setFont(font);
+    textBoxBackground.setFont(font);
 
     for (int i = 0; i < 4; i++) {
         multiples[i].setFont(font);
@@ -195,41 +200,41 @@ void mainMenu(RenderWindow& window) {
 
     inputText.setFont(font);
 
-    backbutton.setPosition(Vector2f(20, 520)); // Setting button position
-    nextbutton.setPosition(Vector2f(1040, 520));
-    grid4button.setPosition(Vector2f(350, 420));
-    grid6button.setPosition(Vector2f(560, 420));
-    grid8button.setPosition(Vector2f(770, 420));
-    gdisplaybutton.setPosition(Vector2f(450, 318));
+    backbutton.setPosition(window, Vector2f(19, 75)); // Setting button position
+    nextbutton.setPosition(window, Vector2f(80, 75));
+    grid4button.setPosition(window, Vector2f(37, 65));
+    grid6button.setPosition(window, Vector2f(50, 65));
+    grid8button.setPosition(window, Vector2f(63, 65));
+    gdisplaybutton.setPosition(window, Vector2f(50, 50));
+    textBoxBackground.setPosition(window, Vector2f(49.5, 26));
 
     for (int i = 0; i < 4; i++) {
-        multiples[i].setPosition(Vector2f(370 + 140 * i, 250));
+        multiples[i].setPosition(window, Vector2f(31.5 + 12 * i, 35));
     }
 
-    textBoxBackground.setPosition(350.f, 182.f);
-    inputText.setPosition(356.f, 196.f);
+
+    inputText.setPosition(510.f, 240.f);
 
     // To make a label above the text box
-    Text Name("Name:", font, 17);
+    Text Name("Name:", font, 35);
     Name.setFillColor(Color(0, 0, 0));
-    Name.setPosition(350.f, 155.f);
-
+    Name.setPosition(510.f, 190.f);
     string name;
     int multi = 0;
     int grid = 0;
 
-    inputText.setCharacterSize(25);
+    inputText.setCharacterSize(35);
     inputText.setFillColor(Color::Black);
 
-    textBoxBackground.setSize(Vector2f(590.f, 50.f));
-    textBoxBackground.setFillColor(Color(0, 0, 0, 20));
-    textBoxBackground.setOutlineThickness(2);              // Initially set outline thickness to make it visible when selected
-    textBoxBackground.setOutlineColor(Color::Transparent); // Set to transparent initially
+    // textBoxBackground.setSize(Vector2f(900.f, 80.f));
+    // textBoxBackground.setFillColor(Color(0, 0, 0, 50));
+    // textBoxBackground.setOutlineThickness(2);              // Initially set outline thickness to make it visible when selected
+    // textBoxBackground.setOutlineColor(Color::Transparent); // Set to transparent initially
 
     // Cursor for the text box
     RectangleShape cursor(Vector2f(2.f, inputText.getCharacterSize()));
     cursor.setFillColor(Color::Black);
-    cursor.setPosition(inputText.getPosition().x + 1.f, inputText.getPosition().y + 1.f); // Adjust the position to be inside the textbox
+    cursor.setPosition(inputText.getPosition().x + 2.f, inputText.getPosition().y + 2.f); // Adjust the position to be inside the textbox
     bool isTextBoxSelected = false;
     Clock cursorTimer;
 
@@ -323,14 +328,14 @@ void mainMenu(RenderWindow& window) {
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
                     // Check if the text box was clicked
-                    if (textBoxBackground.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-                        isTextBoxSelected = true;
-                        textBoxBackground.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
-                    }
-                    else {
-                        isTextBoxSelected = false;
-                        textBoxBackground.setOutlineColor(Color::Transparent); // Default outline color
-                    }
+                    // if (textBoxBackground.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    //     isTextBoxSelected = true;
+                    //     textBoxBackground.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
+                    // }
+                    // else {
+                    //     isTextBoxSelected = false;
+                    //     textBoxBackground.setOutlineColor(Color::Transparent); // Default outline color
+                    // }
                 }
             }
             else if (event.type == Event::TextEntered) {
@@ -350,8 +355,8 @@ void mainMenu(RenderWindow& window) {
 
                 // Update cursor position based on cursorIndex
                 string textBeforeCursor = name.substr(0, cursorIndex);
-                Text tempText(textBeforeCursor, font, 25);
-                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 1.f, inputText.getPosition().y + 1.f);
+                Text tempText(textBeforeCursor, font, 35);
+                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 2.f, inputText.getPosition().y + 2.f);
             }
             else if (event.type == Event::KeyPressed) {
                 if (event.key.code == Keyboard::Left && cursorIndex > 0) {
@@ -363,8 +368,8 @@ void mainMenu(RenderWindow& window) {
 
                 // Update cursor position based on cursorIndex
                 string textBeforeCursor = name.substr(0, cursorIndex);
-                Text tempText(textBeforeCursor, font, 25);
-                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 1.f, inputText.getPosition().y + 1.f);
+                Text tempText(textBeforeCursor, font, 35);
+                cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 2.f, inputText.getPosition().y + 2.f);
             }
         }
 
@@ -379,11 +384,13 @@ void mainMenu(RenderWindow& window) {
             cursor.setFillColor(Color::Transparent);
         }
 
+        window.clear();
+
         // Picture:
         background.drawTo(window);
 
         // Textbox:
-        window.draw(textBoxBackground);
+        //window.draw(textBoxBackground);
         window.draw(inputText);
         window.draw(Name);
 
@@ -399,6 +406,7 @@ void mainMenu(RenderWindow& window) {
         grid6button.drawTo(window);
         grid8button.drawTo(window);
         gdisplaybutton.drawTo(window);
+        textBoxBackground.drawTo(window);
 
         for (int i = 0; i < 4; i++) {
             multiples[i].drawTo(window);
@@ -407,26 +415,31 @@ void mainMenu(RenderWindow& window) {
         window.display();
     }
 }
+
 void firstScreen(RenderWindow& window) {
 
     window.setFramerateLimit(60);
 
-    Button playbutton("PLAY", Vector2f(300, 80), 24, Color(6, 46, 81), Color::White);
-    Button lbbutton("LEADERBOARD", Vector2f(300, 60), 24, Color(6, 46, 81), Color::White);
+    Button playbutton(window, "PLAY", Vector2f(22, 12), 24, Color(6, 46, 81), Color::White);
+    Button lbbutton(window, "LEADERBOARD", Vector2f(22, 7), 24, Color(6, 46, 81), Color::White);
+    Button settingbutton(window, "SETTINGS", Vector2f(22, 7), 24, Color(6, 46, 81), Color::White);
 
     //To display bg image
-    Picture background("4096 bg.png");
+    Picture background("4096 bg(light).png");
 
     background.setScale(Vector2f(window.getSize().x, window.getSize().y));
-    background.setPosition(Vector2f(0, 0));
+    background.setPosition(window, Vector2f(0, 0));
 
     Font font;
     font.loadFromFile("Baloo.ttf");
     playbutton.setFont(font);
     lbbutton.setFont(font);
+    settingbutton.setFont(font);
 
-    playbutton.setPosition(Vector2f(500, 218));
-    lbbutton.setPosition(Vector2f(500, 308));
+    playbutton.setPosition(window, Vector2f(50, 42));
+    lbbutton.setPosition(window, Vector2f(50, 53));
+    settingbutton.setPosition(window, Vector2f(50, 61.5));
+
     bool isMusicPlaying = true;
     bool lightTheme = true;
     bool sfx = true;
@@ -456,7 +469,7 @@ void firstScreen(RenderWindow& window) {
         bgmusic.play();
 
     if (!lightTheme)
-        background.SetTexture("4096 bg (dark).png");
+        background.SetTexture("4096 bg(dark).png");
 
     // Open the next window
     while (window.isOpen()) {
@@ -474,6 +487,11 @@ void firstScreen(RenderWindow& window) {
         else
             lbbutton.setBackColor(Color(6, 46, 81));
 
+        if (settingbutton.coursorInbound(window))
+            settingbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
+        else
+            settingbutton.setBackColor(Color(6, 46, 81));
+
         while (window.pollEvent(Event)) {
             // Handle events for the next window
             if (Event.type == Event::Closed)
@@ -482,18 +500,29 @@ void firstScreen(RenderWindow& window) {
             // (e.g., window closing event, user interactions, etc.)
             if (Event.type == Event::MouseButtonPressed) {
                 if (Event.mouseButton.button == Mouse::Left) {
-                    if (playbutton.coursorInbound(window))
+                    if (playbutton.coursorInbound(window)) {
                         mainMenu(window);
-
-                    else if (lbbutton.coursorInbound(window))
+                    }
+                    else if (lbbutton.coursorInbound(window)) {
                         beforeLeaderboard(window);
+                    }
+
+                    else if (settingbutton.coursorInbound(window)) {
+                        beforeLeaderboard(window);
+                    }
                 }
             }
         }
+
+        window.clear();
+
         background.drawTo(window);
+
         playbutton.drawTo(window);
         lbbutton.drawTo(window);
+        settingbutton.drawTo(window);
         window.display();
     }
 }
+
 
