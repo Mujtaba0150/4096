@@ -139,12 +139,12 @@ class Picture {
         texture.loadFromFile(filePath);
         sprite.setTexture(texture);
     }
-    void setScale(Vector2f scale) {
+    void setScale(RenderWindow& window, Vector2f scale) {
         scale.x = std::max(scale.x, 0.1f); // Minimum scale to avoid division by zero
         scale.y = std::max(scale.y, 0.1f);
 
         // Calculate aspect ratio
-        Vector2f Aspectratio(scale.x / texture.getSize().x, scale.y / texture.getSize().y);
+        Vector2f Aspectratio((window.getSize().x / 50) * (scale.x / texture.getSize().x), (window.getSize().y / 50) * (scale.y / texture.getSize().y));
 
         // Set scale of sprite
         sprite.setScale(Aspectratio);

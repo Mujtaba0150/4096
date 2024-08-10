@@ -21,20 +21,20 @@ int main() {
   htp.setFont(font);
   instructions.setFont(font);
 
-  htp.setPosition(window, Vector2f(35, 33));
-  instructions.setPosition(window, Vector2f(35, 56));
+  htp.setPosition(window, Vector2f(36, 33));
+  instructions.setPosition(window, Vector2f(36, 56));
 
   Picture background("4096 bg(light).png");
 
   background.SetTexture("4096 bg(light).png");
-  background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+  background.setScale(window, Vector2f(51, 50));
   background.setPosition(window, Vector2f(0, 0));
 
   Picture disp("grid4_preview.png");
 
   disp.SetTexture("grid4_preview.png");
-  disp.setScale(Vector2f(500, 500));
-  disp.setPosition(window, Vector2f(50, 25));
+  disp.setScale(window, Vector2f(14, 25));
+  disp.setPosition(window, Vector2f(50, 24));
 
 
   // Main loop that continues until the window is closed

@@ -548,7 +548,7 @@ struct gameboard {
 
         // background.SetTexture("4096 bg(light).png");
 
-        background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+        background.setScale(window, Vector2f(51, 50));
         background.setPosition(window, Vector2f(0, 0));
 
         std::vector<std::vector<Button>> buttons;

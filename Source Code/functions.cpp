@@ -28,7 +28,7 @@ void beforeLeaderboard(RenderWindow& window) {
     Picture background("4096 bg(light).png");
 
     // background.SetTexture("4096 bg(light).png");
-    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
     // Making an object of the Font class called "font"
@@ -50,13 +50,13 @@ void beforeLeaderboard(RenderWindow& window) {
     back.setPosition(window, Vector2f(50, 67));
 
     //Picture previews....
-    preview4x4.setPosition(window, Vector2f(28, 20));
-    preview6x6.setPosition(window, Vector2f(43.5, 20));
-    preview8x8.setPosition(window, Vector2f(59, 20));
+    preview4x4.setPosition(window, Vector2f(27.5, 20));
+    preview6x6.setPosition(window, Vector2f(43, 20));
+    preview8x8.setPosition(window, Vector2f(58.5, 20));
     // Setting scale.......
-    preview4x4.setScale(Vector2f(250, 250));
-    preview6x6.setScale(Vector2f(250, 250));
-    preview8x8.setScale(Vector2f(250, 250));
+    preview4x4.setScale(window, Vector2f(7, 13));
+    preview6x6.setScale(window, Vector2f(7, 13));
+    preview8x8.setScale(window, Vector2f(7, 13));
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
@@ -148,8 +148,12 @@ void multiplierButtonColor(Button* button, int multiplier, string gridButtonText
         button[1].setBackColor(defaultButtonColor);
         button[2].setBackColor(defaultButtonColor);
     }
+    else if (multiplier == 0) {
+        for (int i = 0; i < 4; i++) {
+            button[i].setBackColor(defaultButtonColor);
+        }
+    }
 }
-
 void mainMenu(RenderWindow& window) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
@@ -166,7 +170,7 @@ void mainMenu(RenderWindow& window) {
     Button grid4button(window, "4 x 4", Vector2f(12, 7), 30, Color(25, 105, 174), Color::White);
     Button grid6button(window, "6 x 6", Vector2f(12, 7), 30, Color(113, 85, 156), Color::White);
     Button grid8button(window, "8 x 8", Vector2f(12, 7), 30, Color(205, 52, 6), Color::White);
-    Button gdisplaybutton(window, "", Vector2f(22, 16), 45, Color(3, 85, 97), Color::White);
+    Button gdisplaybutton(window, "", Vector2f(25, 16), 45, Color(3, 85, 97), Color::White);
 
     Button multiples[4] = { Button(window,"2", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
                             Button(window,"3", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
@@ -177,7 +181,7 @@ void mainMenu(RenderWindow& window) {
     Picture background("4096 bg(light).png");
 
     background.SetTexture("4096 bg(light).png");
-    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
     Text inputText;
@@ -232,7 +236,7 @@ void mainMenu(RenderWindow& window) {
 
     textBoxBackgroundOld.setSize(Vector2f(900.f, 80.f));
     textBoxBackgroundOld.setFillColor(Color(0, 0, 0, 50));
-    textBoxBackgroundOld.setOutlineThickness(2);              // Initially set outline thickness to make it visible when selected
+    textBoxBackgroundOld.setOutlineThickness(3);              // Initially set outline thickness to make it visible when selected
     textBoxBackgroundOld.setOutlineColor(Color::Transparent); // Set to transparent initially
 
     // Cursor for the text box
@@ -431,7 +435,7 @@ void firstScreen(RenderWindow& window) {
     //To display bg image
     Picture background("4096 bg(light).png");
 
-    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
     Font font;
