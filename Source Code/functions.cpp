@@ -50,9 +50,9 @@ void beforeLeaderboard(RenderWindow& window) {
     back.setPosition(window, Vector2f(50, 67));
 
     //Picture previews....
-    preview4x4.setPosition(window, Vector2f(30, 20));
-    preview6x6.setPosition(window, Vector2f(50, 20));
-    preview8x8.setPosition(window, Vector2f(57, 20));
+    preview4x4.setPosition(window, Vector2f(28, 20));
+    preview6x6.setPosition(window, Vector2f(43.5, 20));
+    preview8x8.setPosition(window, Vector2f(59, 20));
     // Setting scale.......
     preview4x4.setScale(Vector2f(250, 250));
     preview6x6.setScale(Vector2f(250, 250));
@@ -182,7 +182,9 @@ void mainMenu(RenderWindow& window) {
 
     Text inputText;
 
-    Button textBoxBackground(window, "inputText", Vector2f(46, 8), 30, Color(0, 0, 0, 50), Color::Black);
+    Button textBoxBackground(window, "", Vector2f(46, 8), 30, Color(0, 0, 0, 50), Color::Black);
+
+    RectangleShape textBoxBackgroundOld;
 
     Font font;                      // Making an object of the Font class called "font"
     font.loadFromFile("Baloo.ttf"); // Loading the font for the button
@@ -208,6 +210,8 @@ void mainMenu(RenderWindow& window) {
     gdisplaybutton.setPosition(window, Vector2f(50, 50));
     textBoxBackground.setPosition(window, Vector2f(49.5, 26));
 
+    textBoxBackgroundOld.setPosition(Vector2f(500, 241));
+
     for (int i = 0; i < 4; i++) {
         multiples[i].setPosition(window, Vector2f(31.5 + 12 * i, 35));
     }
@@ -226,10 +230,10 @@ void mainMenu(RenderWindow& window) {
     inputText.setCharacterSize(35);
     inputText.setFillColor(Color::Black);
 
-    // textBoxBackground.setSize(Vector2f(900.f, 80.f));
-    // textBoxBackground.setFillColor(Color(0, 0, 0, 50));
-    // textBoxBackground.setOutlineThickness(2);              // Initially set outline thickness to make it visible when selected
-    // textBoxBackground.setOutlineColor(Color::Transparent); // Set to transparent initially
+    textBoxBackgroundOld.setSize(Vector2f(900.f, 80.f));
+    textBoxBackgroundOld.setFillColor(Color(0, 0, 0, 50));
+    textBoxBackgroundOld.setOutlineThickness(2);              // Initially set outline thickness to make it visible when selected
+    textBoxBackgroundOld.setOutlineColor(Color::Transparent); // Set to transparent initially
 
     // Cursor for the text box
     RectangleShape cursor(Vector2f(2.f, inputText.getCharacterSize()));
@@ -328,14 +332,14 @@ void mainMenu(RenderWindow& window) {
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
                     // Check if the text box was clicked
-                    // if (textBoxBackground.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-                    //     isTextBoxSelected = true;
-                    //     textBoxBackground.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
-                    // }
-                    // else {
-                    //     isTextBoxSelected = false;
-                    //     textBoxBackground.setOutlineColor(Color::Transparent); // Default outline color
-                    // }
+                    if (textBoxBackgroundOld.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                        isTextBoxSelected = true;
+                        textBoxBackgroundOld.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
+                    }
+                    else {
+                        isTextBoxSelected = false;
+                        textBoxBackgroundOld.setOutlineColor(Color::Transparent); // Default outline color
+                    }
                 }
             }
             else if (event.type == Event::TextEntered) {
@@ -390,7 +394,7 @@ void mainMenu(RenderWindow& window) {
         background.drawTo(window);
 
         // Textbox:
-        //window.draw(textBoxBackground);
+        window.draw(textBoxBackgroundOld);
         window.draw(inputText);
         window.draw(Name);
 
