@@ -417,10 +417,10 @@ struct gameboard {
             return Vector2f(8.5, 13.2);
 
         else if (size == 6)
-            return Vector2f(5.5, 8.2);
+            return Vector2f(5.5, 8.7);
 
         else if (size == 8)
-            return Vector2f(4, 6.2);
+            return Vector2f(4, 6.5);
     }
 
     Vector2f backgroundSize(int size) {
@@ -431,7 +431,7 @@ struct gameboard {
             return Vector2f(37, 58);
 
         else if (size == 8)
-            return Vector2f(37, 58);
+            return Vector2f(36.4, 59);
     }
 
     // Vector2f backgroundPosition(int size) {
@@ -539,7 +539,7 @@ struct gameboard {
 
         int r = rand() % size;
         int c = rand() % size;
-
+        bool firstValue = true;
         bool isGameover = false;
         int scoreValue = 0;
 
@@ -604,54 +604,77 @@ struct gameboard {
         score.setPosition(window, Vector2f(52, 15));
         best.setPosition(window, Vector2f(62, 15));
 
-        int x = 0, y = 0;
-        //! Need to make a function, "but will not"~Mujtaba
+        float x = 0, y = 0;
+        //! Need to make a function
         for (float i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                buttons[i][j].setPosition(window, Vector2f(x, y));
-
                 switch (size) {
 
                     case 4:
-                        if (j == 0) {
+                        if (firstValue) {
                             x = 36.5, y = 37;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
                         else if (j == 3) {
+                            x += 9;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                             x = 36.5, y += 14;
                         }
-                        else
+                        else if (j != 0) {
                             x += 9;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     case 6:
-                        if (j == 0) {
-                            x = 35, y = 36;
+                        if (firstValue) {
+                            x = 35, y = 34.4;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
                         else if (j == 5) {
-                            x = 35, y += 9;
-                        }
-                        else
                             x += 6;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                            x = 35, y += 9.5;
+                        }
+                        else if (j != 0) {
+                            x += 6;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     case 8:
-                        if (j == 0) {
-                            x = 34, y = 35;
+                        if (firstValue) {
+                            x = 34.40, y = 32.50;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
                         else if (j == 7) {
-                            x = 34, y += 7;
+                            x += 4.45;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                            x = 34.40, y += 7.30;
                         }
-                        else
-                            x += 5;
+                        else if (j != 0) {
+                            x += 4.45;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     default:
                         break;
                 }
             }
-        }
-
-        while (window.isOpen()) {
+        }        while (window.isOpen()) {
             Event event; // Making an object "event" of the Event class
 
             while (window.pollEvent(event)) // Loop to manage when something changes in the console
