@@ -263,7 +263,7 @@ void mainMenu(RenderWindow& window) {
                 if (event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
 
                     if (backbutton.coursorInbound(window)) { // Using self defined function to check if the button was clicked
-                        backbutton.setBackColor(backbutton.coursorInbound(window) ? selectedButtonColor : defaultButtonColor);
+                        backbutton.setBackColor(defaultButtonColor);
                         return;
                     }
 
@@ -293,8 +293,10 @@ void mainMenu(RenderWindow& window) {
                         grid = 4;
                         // multi button colors
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
-                        nextbutton.setBackColor(nextbutton.coursorInbound(window) ? Color(45, 84, 109) : Color(77, 143, 186));
-                        backbutton.setBackColor(backbutton.coursorInbound(window) ? Color(45, 84, 109) : Color(77, 143, 186));
+                        nextbutton.setBackColor(Color(77, 143, 186));
+                        backbutton.setBackColor(Color(77, 143, 186));
+                        defaultButtonColor = Color(77, 143, 186);
+                        selectedButtonColor = Color(45, 84, 109);
                     }
                     else if (grid6button.coursorInbound(window)) {
 
@@ -304,8 +306,10 @@ void mainMenu(RenderWindow& window) {
                         grid = 6;
                         // multi button colors
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
-                        nextbutton.setBackColor(nextbutton.coursorInbound(window) ? Color(78, 64, 111) : Color(132, 108, 188));
-                        backbutton.setBackColor(backbutton.coursorInbound(window) ? Color(78, 64, 111) : Color(132, 108, 188));
+                        nextbutton.setBackColor(Color(132, 108, 188));
+                        backbutton.setBackColor(Color(132, 108, 188));
+                        defaultButtonColor = Color(132, 108, 188);
+                        selectedButtonColor = Color(78, 64, 111);
                     }
                     else if (grid8button.coursorInbound(window)) {
 
@@ -315,8 +319,10 @@ void mainMenu(RenderWindow& window) {
                         grid = 8;
                         // multi button colors
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
-                        nextbutton.setBackColor(nextbutton.coursorInbound(window) ? Color(159, 31, 18) : Color(236, 46, 27));
-                        backbutton.setBackColor(backbutton.coursorInbound(window) ? Color(159, 31, 18) : Color(236, 46, 27));
+                        nextbutton.setBackColor(Color(236, 46, 27));
+                        backbutton.setBackColor(Color(236, 46, 27));
+                        defaultButtonColor = Color(236, 46, 27);
+                        selectedButtonColor = Color(159, 31, 18);
                     }
                     else if (multiples[0].coursorInbound(window)) {
 
