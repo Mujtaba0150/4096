@@ -135,7 +135,6 @@ class Picture {
         sprite.setTexture(texture);
     }
     void SetTexture(string filePath) {
-        this->filePath = filePath;
         texture.loadFromFile(filePath);
         sprite.setTexture(texture);
     }
@@ -151,15 +150,12 @@ class Picture {
     }
     void setPosition(RenderWindow& window, Vector2f pos) {
         Vector2f windowSize = Vector2f(window.getSize());
-        Vector2u textureSize = texture.getSize();
         pos.x = pos.x * (windowSize.x / 100.0f);
         pos.y = pos.y * (windowSize.y / 100.0f);
 
         sprite.setPosition(pos);
     }
     void drawTo(RenderWindow& window) {
-        texture.loadFromFile(filePath);
-        sprite.setTexture(texture);
         window.draw(sprite);
     }
     Vector2f getPosition() {
@@ -180,12 +176,8 @@ class Picture {
     void rotate(float angle) {
         sprite.rotate(angle);
     }
-    string getFilePath() {
-        return filePath;
-    }
 
     private:
-    string filePath;
     Texture texture;
     Sprite sprite;
 };
