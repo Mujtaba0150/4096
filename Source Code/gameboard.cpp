@@ -414,25 +414,36 @@ struct gameboard {
 
     Vector2f tileSize(int size) {
         if (size == 4)
-            return Vector2f(90, 100);
+            return Vector2f(8.5, 13.2);
 
         else if (size == 6)
-            return Vector2f(60, 70);
+            return Vector2f(5.5, 8.2);
 
         else if (size == 8)
-            return Vector2f(45, 55);
+            return Vector2f(4, 6.2);
     }
 
     Vector2f backgroundSize(int size) {
         if (size == 4)
-            return Vector2f(395, 440);
+            return Vector2f(37, 58);
 
         else if (size == 6)
-            return Vector2f(395, 465);
+            return Vector2f(37, 58);
 
         else if (size == 8)
-            return Vector2f(405, 512);
+            return Vector2f(37, 58);
     }
+
+    // Vector2f backgroundPosition(int size) {
+    //     if (size == 4)
+    //         return Vector2f(50, 55);
+
+    //     else if (size == 6)
+    //         return Vector2f(50, 58);
+
+    //     else if (size == 8)
+    //         return Vector2f(50, 59);
+    // }
 
     int gameOver(RenderWindow& window, const std::string& username, int scoreValue, int size, int multi) {
         // Save high score
@@ -465,9 +476,9 @@ struct gameboard {
 
         gameOverBackground.setPosition(0, 0);
 
-        Button gameOver(window, "GAME OVER", Vector2f(400, 150), 40, buttonColor, Color::White, 10, 5);
-        Button playAgain(window, "Play Again", Vector2f(175, 50), 24, buttonColor, Color::White);
-        Button mainMenu(window, "Main Menu", Vector2f(175, 50), 24, buttonColor, Color::White);
+        Button gameOver(window, "GAME OVER", Vector2f(21, 15), 40, buttonColor, Color::White, 10, 5);
+        Button playAgain(window, "Play Again", Vector2f(12, 7), 24, buttonColor, Color::White);
+        Button mainMenu(window, "Main Menu", Vector2f(12, 7), 24, buttonColor, Color::White);
 
 
         Font font;
@@ -476,9 +487,9 @@ struct gameboard {
         playAgain.setFont(font);
         mainMenu.setFont(font);
 
-        gameOver.setPosition(window, Vector2f(750, 300));
-        playAgain.setPosition(window, Vector2f(770, 520));
-        mainMenu.setPosition(window, Vector2f(960, 520));
+        gameOver.setPosition(window, Vector2f(50, 40));
+        playAgain.setPosition(window, Vector2f(43, 55));
+        mainMenu.setPosition(window, Vector2f(57, 55));
 
         // Display the game over screen
         while (true) {
@@ -537,16 +548,16 @@ struct gameboard {
 
 
         //Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-        Button name(window, "4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
+        Button name(window, "4096", Vector2f(15, 14), 50, Color::Transparent, Color::Black, 6);
         Button boardbackground(window, " ", backgroundSize(size), 90, Color(8, 24, 56), Color::Black);
-        Button back(window, "Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-        Button newgame(window, "New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-        Button score(window, to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-        Button best(window, highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+        Button back(window, "Main Menu", Vector2f(9, 5), 24, Color(160, 82, 45), Color::White);
+        Button newgame(window, "New Game", Vector2f(9, 5), 24, Color(160, 82, 45), Color::White);
+        Button score(window, to_string(scoreValue), Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
+        Button best(window, highscore, Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
 
         Picture background("4096 bg(light).png");
 
-        // background.SetTexture("4096 bg(light).png");
+        background.SetTexture("4096 bg(light).png");
 
         background.setScale(window, Vector2f(51, 50));
         background.setPosition(window, Vector2f(0, 0));
@@ -586,42 +597,52 @@ struct gameboard {
 
         // Assigning the positions...
         //gameOver.setPosition(Vector2f(200, 200));
-        boardbackground.setPosition(window, Vector2f(370, 200));
-        back.setPosition(window, Vector2f(560, 150));
-        name.setPosition(window, Vector2f(370, 70));
-        newgame.setPosition(window, Vector2f(666, 150));
-        score.setPosition(window, Vector2f(566, 50));
-        best.setPosition(window, Vector2f(672, 50));
+        boardbackground.setPosition(window, Vector2f(50, 58));
+        back.setPosition(window, Vector2f(52, 25));
+        name.setPosition(window, Vector2f(39, 20));
+        newgame.setPosition(window, Vector2f(62, 25));
+        score.setPosition(window, Vector2f(52, 15));
+        best.setPosition(window, Vector2f(62, 15));
 
-        //! Need to make a function
-        for (int i = 0, x = 378, y = 210; i < size; ++i) {
+        int x = 0, y = 0;
+        //! Need to make a function, "but will not"~Mujtaba
+        for (float i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 buttons[i][j].setPosition(window, Vector2f(x, y));
 
                 switch (size) {
 
                     case 4:
-                        if (j == 3) {
-                            x = 378, y += 106;
+                        if (j == 0) {
+                            x = 36.5, y = 37;
+                        }
+                        else if (j == 3) {
+                            x = 36.5, y += 14;
                         }
                         else
-                            x += 96;
+                            x += 9;
                         break;
 
                     case 6:
-                        if (j == 5) {
-                            x = 378, y += 75;
+                        if (j == 0) {
+                            x = 35, y = 36;
+                        }
+                        else if (j == 5) {
+                            x = 35, y += 9;
                         }
                         else
-                            x += 64;
+                            x += 6;
                         break;
 
                     case 8:
-                        if (j == 7) {
-                            x = 378, y += 62;
+                        if (j == 0) {
+                            x = 34, y = 35;
+                        }
+                        else if (j == 7) {
+                            x = 34, y += 7;
                         }
                         else
-                            x += 49;
+                            x += 5;
                         break;
 
                     default:
@@ -693,6 +714,7 @@ struct gameboard {
                         }
                     }
                 }
+                window.clear();
                 background.drawTo(window);
 
                 name.drawTo(window);
@@ -704,7 +726,7 @@ struct gameboard {
                     }
                 }
 
-                window.clear();
+                //window.clear();
                 newgame.drawTo(window);
                 score.drawTo(window);
                 best.drawTo(window);

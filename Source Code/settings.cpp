@@ -86,14 +86,14 @@ int main() {
 
     Picture background("4096 bg(light).png");
 
-    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
+    background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
-    soundIcon.setPosition(window, Vector2f(sound.getPosition().x + 5.f, sound.getPosition().y + 5.f));
-    soundIcon.setScale(Vector2f(sound.getSize().x - 12.f, sound.getSize().y - 12.f));
+    soundIcon.setPosition(window, Vector2f(57.5, 46.5));
+    soundIcon.setScale(window, Vector2f(1, 2));
 
-    themeTexture.setPosition(window, Vector2f(themeButton.getPosition().x + 5.f, themeButton.getPosition().y + 5.f));
-    themeTexture.setScale(Vector2f(themeButton.getSize().x - 12.f, themeButton.getSize().y - 12.f));
+    themeTexture.setPosition(window, Vector2f(40.5, 52.8));
+    themeTexture.setScale(window, Vector2f(1, 2));
 
     Music bgmusic;
 
@@ -152,13 +152,13 @@ int main() {
                     else if (themeButton.coursorInbound(window)) {
                         if (lightTheme) {
                             themeTexture.SetTexture("sun.png");
-                            themeTexture.setScale(Vector2f(themeButton.getSize().x - 12.f, themeButton.getSize().y - 12.f));
+                            themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 2, "0");
                             background.SetTexture("4096 bg(light).png");
                         }
                         else {
                             themeTexture.SetTexture("moon.png");
-                            themeTexture.setScale(Vector2f(themeButton.getSize().x - 12.f, themeButton.getSize().y - 12.f));
+                            themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 2, "1");
                             background.SetTexture("4096 bg(dark).png");
                         }
