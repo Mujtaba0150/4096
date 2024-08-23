@@ -269,10 +269,13 @@ void mainMenu(RenderWindow& window) {
 
                     else if (nextbutton.coursorInbound(window)) {
 
-                        nextbutton.setBackColor(nextbutton.coursorInbound(window) ? selectedButtonColor : defaultButtonColor);
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !name.empty()) {
+                            nextbutton.setBackColor(selectedButtonColor);
+                            nextbutton.drawTo(window);
+                            window.display();
                             newGame = true;
+                            nextbutton.setBackColor(defaultButtonColor);
                             while (newGame) {
                                 gameboard* game = new gameboard(grid, highscoreFile);
                                 newGame = game->board(window, name, multi);
