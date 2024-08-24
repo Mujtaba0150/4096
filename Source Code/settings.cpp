@@ -54,42 +54,46 @@ int main() {
     ifstream file("settings.dat");
     // Load textures for icons
     Picture soundIcon("s.png");
-    Picture themeTexture("moon.png");
+    Picture themeTexture("sun.png");
 
-
-    Button settings("Settings", Vector2f(400, 150), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
-    Button sound("", Vector2f(50, 50), 30, Color::Transparent, Color::White);
-    Button themeButton("", Vector2f(50, 50), 30, Color::Transparent, Color::White);
-    Button purge("Purge All Highscores", Vector2f(300, 50), 30, Color(212, 0, 0), Color::White);
-    Button sfxbutton("Sound Effects", Vector2f(300, 50), 30, Color(6, 46, 81), Color::White);
-    Button backbutton("Back", Vector2f(365, 50), 30, Color(6, 46, 81), Color::White);
+    Button soundbg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button modebg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button settings(window, "Settings", Vector2f(21, 15), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
+    Button sound(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
+    Button themeButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
+    Button purge(window, "Purge All Highscores", Vector2f(16, 5), 30, Color(212, 0, 0), Color::White);
+    Button sfxbutton(window, "Sound Effects", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White);
+    Button backbutton(window, "Back", Vector2f(20, 5), 30, Color(6, 46, 81), Color::White);
 
     Font font;
     font.loadFromFile("Baloo.ttf");
     settings.setFont(font);
+    soundbg.setFont(font);
     sound.setFont(font);
     themeButton.setFont(font);
     purge.setFont(font);
     sfxbutton.setFont(font);
     backbutton.setFont(font);
 
-    settings.setPosition(Vector2f(755, 300));
-    sound.setPosition(Vector2f(1085, 500));
-    themeButton.setPosition(Vector2f(770, 570));
-    purge.setPosition(Vector2f(835, 570));
-    sfxbutton.setPosition(Vector2f(770, 500));
-    backbutton.setPosition(Vector2f(770, 640));
+    settings.setPosition(window, Vector2f(50, 35));
+    sound.setPosition(window, Vector2f(58.5, 48.5));
+    soundbg.setPosition(window, Vector2f(58.5, 48.5));
+    themeButton.setPosition(window, Vector2f(41.5, 54.8));
+    modebg.setPosition(window, Vector2f(41.5, 54.8));
+    purge.setPosition(window, Vector2f(52, 54.8));
+    sfxbutton.setPosition(window, Vector2f(48, 48.5));
+    backbutton.setPosition(window, Vector2f(50, 61.1));
 
-    Picture background("4096 bg(dark).png");
+    Picture background("4096 bg(light).png");
 
-    background.setScale(Vector2f(window.getSize().x, window.getSize().y));
-    background.setPosition(Vector2f(0, 0));
+    background.setScale(window, Vector2f(51, 50));
+    background.setPosition(window, Vector2f(0, 0));
 
-    soundIcon.setPosition(Vector2f(sound.getPosition().x + 5.f, sound.getPosition().y + 5.f));
-    soundIcon.setScale(Vector2f(sound.getSize().x - 10.f, sound.getSize().y - 10.f));
+    soundIcon.setPosition(window, Vector2f(57.5, 46.5));
+    soundIcon.setScale(window, Vector2f(1, 2));
 
-    themeTexture.setPosition(Vector2f(themeButton.getPosition().x + 5.f, themeButton.getPosition().y + 5.f));
-    themeTexture.setScale(Vector2f(themeButton.getSize().x - 10.f, themeButton.getSize().y - 10.f));
+    themeTexture.setPosition(window, Vector2f(40.5, 52.8));
+    themeTexture.setScale(window, Vector2f(1, 2));
 
     Music bgmusic;
 
@@ -97,16 +101,6 @@ int main() {
         cout << "Error loading music file" << endl;
         return 1;
     }
-
-    RectangleShape soundbg;
-    soundbg.setSize(Vector2f(50, 50));
-    soundbg.setFillColor(Color(6, 46, 81));
-    soundbg.setPosition(sound.getPosition());
-
-    RectangleShape modebg;
-    modebg.setSize(Vector2f(50, 50));
-    modebg.setFillColor(Color(6, 46, 81));
-    modebg.setPosition(themeButton.getPosition());
 
     bool isMusicPlaying;
     bool lightTheme;
@@ -126,15 +120,13 @@ int main() {
     if (!isMusicPlaying)
         soundIcon.SetTexture("mute.png");
 
-    if (lightTheme) {
-        themeTexture.SetTexture("sun.png");
-        themeTexture.setScale(Vector2f(themeButton.getSize().x - 10.f, themeButton.getSize().y - 10.f));
-        background.SetTexture("4096 bg.png");
-    }
+    if (!lightTheme)
+        themeTexture.SetTexture("moon.png");
+
     // Main loop that continues until the window is closed
     while (window.isOpen()) {
         // Create an event object to hold events
-        sf::Event event;
+        Event event;
 
         // Process all events
         while (window.pollEvent(event)) {
@@ -142,62 +134,38 @@ int main() {
             if (event.type == Event::Closed) { // If the close button is pressed
                 window.close(); // Close the window
             }
-            else if (event.type == sf::Event::MouseButtonPressed) {
+            else if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button == Mouse::Left) {
                     if (sound.coursorInbound(window)) {
                         if (isMusicPlaying) {
                             bgmusic.pause(); // Pause the music
                             soundIcon.SetTexture("mute.png");
-                            soundIcon.setScale(Vector2f(sound.getSize().x - 10.f, sound.getSize().y - 10.f));
                             replaceLine("settings.dat", 1, "0");
                         }
                         else {
                             bgmusic.play(); // Resume the music
                             soundIcon.SetTexture("s.png");
-                            soundIcon.setScale(Vector2f(sound.getSize().x - 10.f, sound.getSize().y - 10.f));
                             replaceLine("settings.dat", 1, "1");
                         }
                         isMusicPlaying = !isMusicPlaying; // Toggle the music status
                     }
                     else if (themeButton.coursorInbound(window)) {
                         if (lightTheme) {
-                            themeTexture.SetTexture("moon.png");
-                            themeTexture.setScale(Vector2f(themeButton.getSize().x - 10.f, themeButton.getSize().y - 10.f));
-                            replaceLine("settings.dat", 2, "1");
-                            background.SetTexture("4096 bg(dark).png");
+                            themeTexture.SetTexture("sun.png");
+                            themeTexture.setScale(window, Vector2f(1, 2));
+                            replaceLine("settings.dat", 2, "0");
+                            background.SetTexture("4096 bg(light).png");
                         }
                         else {
-
-                            themeTexture.SetTexture("sun.png");
-                            themeTexture.setScale(Vector2f(themeButton.getSize().x - 10.f, themeButton.getSize().y - 10.f));
-                            replaceLine("settings.dat", 2, "0");
-                            background.SetTexture("4096 bg.png");
+                            themeTexture.SetTexture("moon.png");
+                            themeTexture.setScale(window, Vector2f(1, 2));
+                            replaceLine("settings.dat", 2, "1");
+                            background.SetTexture("4096 bg(dark).png");
                         }
                         lightTheme = !lightTheme;
                     }
                     else if (purge.coursorInbound(window)) {
-                        ofstream outfile("leaderboard4x4.dat");
-                        if (outfile.is_open()) {
-                            outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl;
-                        }
-                        else
-                            cout << "Error opening file" << endl;
-                        outfile.close();
-
-                        outfile.open("leaderboard6x6.dat");
-                        if (outfile.is_open()) {
-                            outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl;
-                        }
-                        else
-                            cout << "Error opening file" << endl;
-                        outfile.close();
-
-                        outfile.open("leaderboard8x8.dat");
-                        if (outfile.is_open())
-                            outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl;
-                        else
-                            cout << "Error opening file" << endl;
-                        outfile.close();
+                        window.close();
                     }
                     else if (sfxbutton.coursorInbound(window)) {
                         if (sfx) {
@@ -220,10 +188,8 @@ int main() {
 
 
         background.drawTo(window);
-        window.draw(soundbg);
-        soundIcon.drawTo(window);
-        window.draw(modebg);
-        themeTexture.drawTo(window);
+        soundbg.drawTo(window);
+        modebg.drawTo(window);
 
         // Buttons:
         settings.drawTo(window);
@@ -232,6 +198,9 @@ int main() {
         purge.drawTo(window);
         sfxbutton.drawTo(window);
         backbutton.drawTo(window);
+
+        themeTexture.drawTo(window);
+        soundIcon.drawTo(window);
 
         // Display the contents of the window
         window.display();
