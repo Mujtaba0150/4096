@@ -20,11 +20,11 @@ struct gameboard {
     std::vector<std::vector<int>> arr;
     std::vector<std::vector<int>> prevArr;
 
-    void replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
+    bool replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
         std::ifstream inFile(filename);
         if (!inFile) {
             std::cerr << "Error opening input file: " << filename << std::endl;
-            exit(1);
+            return false;
         }
 
         std::vector<std::string> lines;
@@ -48,7 +48,7 @@ struct gameboard {
         std::ofstream outFile(filename);
         if (!outFile) {
             std::cerr << "Error opening output file: " << filename << std::endl;
-            exit(1);
+            return false;
         }
 
         for (const auto& l : lines) {
@@ -57,7 +57,7 @@ struct gameboard {
 
         outFile.close();
 
-        return;
+        return true;
     }
 
     void highScore(const std::string& fileName, const std::string& name, int score) {
@@ -414,25 +414,36 @@ struct gameboard {
 
     Vector2f tileSize(int size) {
         if (size == 4)
-            return Vector2f(90, 100);
+            return Vector2f(8.5, 13.2);
 
         else if (size == 6)
-            return Vector2f(60, 70);
+            return Vector2f(5.5, 8.7);
 
         else if (size == 8)
-            return Vector2f(45, 55);
+            return Vector2f(4, 6.5);
     }
 
     Vector2f backgroundSize(int size) {
         if (size == 4)
-            return Vector2f(395, 440);
+            return Vector2f(37, 58);
 
         else if (size == 6)
-            return Vector2f(395, 465);
+            return Vector2f(37, 58);
 
         else if (size == 8)
-            return Vector2f(405, 512);
+            return Vector2f(36.4, 59);
     }
+
+    // Vector2f backgroundPosition(int size) {
+    //     if (size == 4)
+    //         return Vector2f(50, 55);
+
+    //     else if (size == 6)
+    //         return Vector2f(50, 58);
+
+    //     else if (size == 8)
+    //         return Vector2f(50, 59);
+    // }
 
     int gameOver(RenderWindow& window, const std::string& username, int scoreValue, int size, int multi) {
         // Save high score
@@ -465,9 +476,9 @@ struct gameboard {
 
         gameOverBackground.setPosition(0, 0);
 
-        Button gameOver("GAME OVER", Vector2f(400, 150), 40, buttonColor, Color::White, 10, 5);
-        Button playAgain("Play Again", Vector2f(175, 50), 24, buttonColor, Color::White);
-        Button mainMenu("Main Menu", Vector2f(175, 50), 24, buttonColor, Color::White);
+        Button gameOver(window, "GAME OVER", Vector2f(21, 15), 40, buttonColor, Color::White, 10, 5);
+        Button playAgain(window, "Play Again", Vector2f(12, 7), 24, buttonColor, Color::White);
+        Button mainMenu(window, "Main Menu", Vector2f(12, 7), 24, buttonColor, Color::White);
 
 
         Font font;
@@ -476,9 +487,9 @@ struct gameboard {
         playAgain.setFont(font);
         mainMenu.setFont(font);
 
-        gameOver.setPosition(Vector2f(750, 300));
-        playAgain.setPosition(Vector2f(770, 520));
-        mainMenu.setPosition(Vector2f(960, 520));
+        gameOver.setPosition(window, Vector2f(50, 40));
+        playAgain.setPosition(window, Vector2f(43, 55));
+        mainMenu.setPosition(window, Vector2f(57, 55));
 
         // Display the game over screen
         while (true) {
@@ -528,7 +539,7 @@ struct gameboard {
 
         int r = rand() % size;
         int c = rand() % size;
-
+        bool firstValue = true;
         bool isGameover = false;
         int scoreValue = 0;
 
@@ -537,27 +548,28 @@ struct gameboard {
 
 
         //Button gameOver("GAME OVER", Vector2f(200, 200), 24, Color::Black, Color::White);
-        Button name("4096", Vector2f(150, 100), 50, Color::Transparent, Color::Black, 6);
-        Button boardbackground(" ", backgroundSize(size), 90, Color(8, 24, 56), Color::Black);
-        Button back("Main Menu", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-        Button newgame("New Game", Vector2f(100, 45), 15, Color(160, 82, 45), Color::White);
-        Button score(to_string(scoreValue), Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
-        Button best(highscore, Vector2f(100, 55), 14, Color(160, 82, 45), Color::White);
+        Button name(window, "4096", Vector2f(15, 14), 50, Color::Transparent, Color::Black, 6);
+        Button boardbackground(window, " ", backgroundSize(size), 90, Color(8, 24, 56), Color::Black);
+        Button back(window, "Main Menu", Vector2f(9, 5), 24, Color(160, 82, 45), Color::White);
+        Button newgame(window, "New Game", Vector2f(9, 5), 24, Color(160, 82, 45), Color::White);
+        Button score(window, to_string(scoreValue), Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
+        Button best(window, highscore, Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
 
-        Picture background("4096 bg.png");
+        Picture background("4096 bg(light).png");
 
-        background.SetTexture("4096 bg.png");
+        background.SetTexture("4096 bg(light).png");
 
-        background.setScale(Vector2f(window.getSize().x, window.getSize().y));
-        background.setPosition(Vector2f(0, 0));
+        background.setScale(window, Vector2f(51, 50));
+        background.setPosition(window, Vector2f(0, 0));
 
         std::vector<std::vector<Button>> buttons;
-        buttons.resize(size, std::vector<Button>(size, Button("", Vector2f(0, 0), 0, Color::Transparent, Color::Transparent)));
+        buttons.resize(size, std::vector<Button>(size, Button(window, "", Vector2f(0, 0), 0, Color::Transparent, Color::Transparent)));
 
         // Initialize each button in the vector
         for (int i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
                 buttons[i][j] = Button(
+                    window,
                     boardValues(arr[i][j]),
                     tileSize(size),
                     30,
@@ -585,51 +597,84 @@ struct gameboard {
 
         // Assigning the positions...
         //gameOver.setPosition(Vector2f(200, 200));
-        boardbackground.setPosition(Vector2f(370, 200));
-        back.setPosition(Vector2f(560, 150));
-        name.setPosition(Vector2f(370, 70));
-        newgame.setPosition(Vector2f(666, 150));
-        score.setPosition(Vector2f(566, 50));
-        best.setPosition(Vector2f(672, 50));
+        boardbackground.setPosition(window, Vector2f(50, 58));
+        back.setPosition(window, Vector2f(52, 25));
+        name.setPosition(window, Vector2f(39, 20));
+        newgame.setPosition(window, Vector2f(62, 25));
+        score.setPosition(window, Vector2f(52, 15));
+        best.setPosition(window, Vector2f(62, 15));
 
+        float x = 0, y = 0;
         //! Need to make a function
-        for (int i = 0, x = 378, y = 210; i < size; ++i) {
+        for (float i = 0; i < size; ++i) {
             for (int j = 0; j < size; ++j) {
-                buttons[i][j].setPosition(Vector2f(x, y));
-
                 switch (size) {
 
                     case 4:
-                        if (j == 3) {
-                            x = 378, y += 106;
+                        if (firstValue) {
+                            x = 36.5, y = 37;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
-                        else
-                            x += 96;
+                        else if (j == 3) {
+                            x += 9;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                            x = 36.5, y += 14;
+                        }
+                        else if (j != 0) {
+                            x += 9;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     case 6:
-                        if (j == 5) {
-                            x = 378, y += 75;
+                        if (firstValue) {
+                            x = 35, y = 34.4;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
-                        else
-                            x += 64;
+                        else if (j == 5) {
+                            x += 6;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                            x = 35, y += 9.5;
+                        }
+                        else if (j != 0) {
+                            x += 6;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     case 8:
-                        if (j == 7) {
-                            x = 378, y += 62;
+                        if (firstValue) {
+                            x = 34.40, y = 32.50;
+                            firstValue = false;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
                         }
-                        else
-                            x += 49;
+                        else if (j == 7) {
+                            x += 4.45;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                            x = 34.40, y += 7.30;
+                        }
+                        else if (j != 0) {
+                            x += 4.45;
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
+                        else {
+                            buttons[i][j].setPosition(window, Vector2f(x, y));
+                        }
                         break;
 
                     default:
                         break;
                 }
             }
-        }
-
-        while (window.isOpen()) {
+        }        while (window.isOpen()) {
             Event event; // Making an object "event" of the Event class
 
             while (window.pollEvent(event)) // Loop to manage when something changes in the console
@@ -692,6 +737,7 @@ struct gameboard {
                         }
                     }
                 }
+                window.clear();
                 background.drawTo(window);
 
                 name.drawTo(window);
@@ -703,6 +749,7 @@ struct gameboard {
                     }
                 }
 
+                //window.clear();
                 newgame.drawTo(window);
                 score.drawTo(window);
                 best.drawTo(window);

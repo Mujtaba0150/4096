@@ -14,12 +14,12 @@ using namespace sf;
  */
 class Button {
     public:
-    Button(string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
+    Button(RenderWindow& window, string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
         : padding(padding), charSize(charSize), xOffset(xOffset), yOffset(yOffset) {
         text.setString(t);
         text.setFillColor(textColor);
+        button.setSize(Vector2f(size.x * window.getSize().x / 100, size.y * window.getSize().y / 100));
         text.setCharacterSize(charSize);
-        button.setSize(size);
         button.setFillColor(bgColor);
         centerText();
     }
@@ -42,7 +42,18 @@ class Button {
         centerText();
     }
 
-    void setPosition(Vector2f pos) {
+    void setPosition(RenderWindow& window, Vector2f pos) {
+        Vector2f windowSize = Vector2f(window.getSize());
+        Vector2f buttonSize = button.getSize();
+        pos.x = pos.x * (windowSize.x / 100.0f) - buttonSize.x / 2.0f;
+        pos.y = pos.y * (windowSize.y / 100.0f) - buttonSize.y / 2.0f;
+
+        // Ensure the button stays within the window bounds
+        if (pos.x < 0) pos.x = 0;
+        if (pos.y < 0) pos.y = 0;
+        if (pos.x + buttonSize.x > windowSize.x) pos.x = windowSize.x - buttonSize.x;
+        if (pos.y + buttonSize.y > windowSize.y) pos.y = windowSize.y - buttonSize.y;
+
         button.setPosition(pos);
         adjustTextSize();
         centerText();
@@ -111,13 +122,12 @@ class Button {
             float widthScale = maxWidth / textBounds.width;
             float heightScale = maxHeight / textBounds.height;
 
-            float scale = std::min(widthScale, heightScale);
+            float scale = min(widthScale, heightScale);
 
-            text.setCharacterSize(static_cast<int>(charSize * scale));
+            text.setCharacterSize(int(charSize * scale));
         }
     }
 };
-
 class Picture {
     public:
     Picture(string filePath) {
@@ -125,22 +135,25 @@ class Picture {
         sprite.setTexture(texture);
     }
     void SetTexture(string filePath) {
-        this->filePath = filePath;
         texture.loadFromFile(filePath);
         sprite.setTexture(texture);
     }
-    void setScale(Vector2f scale) {
+    void setScale(RenderWindow& window, Vector2f scale) {
         scale.x = std::max(scale.x, 0.1f); // Minimum scale to avoid division by zero
         scale.y = std::max(scale.y, 0.1f);
 
         // Calculate aspect ratio
-        Vector2f Aspectratio(scale.x / texture.getSize().x, scale.y / texture.getSize().y);
+        Vector2f Aspectratio((window.getSize().x / 50) * (scale.x / texture.getSize().x), (window.getSize().y / 50) * (scale.y / texture.getSize().y));
 
         // Set scale of sprite
         sprite.setScale(Aspectratio);
     }
-    void setPosition(Vector2f position) {
-        sprite.setPosition(position);
+    void setPosition(RenderWindow& window, Vector2f pos) {
+        Vector2f windowSize = Vector2f(window.getSize());
+        pos.x = pos.x * (windowSize.x / 100.0f);
+        pos.y = pos.y * (windowSize.y / 100.0f);
+
+        sprite.setPosition(pos);
     }
     void drawTo(RenderWindow& window) {
         window.draw(sprite);
@@ -163,12 +176,8 @@ class Picture {
     void rotate(float angle) {
         sprite.rotate(angle);
     }
-    string getFilePath() {
-        return filePath;
-    }
 
     private:
-    string filePath;
     Texture texture;
     Sprite sprite;
 };
