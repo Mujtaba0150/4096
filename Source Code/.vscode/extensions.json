@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "ms-vscode.cpptools-extension-pack", // C/C++ Extension Pack
+        "aaron-bond.better-comments",
+        "tintinweb.vscode-inline-bookmarks",
+        
+    ],
+    "unwantedRecommendations": [
+        "some-unwanted.extension" // Specify any extensions you don't recommend
+    ]
+}
