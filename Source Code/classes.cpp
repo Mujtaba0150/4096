@@ -5,12 +5,15 @@ using namespace std;
 using namespace sf;
 
 /** @brief Class for creating a rectangular button
+ * @details The button is created with a text and a background color. The text is automatically adjusted to fit the button size and is centered. The button can be positioned anywhere on the window.
+ * @param window Window to which the button belongs
  * @param t Text to be displayed on the button
  * @param size Size of the button
  * @param charSize Size of the text
  * @param bgColor Background color of the button
  * @param textColor Text color of the button
  * @param padding Padding of the text from the button edges (default = 5.0f)
+ * @example Button button(window, "Click me", Vector2f(10.0f, 5.0f), 20, Color::Blue, Color::White);
  */
 class Button {
     public:
@@ -23,25 +26,41 @@ class Button {
         button.setFillColor(bgColor);
         centerText();
     }
-
+    /**
+     * @brief Set the font of the text
+     * @param font Font to be set
+    */
     void setFont(Font& font) {
         text.setFont(font);
     }
-
+    /**
+     * @brief Set the background color of the button
+     * @param color Color to be set
+    */
     void setBackColor(Color color) {
         button.setFillColor(color);
     }
-
+    /**
+     * @brief Set the text color of the button
+     * @param color Color to be set
+    */
     void setTextColor(Color color) {
         text.setFillColor(color);
     }
-
+    /**
+     * @brief Set the text of the button
+     * @param t Text to be set
+    */
     void setText(string t) {
         text.setString(t);
         adjustTextSize();
         centerText();
     }
-
+    /**
+     * @brief Set the position of the button
+     * @param window Window to which the button belongs
+     * @param pos Position to be set
+    */
     void setPosition(RenderWindow& window, Vector2f pos) {
         Vector2f windowSize = Vector2f(window.getSize());
         Vector2f buttonSize = button.getSize();
@@ -58,7 +77,10 @@ class Button {
         adjustTextSize();
         centerText();
     }
-
+    /**
+     * @brief Set the padding of the text from the button edges
+     * @param newPadding Padding to be set
+    */
     void setPadding(float newPadding) {
         padding = newPadding;
         adjustTextSize();
@@ -136,7 +158,9 @@ class Picture {
     }
     void SetTexture(string filePath) {
         texture.loadFromFile(filePath);
+        texture.setSmooth(true);
         sprite.setTexture(texture);
+        sprite.setTextureRect(IntRect(0, 0, texture.getSize().x, texture.getSize().y));
     }
     void setScale(RenderWindow& window, Vector2f scale) {
         scale.x = std::max(scale.x, 0.1f); // Minimum scale to avoid division by zero

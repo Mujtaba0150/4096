@@ -55,6 +55,7 @@ int main() {
     // Load textures for icons
     Picture soundIcon("s.png");
     Picture themeTexture("sun.png");
+    Picture background("4096 bg(light).png");
 
     Button soundbg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
     Button modebg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
@@ -84,7 +85,6 @@ int main() {
     sfxbutton.setPosition(window, Vector2f(48, 48.5));
     backbutton.setPosition(window, Vector2f(50, 61.1));
 
-    Picture background("4096 bg(light).png");
 
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
@@ -115,14 +115,17 @@ int main() {
         cout << "Error opening file" << endl;
         return 1;
     }
+
     file.close();
 
     if (!isMusicPlaying)
         soundIcon.SetTexture("mute.png");
 
-    if (!lightTheme)
+    if (!lightTheme) {
         themeTexture.SetTexture("moon.png");
-
+        themeTexture.setScale(window, Vector2f(1, 2));
+        background.SetTexture("4096 bg(dark).png");
+    }
     // Main loop that continues until the window is closed
     while (window.isOpen()) {
         // Create an event object to hold events
@@ -150,16 +153,16 @@ int main() {
                         isMusicPlaying = !isMusicPlaying; // Toggle the music status
                     }
                     else if (themeButton.coursorInbound(window)) {
-                        if (lightTheme) {
+                        if (!lightTheme) {
                             themeTexture.SetTexture("sun.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
-                            replaceLine("settings.dat", 2, "0");
+                            replaceLine("settings.dat", 2, "1");
                             background.SetTexture("4096 bg(light).png");
                         }
                         else {
                             themeTexture.SetTexture("moon.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
-                            replaceLine("settings.dat", 2, "1");
+                            replaceLine("settings.dat", 2, "0");
                             background.SetTexture("4096 bg(dark).png");
                         }
                         lightTheme = !lightTheme;
