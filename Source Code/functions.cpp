@@ -262,7 +262,11 @@ void mainMenu(RenderWindow& window) {
 
                 if (event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
 
+<<<<<<< HEAD
                     if (backbutton.cursorInbound(window)) { // Using self defined function to check if the button was clicked
+=======
+                    if (backbutton.coursorInbound(window)) { // Using self defined function to check if the button was clicked
+>>>>>>> 06b25b40ac35df5c0f24be1038b7b11f244c9781
                         backbutton.setBackColor(defaultButtonColor);
                         return;
                     }
@@ -504,7 +508,11 @@ void firstScreen(RenderWindow& window) {
         else
             lbbutton.setBackColor(Color(6, 46, 81));
 
+<<<<<<< HEAD
         if (settingbutton.cursorInbound(window))
+=======
+        if (settingbutton.coursorInbound(window))
+>>>>>>> 06b25b40ac35df5c0f24be1038b7b11f244c9781
             settingbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             settingbutton.setBackColor(Color(6, 46, 81));
@@ -517,6 +525,7 @@ void firstScreen(RenderWindow& window) {
             // (e.g., window closing event, user interactions, etc.)
             if (Event.type == Event::MouseButtonPressed) {
                 if (Event.mouseButton.button == Mouse::Left) {
+<<<<<<< HEAD
                     if (playbutton.cursorInbound(window)) {
                         mainMenu(window);
                     }
@@ -525,6 +534,16 @@ void firstScreen(RenderWindow& window) {
                     }
 
                     else if (settingbutton.cursorInbound(window)) {
+=======
+                    if (playbutton.coursorInbound(window)) {
+                        mainMenu(window);
+                    }
+                    else if (lbbutton.coursorInbound(window)) {
+                        beforeLeaderboard(window);
+                    }
+
+                    else if (settingbutton.coursorInbound(window)) {
+>>>>>>> 06b25b40ac35df5c0f24be1038b7b11f244c9781
                         beforeLeaderboard(window);
                     }
                 }
