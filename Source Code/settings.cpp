@@ -155,6 +155,7 @@ int main() {
                             themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 2, "0");
                             background.SetTexture("4096 bg(light).png");
+<<<<<<< HEAD
                         }
                         else {
                             themeTexture.SetTexture("moon.png");
@@ -165,6 +166,18 @@ int main() {
                         lightTheme = !lightTheme;
                     }
                     else if (purge.cursorInbound(window)) {
+=======
+                        }
+                        else {
+                            themeTexture.SetTexture("moon.png");
+                            themeTexture.setScale(window, Vector2f(1, 2));
+                            replaceLine("settings.dat", 2, "1");
+                            background.SetTexture("4096 bg(dark).png");
+                        }
+                        lightTheme = !lightTheme;
+                    }
+                    else if (purge.coursorInbound(window)) {
+>>>>>>> 06b25b40ac35df5c0f24be1038b7b11f244c9781
                         window.close();
                     }
                     else if (sfxbutton.cursorInbound(window)) {
