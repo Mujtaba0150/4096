@@ -78,7 +78,7 @@ class Button {
         window.draw(text);
     }
 
-    bool coursorInbound(RenderWindow& window) {
+    bool cursorInbound(RenderWindow& window) {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
         return button.getGlobalBounds().contains(mousePos);
     }

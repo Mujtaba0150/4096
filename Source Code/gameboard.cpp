@@ -508,13 +508,13 @@ struct gameboard {
                 }
                 else if (event.type == sf::Event::MouseButtonPressed) {
                     if (event.mouseButton.button == Mouse::Left) {
-                        if (gameOver.coursorInbound(window)) {
+                        if (gameOver.cursorInbound(window)) {
                             return 0;
                         }
-                        else if (playAgain.coursorInbound(window)) {
+                        else if (playAgain.cursorInbound(window)) {
                             return 1;
                         }
-                        else if (mainMenu.coursorInbound(window)) {
+                        else if (mainMenu.cursorInbound(window)) {
                             return false;
                         }
 
@@ -692,11 +692,11 @@ struct gameboard {
                 {
                     if (event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
                     {
-                        if (back.coursorInbound(window)) // Using self defined function to check if the button was clicked
+                        if (back.cursorInbound(window)) // Using self defined function to check if the button was clicked
                         {
                             return false;
                         }
-                        else if (newgame.coursorInbound(window)) // Using self defined function to check if the button was clicked
+                        else if (newgame.cursorInbound(window)) // Using self defined function to check if the button was clicked
                         {
                             return true;
                         }

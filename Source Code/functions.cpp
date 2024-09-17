@@ -72,16 +72,16 @@ void beforeLeaderboard(RenderWindow& window) {
 
                 if (event.mouseButton.button == Mouse::Left) {
 
-                    if (four.coursorInbound(window)) {
+                    if (four.cursorInbound(window)) {
                         // leaderboard(window, "leaderboard4x4.dat");
                     }
-                    if (six.coursorInbound(window)) {
+                    if (six.cursorInbound(window)) {
                         // leaderboard(window, "leaderboard6x6.dat");
                     }
-                    if (eight.coursorInbound(window)) {
+                    if (eight.cursorInbound(window)) {
                         // leaderboard(window, "leaderboard8x8.dat");
                     }
-                    if (back.coursorInbound(window)) {
+                    if (back.cursorInbound(window)) {
                         return;
                     }
                 }
@@ -262,12 +262,12 @@ void mainMenu(RenderWindow& window) {
 
                 if (event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
 
-                    if (backbutton.coursorInbound(window)) { // Using self defined function to check if the button was clicked
+                    if (backbutton.cursorInbound(window)) { // Using self defined function to check if the button was clicked
                         backbutton.setBackColor(defaultButtonColor);
                         return;
                     }
 
-                    else if (nextbutton.coursorInbound(window)) {
+                    else if (nextbutton.cursorInbound(window)) {
 
                         // Check if the required conditions are met
                         if (multi > 0 && grid > 0 && !name.empty()) {
@@ -285,7 +285,7 @@ void mainMenu(RenderWindow& window) {
                         }
                     }
 
-                    else if (grid4button.coursorInbound(window)) {
+                    else if (grid4button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(6, 46, 81));
                         gdisplaybutton.setText("4x4");
@@ -298,7 +298,7 @@ void mainMenu(RenderWindow& window) {
                         defaultButtonColor = Color(77, 143, 186);
                         selectedButtonColor = Color(45, 84, 109);
                     }
-                    else if (grid6button.coursorInbound(window)) {
+                    else if (grid6button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(60, 52, 124));
                         gdisplaybutton.setText("6x6");
@@ -311,7 +311,7 @@ void mainMenu(RenderWindow& window) {
                         defaultButtonColor = Color(132, 108, 188);
                         selectedButtonColor = Color(78, 64, 111);
                     }
-                    else if (grid8button.coursorInbound(window)) {
+                    else if (grid8button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(125, 13, 13));
                         gdisplaybutton.setText("8x8");
@@ -324,22 +324,22 @@ void mainMenu(RenderWindow& window) {
                         defaultButtonColor = Color(236, 46, 27);
                         selectedButtonColor = Color(159, 31, 18);
                     }
-                    else if (multiples[0].coursorInbound(window)) {
+                    else if (multiples[0].cursorInbound(window)) {
 
                         multi = 2;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[1].coursorInbound(window)) {
+                    else if (multiples[1].cursorInbound(window)) {
 
                         multi = 3;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[2].coursorInbound(window)) {
+                    else if (multiples[2].cursorInbound(window)) {
 
                         multi = 6;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[3].coursorInbound(window)) {
+                    else if (multiples[3].cursorInbound(window)) {
 
                         multi = 7;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
@@ -494,17 +494,17 @@ void firstScreen(RenderWindow& window) {
         // Handle events for the next window (if needed)
         Event Event;
 
-        if (playbutton.coursorInbound(window))
+        if (playbutton.cursorInbound(window))
             playbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             playbutton.setBackColor(Color(6, 46, 81));
 
-        if (lbbutton.coursorInbound(window))
+        if (lbbutton.cursorInbound(window))
             lbbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             lbbutton.setBackColor(Color(6, 46, 81));
 
-        if (settingbutton.coursorInbound(window))
+        if (settingbutton.cursorInbound(window))
             settingbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             settingbutton.setBackColor(Color(6, 46, 81));
@@ -517,14 +517,14 @@ void firstScreen(RenderWindow& window) {
             // (e.g., window closing event, user interactions, etc.)
             if (Event.type == Event::MouseButtonPressed) {
                 if (Event.mouseButton.button == Mouse::Left) {
-                    if (playbutton.coursorInbound(window)) {
+                    if (playbutton.cursorInbound(window)) {
                         mainMenu(window);
                     }
-                    else if (lbbutton.coursorInbound(window)) {
+                    else if (lbbutton.cursorInbound(window)) {
                         beforeLeaderboard(window);
                     }
 
-                    else if (settingbutton.coursorInbound(window)) {
+                    else if (settingbutton.cursorInbound(window)) {
                         beforeLeaderboard(window);
                     }
                 }

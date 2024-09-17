@@ -136,7 +136,7 @@ int main() {
             }
             else if (event.type == Event::MouseButtonPressed) {
                 if (event.mouseButton.button == Mouse::Left) {
-                    if (sound.coursorInbound(window)) {
+                    if (sound.cursorInbound(window)) {
                         if (isMusicPlaying) {
                             bgmusic.pause(); // Pause the music
                             soundIcon.SetTexture("mute.png");
@@ -149,7 +149,7 @@ int main() {
                         }
                         isMusicPlaying = !isMusicPlaying; // Toggle the music status
                     }
-                    else if (themeButton.coursorInbound(window)) {
+                    else if (themeButton.cursorInbound(window)) {
                         if (lightTheme) {
                             themeTexture.SetTexture("sun.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
@@ -164,10 +164,10 @@ int main() {
                         }
                         lightTheme = !lightTheme;
                     }
-                    else if (purge.coursorInbound(window)) {
+                    else if (purge.cursorInbound(window)) {
                         window.close();
                     }
-                    else if (sfxbutton.coursorInbound(window)) {
+                    else if (sfxbutton.cursorInbound(window)) {
                         if (sfx) {
                             replaceLine("settings.dat", 3, "0");
                             sfxbutton.setText("Sound Effects: Off");
@@ -178,7 +178,7 @@ int main() {
                         }
                         sfx = !sfx;
                     }
-                    else if (backbutton.coursorInbound(window)) {
+                    else if (backbutton.cursorInbound(window)) {
                         return 0;
                     }
                 }

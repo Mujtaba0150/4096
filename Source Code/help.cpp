@@ -14,14 +14,14 @@ int main() {
 
 
   Button htp(window, "HOW TO PLAY: ", Vector2f(21, 15), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
-  Button instructions(window, "Use your keyboard arrow \nkeys to move the tiles.\nWhen two tiles of the same \nnumbers touch, they merge into \nONE!\nJOIN THE NUMBERS AND GET \nTO THE HIGHEST TILE!", Vector2f(21, 28), 25, Color(6, 46, 81, 190), Color::White, 5, 10);
+  Button instructions(window, "Use your keyboard arrow \nkeys (or A,W,S,D keys) \nto move the tiles.\nWhen two tiles of the same \nnumbers touch, they merge into \nONE!\nJOIN THE NUMBERS AND GET \nTO THE HIGHEST TILE!", Vector2f(21, 32), 25, Color(6, 46, 81, 190), Color::White, 5, 10);
 
   Font font;
   font.loadFromFile("Baloo.ttf");
   htp.setFont(font);
   instructions.setFont(font);
 
-  htp.setPosition(window, Vector2f(36, 33));
+  htp.setPosition(window, Vector2f(36, 32));
   instructions.setPosition(window, Vector2f(36, 56));
 
   Picture background("4096 bg(light).png");
