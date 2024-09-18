@@ -1,4 +1,6 @@
+.gitignore
 *.dat
 *.exe
 *.txt
 useless.cpp
+source/.vscode/tasks.json
