@@ -11,6 +11,8 @@
 using namespace std;
 using namespace sf;
 
+Music bgmusic;
+
 void beforeLeaderboard(RenderWindow& window) {
 
     Picture preview4x4("grid4_preview.png");
@@ -154,7 +156,7 @@ void multiplierButtonColor(Button* button, int multiplier, string gridButtonText
         }
     }
 }
-void mainMenu(RenderWindow& window) {
+void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
     bool newGame = true;
@@ -172,15 +174,16 @@ void mainMenu(RenderWindow& window) {
     Button grid8button(window, "8 x 8", Vector2f(12, 7), 30, Color(205, 52, 6), Color::White);
     Button gdisplaybutton(window, "", Vector2f(25, 16), 45, Color(3, 85, 97), Color::White);
 
-    Button multiples[4] = { Button(window,"2", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
+    Button multiples[4] = {Button(window,"2", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
                             Button(window,"3", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
                             Button(window,"6", Vector2f(9, 7), 30, defaultButtonColor, Color::White),
-                            Button(window,"7", Vector2f(9, 7), 30, defaultButtonColor, Color::White) };
+                            Button(window,"7", Vector2f(9, 7), 30, defaultButtonColor, Color::White)};
 
     // To display bg image
     Picture background("4096 bg(light).png");
+    if (!lightTheme)
+        background.SetTexture("4096 bg(dark).png");
 
-    background.SetTexture("4096 bg(light).png");
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
@@ -278,7 +281,7 @@ void mainMenu(RenderWindow& window) {
                             nextbutton.setBackColor(defaultButtonColor);
                             while (newGame) {
                                 gameboard* game = new gameboard(grid, highscoreFile);
-                                newGame = game->board(window, name, multi);
+                                newGame = game->board(window, name, multi, lightTheme, sfx);
                                 delete game;
                                 game = nullptr;
                             }
@@ -379,7 +382,7 @@ void mainMenu(RenderWindow& window) {
                 if (event.key.code == Keyboard::Left && cursorIndex > 0) {
                     cursorIndex--;
                 }
-                else if (event.key.code == Keyboard::Right && cursorIndex < name.size()) {
+                else if (event.key.code == Keyboard::Right && cursorIndex < int(name.size())) {
                     cursorIndex++;
                 }
 
@@ -433,6 +436,204 @@ void mainMenu(RenderWindow& window) {
     }
 }
 
+int replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
+    std::ifstream inFile(filename);
+    if (!inFile) {
+        std::cerr << "Error opening input file: " << filename << std::endl;
+        return false;
+    }
+
+    std::vector<std::string> lines;
+    std::string line;
+    int currentLineNumber = 0;
+
+    // Read all lines from the file into a vector
+    while (std::getline(inFile, line)) {
+        ++currentLineNumber;
+        if (currentLineNumber == lineNumber) {
+            lines.push_back(newLine); // Replace the line at lineNumber with newLine
+        }
+        else {
+            lines.push_back(line); // Keep the original line
+        }
+    }
+
+    inFile.close();
+
+    // Write the modified content back to the file
+    std::ofstream outFile(filename);
+    if (!outFile) {
+        std::cerr << "Error opening output file: " << filename << std::endl;
+        return 1;
+    }
+
+    for (const auto& l : lines) {
+        outFile << l << std::endl;
+    }
+
+    outFile.close();
+
+    return 0;
+}
+
+int settings(RenderWindow& window) {
+
+    ifstream file("settings.dat");
+    // Load textures for icons
+    Picture soundIcon("unmute.png");
+    Picture themeTexture("sun.png");
+    Picture background("4096 bg(light).png");
+
+    Button soundbg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button modebg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button settings(window, "Settings", Vector2f(21, 15), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
+    Button sound(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
+    Button themeButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
+    Button purge(window, "Purge All Highscores", Vector2f(16, 5), 30, Color(212, 0, 0), Color::White);
+    Button sfxbutton(window, "Sound Effects", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White);
+    Button backbutton(window, "Back", Vector2f(20, 5), 30, Color(6, 46, 81), Color::White);
+
+    Font font;
+    font.loadFromFile("Baloo.ttf");
+    settings.setFont(font);
+    soundbg.setFont(font);
+    sound.setFont(font);
+    themeButton.setFont(font);
+    purge.setFont(font);
+    sfxbutton.setFont(font);
+    backbutton.setFont(font);
+
+    settings.setPosition(window, Vector2f(50, 35));
+    sound.setPosition(window, Vector2f(58.5, 48.5));
+    soundbg.setPosition(window, Vector2f(58.5, 48.5));
+    themeButton.setPosition(window, Vector2f(41.5, 54.8));
+    modebg.setPosition(window, Vector2f(41.5, 54.8));
+    purge.setPosition(window, Vector2f(52, 54.8));
+    sfxbutton.setPosition(window, Vector2f(48, 48.5));
+    backbutton.setPosition(window, Vector2f(50, 61.1));
+
+
+    background.setScale(window, Vector2f(51, 50));
+    background.setPosition(window, Vector2f(0, 0));
+
+    soundIcon.setPosition(window, Vector2f(57.5, 46.5));
+    soundIcon.setScale(window, Vector2f(1, 2));
+
+    themeTexture.setPosition(window, Vector2f(40.5, 52.8));
+    themeTexture.setScale(window, Vector2f(1, 2));
+
+    bool lightTheme;
+    bool sfx;
+    bool isMusicPlaying;
+
+    string temp;
+
+    if (file.is_open()) {
+        file >> lightTheme;
+        file >> sfx;
+        file >> isMusicPlaying;
+    }
+    else {
+        cout << "Error opening file" << endl;
+        return 1;
+    }
+
+    file.close();
+
+    if (!isMusicPlaying)
+        soundIcon.SetTexture("mute.png");
+
+    if (!lightTheme) {
+        themeTexture.SetTexture("moon.png");
+        themeTexture.setScale(window, Vector2f(1, 2));
+        background.SetTexture("4096 bg(dark).png");
+    }
+    // Main loop that continues until the window is closed
+    while (window.isOpen()) {
+        // Create an event object to hold events
+        Event event;
+
+        // Process all events
+        while (window.pollEvent(event)) {
+            // Check for specific event types
+            if (event.type == Event::Closed) { // If the close button is pressed
+                window.close(); // Close the window
+            }
+            else if (event.type == Event::MouseButtonPressed) {
+                if (event.mouseButton.button == Mouse::Left) {
+                    if (themeButton.coursorInbound(window)) {
+                        if (!lightTheme) {
+                            themeTexture.SetTexture("sun.png");
+                            themeTexture.setScale(window, Vector2f(1, 2));
+                            replaceLine("settings.dat", 1, "1");
+                            background.SetTexture("4096 bg(light).png");
+                        }
+                        else {
+                            themeTexture.SetTexture("moon.png");
+                            themeTexture.setScale(window, Vector2f(1, 2));
+                            replaceLine("settings.dat", 1, "0");
+                            background.SetTexture("4096 bg(dark).png");
+                        }
+                        lightTheme = !lightTheme;
+                    }
+                    else if (sfxbutton.coursorInbound(window)) {
+                        if (sfx) {
+                            replaceLine("settings.dat", 2, "0");
+                            sfxbutton.setText("Sound Effects: Off");
+                        }
+                        else {
+                            replaceLine("settings.dat", 2, "1");
+                            sfxbutton.setText("Sound Effects: On");
+                        }
+                        sfx = !sfx;
+                    }
+                    else if (sound.coursorInbound(window)) {
+                        if (isMusicPlaying) {
+                            bgmusic.pause(); // Pause the music
+                            soundIcon.SetTexture("mute.png");
+                            replaceLine("settings.dat", 3, "0");
+                        }
+                        else {
+                            bgmusic.play(); // Resume the music
+                            soundIcon.SetTexture("unmute.png");
+                            replaceLine("settings.dat", 3, "1");
+                        }
+                        isMusicPlaying = !isMusicPlaying; // Toggle the music status
+                    }
+                    else if (purge.coursorInbound(window)) {
+                        window.close();
+                    }
+                    else if (backbutton.coursorInbound(window)) {
+                        return 0;
+                    }
+                }
+            }
+
+        }
+
+
+        background.drawTo(window);
+        soundbg.drawTo(window);
+        modebg.drawTo(window);
+
+        // Buttons:
+        settings.drawTo(window);
+        sound.drawTo(window);
+        themeButton.drawTo(window);
+        purge.drawTo(window);
+        sfxbutton.drawTo(window);
+        backbutton.drawTo(window);
+
+        themeTexture.drawTo(window);
+        soundIcon.drawTo(window);
+
+        // Display the contents of the window
+        window.display();
+    }
+
+    return 0;
+}
+
 void firstScreen(RenderWindow& window) {
 
     window.setFramerateLimit(60);
@@ -464,13 +665,13 @@ void firstScreen(RenderWindow& window) {
     fstream file("settings.dat", ios::in);
 
     if (file.is_open()) {
-        file >> isMusicPlaying;
         file >> lightTheme;
         file >> sfx;
+        file >> isMusicPlaying;
     }
     else {
         file.close();
-        file.open("settings.txt", ios::out);
+        file.open("settings.dat", ios::out);
         file << 1 << endl;
         file << 1 << endl;
         file << 1 << endl;
@@ -478,7 +679,7 @@ void firstScreen(RenderWindow& window) {
     file.close();
 
     // Music
-    Music bgmusic;
+
     if (!bgmusic.openFromFile("bg.ogg"))
         // Handle error if audio fails to load
         return;
@@ -514,18 +715,29 @@ void firstScreen(RenderWindow& window) {
             if (Event.type == Event::Closed)
                 window.close();
 
-            // (e.g., window closing event, user interactions, etc.)
             if (Event.type == Event::MouseButtonPressed) {
                 if (Event.mouseButton.button == Mouse::Left) {
                     if (playbutton.coursorInbound(window)) {
-                        mainMenu(window);
+                        mainMenu(window, lightTheme, sfx);
                     }
                     else if (lbbutton.coursorInbound(window)) {
                         beforeLeaderboard(window);
                     }
 
                     else if (settingbutton.coursorInbound(window)) {
-                        beforeLeaderboard(window);
+                        settings(window);
+                        file.open("settings.dat", ios::in);
+                        file >> lightTheme;
+                        file >> sfx;
+                        file.close();
+                        if (lightTheme)
+                            background.SetTexture("4096 bg(light).png");
+                        else
+                            background.SetTexture("4096 bg(dark).png");
+                        if (sfx)
+                            cout << "Sound Effects: On" << endl;
+                        else
+                            cout << "Sound Effects: Off" << endl;
                     }
                 }
             }
@@ -541,5 +753,3 @@ void firstScreen(RenderWindow& window) {
         window.display();
     }
 }
-
-

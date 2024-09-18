@@ -524,7 +524,7 @@ struct gameboard {
         }
     }
 
-    bool board(RenderWindow& window, string username, int multi) {
+    bool board(RenderWindow& window, string username, int multi, int lightTheme, int sfx) {
 
         ifstream file(fileName);
         string highscore;
@@ -556,8 +556,9 @@ struct gameboard {
         Button best(window, highscore, Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
 
         Picture background("4096 bg(light).png");
-
-        background.SetTexture("4096 bg(light).png");
+        if (!lightTheme) {
+            background.SetTexture("4096 bg(dark).png");
+        }
 
         background.setScale(window, Vector2f(51, 50));
         background.setPosition(window, Vector2f(0, 0));
