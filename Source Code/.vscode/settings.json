@@ -4,7 +4,6 @@
     "editor.formatOnSave": true,
     "editor.minimap.enabled": false,
     "files.autoSave": "afterDelay",
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, IndentWidth: 4, UseTab: Never, BreakBeforeBraces: Attach }",
     "C_Cpp.formatting": "vcFormat",
     "C_Cpp.vcFormat.indent.caseLabels": true,
     "C_Cpp.vcFormat.indent.accessSpecifiers": true,
