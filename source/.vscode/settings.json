@@ -5,13 +5,40 @@
     "editor.minimap.enabled": false,
     "files.autoSave": "afterDelay",
     "C_Cpp.formatting": "vcFormat",
-    "C_Cpp.vcFormat.indent.caseLabels": true,
-    "C_Cpp.vcFormat.indent.accessSpecifiers": true,
-    "C_Cpp.vcFormat.newLine.beforeOpenBrace.block": "sameLine",
-    "C_Cpp.vcFormat.newLine.beforeOpenBrace.function": "sameLine",
-    "C_Cpp.vcFormat.newLine.beforeOpenBrace.lambda": "sameLine",
-    "C_Cpp.vcFormat.newLine.beforeOpenBrace.namespace": "sameLine",
-    "C_Cpp.vcFormat.newLine.beforeOpenBrace.type": "sameLine",
+    "C_Cpp.vcFormat": {
+        "indent": {
+            "caseLabels": true,
+            "accessSpecifiers": false
+        },
+        "newLine": {
+            "beforeOpenBrace": {
+                "block": "sameLine",
+                "function": "sameLine",
+                "lambda": "sameLine",
+                "namespace": "sameLine",
+                "type": "sameLine"
+            },
+            "beforeWhileInDoWhile": true,
+            "beforeElse": true
+        },
+        "space": {
+            "aroundAssignmentOperator": "insert",
+            "afterComma": true,
+            "beforeBlockOpenBrace": true,
+            "beforeFunctionOpenParenthesis": "remove",
+            "beforeOpenBrace": false,
+            "removeBeforeSemicolon": true,
+            "afterKeywordsInControlFlowStatements": false,
+            "betweenEmptyBraces": false,
+            "betweenEmptySquareBrackets": false,
+            "betweenEmptyParameterListParentheses": false,
+            "withinSquareBrackets": false,
+            "withinCastParentheses": false,
+            "withinInitializerListBraces": false,
+            "withinLambdaBrackets": false,
+            "withinParameterListParentheses": false
+        }
+    },
     "better-comments.tags": [
         {
             "tag": "!",
@@ -60,20 +87,4 @@
         }
     ],
     "inline-bookmarks.default.words.red": "//!",
-    "diffEditor.ignoreTrimWhitespace": false,
-    "git.autofetch": true,
-    "git.openRepositoryInParentFolders": "always",
-    "breadcrumbs.enabled": false,
-    "gitlens.ai.experimental.model": "openai:gpt-4o",
-    "git.confirmSync": false,
-    "workbench.editorAssociations": {
-        "git-rebase-todo": "default"
-    },
-    "workbench.startupEditor": "none",
-    "window.commandCenter": false,
-    "files.associations": {
-        "iosfwd": "cpp",
-        "string": "cpp",
-        "format": "cpp"
-    },
 }

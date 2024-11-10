@@ -2,4 +2,5 @@
 *.exe
 *.txt
 useless.cpp
+source/.vscode/launch.json
 source/.vscode/tasks.json
