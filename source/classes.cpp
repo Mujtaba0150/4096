@@ -68,10 +68,10 @@ class Button {
         pos.y = pos.y * (windowSize.y / 100.0f) - buttonSize.y / 2.0f;
 
         // Ensure the button stays within the window bounds
-        if (pos.x < 0) pos.x = 0;
-        if (pos.y < 0) pos.y = 0;
-        if (pos.x + buttonSize.x > windowSize.x) pos.x = windowSize.x - buttonSize.x;
-        if (pos.y + buttonSize.y > windowSize.y) pos.y = windowSize.y - buttonSize.y;
+        if(pos.x < 0) pos.x = 0;
+        if(pos.y < 0) pos.y = 0;
+        if(pos.x + buttonSize.x > windowSize.x) pos.x = windowSize.x - buttonSize.x;
+        if(pos.y + buttonSize.y > windowSize.y) pos.y = windowSize.y - buttonSize.y;
 
         button.setPosition(pos);
         adjustTextSize();
@@ -100,7 +100,7 @@ class Button {
         window.draw(text);
     }
 
-    bool coursorInbound(RenderWindow& window) {
+    bool cursorInbound(RenderWindow& window) {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
         return button.getGlobalBounds().contains(mousePos);
     }
@@ -140,7 +140,7 @@ class Button {
         text.setCharacterSize(charSize);
         FloatRect textBounds = text.getLocalBounds();
 
-        if (textBounds.width > maxWidth || textBounds.height > maxHeight) {
+        if(textBounds.width > maxWidth || textBounds.height > maxHeight) {
             float widthScale = maxWidth / textBounds.width;
             float heightScale = maxHeight / textBounds.height;
 

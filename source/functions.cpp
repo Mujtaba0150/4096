@@ -13,7 +13,182 @@ using namespace sf;
 
 Music bgmusic;
 
-void beforeLeaderboard(RenderWindow& window) {
+void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
+    string scores[5], names[5];
+    ifstream leaderboardFile(fileName);
+    if(leaderboardFile.is_open()) {
+        for(int i = 0; i < 5; i++) {
+            getline(leaderboardFile, scores[i]);
+        }
+        getline(leaderboardFile, names[0]);
+
+        for(int i = 0; i < 5; i++) {
+            getline(leaderboardFile, names[i]);
+        }
+
+
+    }
+    else {
+        cerr << "Unable To Open The File!" << endl;
+    }
+
+    // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
+
+    // Creating an object of the Button class named "button" and specifying its properties
+    Button rankButt(window, "RANK", Vector2f(8, 7), 24, Color(6, 46, 81, 190), Color::White);
+    Button nameButton(window, "NAME", Vector2f(19, 7), 24, Color(6, 46, 81, 190), Color::White);
+    Button scoreButton(window, "SCORE", Vector2f(8, 7), 24, Color(6, 46, 81, 190), Color::White);
+    Button back(window, "BACK", Vector2f(12, 7), 24, Color(6, 46, 81, 190), Color::White);
+    //Rank buttons: (takes up the complete width of each transparent button placeholder)
+    Button rank1(window, "", Vector2f(36, 7), 24, Color(154, 197, 219), Color::White);
+    Button rank2(window, "", Vector2f(36, 7), 24, Color(238, 201, 0), Color::White);
+    Button rank3(window, "", Vector2f(36, 7), 24, Color(202, 202, 202), Color::White);
+    Button rank4(window, "", Vector2f(36, 7), 24, Color(185, 97, 30), Color::White);
+    Button rank5(window, "", Vector2f(36, 7), 24, Color(205, 127, 50), Color::White);
+    //Rank No.(to remain definite)
+    Button r1(window, "1.", Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button r2(window, "2.", Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button r3(window, "3.", Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button r4(window, "4.", Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button r5(window, "5.", Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    //Name place holders (shd updated with the name of the user that has the highest score)
+    Button name1(window, names[0], Vector2f(18, 7), 25, Color::Transparent, Color::White);
+    Button name2(window, names[1], Vector2f(18, 7), 25, Color::Transparent, Color::White);
+    Button name3(window, names[2], Vector2f(18, 7), 25, Color::Transparent, Color::White);
+    Button name4(window, names[3], Vector2f(18, 7), 25, Color::Transparent, Color::White);
+    Button name5(window, names[4], Vector2f(18, 7), 25, Color::Transparent, Color::White);
+    //Score (shd updated with the score of the user that has the highest score)
+    Button s1(window, scores[0], Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button s2(window, scores[1], Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button s3(window, scores[2], Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button s4(window, scores[3], Vector2f(7, 7), 25, Color::Transparent, Color::White);
+    Button s5(window, scores[4], Vector2f(7, 7), 25, Color::Transparent, Color::White);
+
+    // To display bg image
+    Picture background("4096 bg(light).png");
+
+    if(!lightTheme)
+        background.SetTexture("4096 bg(dark).png");
+
+    background.setScale(window, Vector2f(51, 50));
+    background.setPosition(window, Vector2f(0, 0));
+
+    // Making an object of the Font class called "font"
+    Font font;
+
+    // Loading the font for the button
+    font.loadFromFile("Baloo.ttf");
+
+    // Setting the font to the button
+    rankButt.setFont(font);
+    nameButton.setFont(font);
+    scoreButton.setFont(font);
+    rank1.setFont(font);
+    rank2.setFont(font);
+    rank3.setFont(font);
+    rank4.setFont(font);
+    rank5.setFont(font);
+    back.setFont(font);
+    r1.setFont(font);
+    r2.setFont(font);
+    r3.setFont(font);
+    r4.setFont(font);
+    r5.setFont(font);
+    name1.setFont(font);
+    name2.setFont(font);
+    name3.setFont(font);
+    name4.setFont(font);
+    name5.setFont(font);
+    s1.setFont(font);
+    s2.setFont(font);
+    s3.setFont(font);
+    s4.setFont(font);
+    s5.setFont(font);
+
+    // Setting button position
+    rankButt.setPosition(window, Vector2f(36, 25));
+    nameButton.setPosition(window, Vector2f(50, 25));
+    scoreButton.setPosition(window, Vector2f(64, 25));
+    rank1.setPosition(window, Vector2f(50, 33.0f));
+    rank2.setPosition(window, Vector2f(50, 41.0f));
+    rank3.setPosition(window, Vector2f(50, 49.0f));
+    rank4.setPosition(window, Vector2f(50, 57.0f));
+    rank5.setPosition(window, Vector2f(50, 65.0f));
+    back.setPosition(window, Vector2f(50, 73));
+    r1.setPosition(window, Vector2f(36, 33.0f));
+    r2.setPosition(window, Vector2f(36, 41.0f));
+    r3.setPosition(window, Vector2f(36, 49.0f));
+    r4.setPosition(window, Vector2f(36, 57.0f));
+    r5.setPosition(window, Vector2f(36, 65.0f));
+    name1.setPosition(window, Vector2f(50, 33.0f));
+    name2.setPosition(window, Vector2f(50, 41.0f));
+    name3.setPosition(window, Vector2f(50, 49.0f));
+    name4.setPosition(window, Vector2f(50, 57.0f));
+    name5.setPosition(window, Vector2f(50, 65.0f));
+    s1.setPosition(window, Vector2f(64, 33.0f));
+    s2.setPosition(window, Vector2f(64, 41.0f));
+    s3.setPosition(window, Vector2f(64, 49.0f));
+    s4.setPosition(window, Vector2f(64, 57.0f));
+    s5.setPosition(window, Vector2f(64, 65.0f));
+
+    window.setFramerateLimit(60); // Setting the frame rate to 60 fps
+
+    while(window.isOpen()) {
+        Event event; // Making an object "event" of the Event class
+
+        while(window.pollEvent(event)) // Loop to manage when something changes in the console
+        {
+            if(event.type == Event::Closed) {
+                window.close();
+            }
+
+            else if(event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
+            {
+
+                if(event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
+                {
+
+                    if(back.cursorInbound(window)) // Using self defined function to check if the button was clicked
+                    {
+                        return; // Closes the window
+                    }
+                }
+            }
+        }
+
+        background.drawTo(window);
+
+        rankButt.drawTo(window);
+        nameButton.drawTo(window);
+        scoreButton.drawTo(window);
+        rank1.drawTo(window);
+        rank2.drawTo(window);
+        rank3.drawTo(window);
+        rank4.drawTo(window);
+        rank5.drawTo(window);
+        r1.drawTo(window);
+        r2.drawTo(window);
+        r3.drawTo(window);
+        r4.drawTo(window);
+        r5.drawTo(window);
+        name1.drawTo(window);
+        name2.drawTo(window);
+        name3.drawTo(window);
+        name4.drawTo(window);
+        name5.drawTo(window);
+        s1.drawTo(window);
+        s2.drawTo(window);
+        s3.drawTo(window);
+        s4.drawTo(window);
+        s5.drawTo(window);
+        back.drawTo(window);
+
+
+        window.display();
+    }
+}
+
+void beforeLeaderboard(RenderWindow& window, bool lightTheme) {
 
     Picture preview4x4("grid4_preview.png");
     Picture preview6x6("grid6_preview.png");
@@ -28,6 +203,9 @@ void beforeLeaderboard(RenderWindow& window) {
 
     //To display bg image
     Picture background("4096 bg(light).png");
+
+    if(!lightTheme)
+        background.SetTexture("4096 bg(dark).png");
 
     // background.SetTexture("4096 bg(light).png");
     background.setScale(window, Vector2f(51, 50));
@@ -62,28 +240,28 @@ void beforeLeaderboard(RenderWindow& window) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
 
-    while (window.isOpen()) {
+    while(window.isOpen()) {
         Event event;
 
-        while (window.pollEvent(event)) {
-            if (event.type == Event::Closed) {
+        while(window.pollEvent(event)) {
+            if(event.type == Event::Closed) {
                 window.close();
             }
 
-            else if (event.type == Event::MouseButtonPressed) {
+            else if(event.type == Event::MouseButtonPressed) {
 
-                if (event.mouseButton.button == Mouse::Left) {
+                if(event.mouseButton.button == Mouse::Left) {
 
-                    if (four.coursorInbound(window)) {
-                        // leaderboard(window, "leaderboard4x4.dat");
+                    if(four.cursorInbound(window)) {
+                        leaderboard(window, "leaderboard4x4.dat", lightTheme);
                     }
-                    if (six.coursorInbound(window)) {
-                        // leaderboard(window, "leaderboard6x6.dat");
+                    if(six.cursorInbound(window)) {
+                        leaderboard(window, "leaderboard6x6.dat", lightTheme);
                     }
-                    if (eight.coursorInbound(window)) {
-                        // leaderboard(window, "leaderboard8x8.dat");
+                    if(eight.cursorInbound(window)) {
+                        leaderboard(window, "leaderboard8x8.dat", lightTheme);
                     }
-                    if (back.coursorInbound(window)) {
+                    if(back.cursorInbound(window)) {
                         return;
                     }
                 }
@@ -113,49 +291,112 @@ void multiplierButtonColor(Button* button, int multiplier, string gridButtonText
     Color defaultButtonColor(114, 156, 155);
     Color selectedButtonColor(58, 79, 78);
 
-    if (gridButtonText == "4x4") {
+    if(gridButtonText == "4x4") {
         defaultButtonColor = Color(77, 143, 186);
         selectedButtonColor = Color(45, 84, 109);
     }
-    else if (gridButtonText == "6x6") {
+    else if(gridButtonText == "6x6") {
         defaultButtonColor = Color(132, 108, 188);
         selectedButtonColor = Color(78, 64, 111);
     }
-    else if (gridButtonText == "8x8") {
+    else if(gridButtonText == "8x8") {
         defaultButtonColor = Color(236, 46, 27);
         selectedButtonColor = Color(159, 31, 18);
     }
 
-    if (multiplier == 2) {
+    if(multiplier == 2) {
         button[0].setBackColor(selectedButtonColor);
         button[1].setBackColor(defaultButtonColor);
         button[2].setBackColor(defaultButtonColor);
         button[3].setBackColor(defaultButtonColor);
     }
-    else if (multiplier == 3) {
+    else if(multiplier == 3) {
         button[1].setBackColor(selectedButtonColor);
         button[0].setBackColor(defaultButtonColor);
         button[2].setBackColor(defaultButtonColor);
         button[3].setBackColor(defaultButtonColor);
     }
-    else if (multiplier == 6) {
+    else if(multiplier == 6) {
         button[2].setBackColor(selectedButtonColor);
         button[0].setBackColor(defaultButtonColor);
         button[1].setBackColor(defaultButtonColor);
         button[3].setBackColor(defaultButtonColor);
     }
-    else if (multiplier == 7) {
+    else if(multiplier == 7) {
         button[3].setBackColor(selectedButtonColor);
         button[0].setBackColor(defaultButtonColor);
         button[1].setBackColor(defaultButtonColor);
         button[2].setBackColor(defaultButtonColor);
     }
-    else if (multiplier == 0) {
-        for (int i = 0; i < 4; i++) {
+    else if(multiplier == 0) {
+        for(int i = 0; i < 4; i++) {
             button[i].setBackColor(defaultButtonColor);
         }
     }
 }
+
+void help(RenderWindow& window) {
+    Button htp(window, "HOW TO PLAY: ", Vector2f(21, 15), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
+    Button instructions(window, "Use your keyboard arrow \nkeys to move the tiles.\nWhen two tiles of the same \nnumbers touch, they merge into \nONE!\nJOIN THE NUMBERS AND GET \nTO THE HIGHEST TILE!", Vector2f(21, 28), 25, Color(6, 46, 81, 190), Color::White, 5, 10);
+
+    Font font;
+    font.loadFromFile("Baloo.ttf");
+    htp.setFont(font);
+    instructions.setFont(font);
+
+    htp.setPosition(window, Vector2f(36, 33));
+    instructions.setPosition(window, Vector2f(36, 56));
+
+    Picture background("4096 bg(light).png");
+
+    background.SetTexture("4096 bg(light).png");
+    background.setScale(window, Vector2f(51, 50));
+    background.setPosition(window, Vector2f(0, 0));
+
+    Picture disp("grid4_preview.png");
+
+    disp.SetTexture("grid4_preview.png");
+    disp.setScale(window, Vector2f(14, 25));
+    disp.setPosition(window, Vector2f(50, 24));
+
+
+    // Main loop that continues until the window is closed
+    while(window.isOpen()) {
+        // Create an event object to hold events
+        Event event;
+
+        // Process all events
+        while(window.pollEvent(event)) {
+            // Check for specific event types
+            if(event.type == Event::Closed) { // If the close button is pressed
+                window.close(); // Close the window
+            }
+            else if(event.type == Event::MouseButtonPressed) {
+                if(event.mouseButton.button == Mouse::Left) {
+                    // if (sound.coursorInbound(window)) {}
+
+                }
+
+            }
+
+        }
+
+        //Picture:
+        background.drawTo(window);
+        disp.drawTo(window);
+
+        // Buttons:
+        htp.drawTo(window);
+        instructions.drawTo(window);
+
+
+        // Display the contents of the window
+        window.display();
+    }
+
+    return;
+}
+
 void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
     window.setFramerateLimit(60); // Setting the frame rate to 60 fps
@@ -181,7 +422,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
     // To display bg image
     Picture background("4096 bg(light).png");
-    if (!lightTheme)
+    if(!lightTheme)
         background.SetTexture("4096 bg(dark).png");
 
     background.setScale(window, Vector2f(51, 50));
@@ -203,7 +444,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
     gdisplaybutton.setFont(font);
     textBoxBackground.setFont(font);
 
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
         multiples[i].setFont(font);
     }
 
@@ -219,7 +460,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
     textBoxBackgroundOld.setPosition(Vector2f(500, 241));
 
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
         multiples[i].setPosition(window, Vector2f(31.5 + 12 * i, 35));
     }
 
@@ -252,34 +493,34 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
     // Cursor position index
     int cursorIndex = name.size();
 
-    while (window.isOpen()) {
+    while(window.isOpen()) {
 
         Event event; // Making an object "event" of the Event class
 
-        while (window.pollEvent(event)) { // Loop to manage when something changes in the console
-            if (event.type == Event::Closed) {
+        while(window.pollEvent(event)) { // Loop to manage when something changes in the console
+            if(event.type == Event::Closed) {
                 window.close();
             }
 
-            else if (event.type == Event::MouseButtonPressed) { // Checking if mouse was clicked
+            else if(event.type == Event::MouseButtonPressed) { // Checking if mouse was clicked
 
-                if (event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
+                if(event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
 
-                    if (backbutton.coursorInbound(window)) { // Using self defined function to check if the button was clicked
+                    if(backbutton.cursorInbound(window)) { // Using self defined function to check if the button was clicked
                         backbutton.setBackColor(defaultButtonColor);
                         return;
                     }
 
-                    else if (nextbutton.coursorInbound(window)) {
+                    else if(nextbutton.cursorInbound(window)) {
 
                         // Check if the required conditions are met
-                        if (multi > 0 && grid > 0 && !name.empty()) {
+                        if(multi > 0 && grid > 0 && !name.empty()) {
                             nextbutton.setBackColor(selectedButtonColor);
                             nextbutton.drawTo(window);
                             window.display();
                             newGame = true;
                             nextbutton.setBackColor(defaultButtonColor);
-                            while (newGame) {
+                            while(newGame) {
                                 gameboard* game = new gameboard(grid, highscoreFile);
                                 newGame = game->board(window, name, multi, lightTheme, sfx);
                                 delete game;
@@ -288,7 +529,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                         }
                     }
 
-                    else if (grid4button.coursorInbound(window)) {
+                    else if(grid4button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(6, 46, 81));
                         gdisplaybutton.setText("4x4");
@@ -301,7 +542,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                         defaultButtonColor = Color(77, 143, 186);
                         selectedButtonColor = Color(45, 84, 109);
                     }
-                    else if (grid6button.coursorInbound(window)) {
+                    else if(grid6button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(60, 52, 124));
                         gdisplaybutton.setText("6x6");
@@ -314,7 +555,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                         defaultButtonColor = Color(132, 108, 188);
                         selectedButtonColor = Color(78, 64, 111);
                     }
-                    else if (grid8button.coursorInbound(window)) {
+                    else if(grid8button.cursorInbound(window)) {
 
                         gdisplaybutton.setBackColor(Color(125, 13, 13));
                         gdisplaybutton.setText("8x8");
@@ -327,28 +568,28 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                         defaultButtonColor = Color(236, 46, 27);
                         selectedButtonColor = Color(159, 31, 18);
                     }
-                    else if (multiples[0].coursorInbound(window)) {
+                    else if(multiples[0].cursorInbound(window)) {
 
                         multi = 2;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[1].coursorInbound(window)) {
+                    else if(multiples[1].cursorInbound(window)) {
 
                         multi = 3;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[2].coursorInbound(window)) {
+                    else if(multiples[2].cursorInbound(window)) {
 
                         multi = 6;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
-                    else if (multiples[3].coursorInbound(window)) {
+                    else if(multiples[3].cursorInbound(window)) {
 
                         multi = 7;
                         multiplierButtonColor(multiples, multi, gdisplaybutton.getText().getString());
                     }
                     // Check if the text box was clicked
-                    if (textBoxBackgroundOld.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    if(textBoxBackgroundOld.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         isTextBoxSelected = true;
                         textBoxBackgroundOld.setOutlineColor(Color(114, 156, 155)); // Highlight outline color
                     }
@@ -358,16 +599,16 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                     }
                 }
             }
-            else if (event.type == Event::TextEntered) {
-                if (((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ') {
-                    if (inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding
+            else if(event.type == Event::TextEntered) {
+                if(((event.text.unicode >= 'A' && event.text.unicode <= 'Z') || (event.text.unicode >= 'a' && event.text.unicode <= 'z')) || event.text.unicode == ' ') {
+                    if(inputText.getLocalBounds().width + 10 < textBoxBackground.getSize().x) // Adjust the padding
                     {
                         name.insert(name.begin() + cursorIndex, static_cast<char>(event.text.unicode));
                         cursorIndex++;
                     }
                 }
 
-                else if (event.text.unicode == 8 && cursorIndex > 0) { // Backspace
+                else if(event.text.unicode == 8 && cursorIndex > 0) { // Backspace
                     name.erase(name.begin() + cursorIndex - 1);
                     cursorIndex--;
                 }
@@ -378,11 +619,11 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                 Text tempText(textBeforeCursor, font, 35);
                 cursor.setPosition(inputText.getPosition().x + tempText.getLocalBounds().width + 2.f, inputText.getPosition().y + 2.f);
             }
-            else if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::Left && cursorIndex > 0) {
+            else if(event.type == Event::KeyPressed) {
+                if(event.key.code == Keyboard::Left && cursorIndex > 0) {
                     cursorIndex--;
                 }
-                else if (event.key.code == Keyboard::Right && cursorIndex < int(name.size())) {
+                else if(event.key.code == Keyboard::Right && cursorIndex < int(name.size())) {
                     cursorIndex++;
                 }
 
@@ -394,8 +635,8 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
         }
 
         // Blink the cursor
-        if (isTextBoxSelected) {
-            if (cursorTimer.getElapsedTime().asSeconds() >= 0.5f) {
+        if(isTextBoxSelected) {
+            if(cursorTimer.getElapsedTime().asSeconds() >= 0.5f) {
                 cursor.setFillColor(cursor.getFillColor() == Color::Black ? Color::Transparent : Color::Black);
                 cursorTimer.restart();
             }
@@ -415,7 +656,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
         window.draw(Name);
 
         // Cursor:
-        if (isTextBoxSelected) {
+        if(isTextBoxSelected) {
             window.draw(cursor);
         }
 
@@ -428,7 +669,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
         gdisplaybutton.drawTo(window);
         textBoxBackground.drawTo(window);
 
-        for (int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++) {
             multiples[i].drawTo(window);
         }
 
@@ -438,7 +679,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
 int replaceLine(const std::string& filename, int lineNumber, const std::string& newLine) {
     std::ifstream inFile(filename);
-    if (!inFile) {
+    if(!inFile) {
         std::cerr << "Error opening input file: " << filename << std::endl;
         return false;
     }
@@ -448,9 +689,9 @@ int replaceLine(const std::string& filename, int lineNumber, const std::string& 
     int currentLineNumber = 0;
 
     // Read all lines from the file into a vector
-    while (std::getline(inFile, line)) {
+    while(std::getline(inFile, line)) {
         ++currentLineNumber;
-        if (currentLineNumber == lineNumber) {
+        if(currentLineNumber == lineNumber) {
             lines.push_back(newLine); // Replace the line at lineNumber with newLine
         }
         else {
@@ -462,18 +703,46 @@ int replaceLine(const std::string& filename, int lineNumber, const std::string& 
 
     // Write the modified content back to the file
     std::ofstream outFile(filename);
-    if (!outFile) {
+    if(!outFile) {
         std::cerr << "Error opening output file: " << filename << std::endl;
         return 1;
     }
 
-    for (const auto& l : lines) {
+    for(const auto& l : lines) {
         outFile << l << std::endl;
     }
 
     outFile.close();
 
     return 0;
+}
+
+void purgeHighscores() {
+    std::ofstream outfile("leaderboard4x4.dat");
+    if(outfile.is_open()) {
+        outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
+        outfile.close();
+    }
+    else {
+        cout << "Error opening file" << endl;
+    }
+    outfile.open("leaderboard6x6.dat");
+    if(outfile.is_open()) {
+        outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
+        outfile.close();
+    }
+    else {
+        cout << "Error opening file" << endl;
+    }
+    outfile.open("leaderboard8x8.dat");
+    if(outfile.is_open()) {
+        outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
+        outfile.close();
+    }
+    else {
+        cout << "Error opening file" << endl;
+    }
+    return;
 }
 
 int settings(RenderWindow& window) {
@@ -528,7 +797,7 @@ int settings(RenderWindow& window) {
 
     string temp;
 
-    if (file.is_open()) {
+    if(file.is_open()) {
         file >> lightTheme;
         file >> sfx;
         file >> isMusicPlaying;
@@ -540,29 +809,29 @@ int settings(RenderWindow& window) {
 
     file.close();
 
-    if (!isMusicPlaying)
+    if(!isMusicPlaying)
         soundIcon.SetTexture("mute.png");
 
-    if (!lightTheme) {
+    if(!lightTheme) {
         themeTexture.SetTexture("moon.png");
         themeTexture.setScale(window, Vector2f(1, 2));
         background.SetTexture("4096 bg(dark).png");
     }
     // Main loop that continues until the window is closed
-    while (window.isOpen()) {
+    while(window.isOpen()) {
         // Create an event object to hold events
         Event event;
 
         // Process all events
-        while (window.pollEvent(event)) {
+        while(window.pollEvent(event)) {
             // Check for specific event types
-            if (event.type == Event::Closed) { // If the close button is pressed
+            if(event.type == Event::Closed) { // If the close button is pressed
                 window.close(); // Close the window
             }
-            else if (event.type == Event::MouseButtonPressed) {
-                if (event.mouseButton.button == Mouse::Left) {
-                    if (themeButton.coursorInbound(window)) {
-                        if (!lightTheme) {
+            else if(event.type == Event::MouseButtonPressed) {
+                if(event.mouseButton.button == Mouse::Left) {
+                    if(themeButton.cursorInbound(window)) {
+                        if(!lightTheme) {
                             themeTexture.SetTexture("sun.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 1, "1");
@@ -576,8 +845,8 @@ int settings(RenderWindow& window) {
                         }
                         lightTheme = !lightTheme;
                     }
-                    else if (sfxbutton.coursorInbound(window)) {
-                        if (sfx) {
+                    else if(sfxbutton.cursorInbound(window)) {
+                        if(sfx) {
                             replaceLine("settings.dat", 2, "0");
                             sfxbutton.setText("Sound Effects: Off");
                         }
@@ -587,8 +856,8 @@ int settings(RenderWindow& window) {
                         }
                         sfx = !sfx;
                     }
-                    else if (sound.coursorInbound(window)) {
-                        if (isMusicPlaying) {
+                    else if(sound.cursorInbound(window)) {
+                        if(isMusicPlaying) {
                             bgmusic.pause(); // Pause the music
                             soundIcon.SetTexture("mute.png");
                             replaceLine("settings.dat", 3, "0");
@@ -600,10 +869,10 @@ int settings(RenderWindow& window) {
                         }
                         isMusicPlaying = !isMusicPlaying; // Toggle the music status
                     }
-                    else if (purge.coursorInbound(window)) {
-                        window.close();
+                    else if(purge.cursorInbound(window)) {
+                        purgeHighscores();
                     }
-                    else if (backbutton.coursorInbound(window)) {
+                    else if(backbutton.cursorInbound(window)) {
                         return 0;
                     }
                 }
@@ -664,7 +933,7 @@ void firstScreen(RenderWindow& window) {
 
     fstream file("settings.dat", ios::in);
 
-    if (file.is_open()) {
+    if(file.is_open()) {
         file >> lightTheme;
         file >> sfx;
         file >> isMusicPlaying;
@@ -680,61 +949,61 @@ void firstScreen(RenderWindow& window) {
 
     // Music
 
-    if (!bgmusic.openFromFile("bg.ogg"))
+    if(!bgmusic.openFromFile("bg.ogg"))
         // Handle error if audio fails to load
         return;
-    else if (isMusicPlaying)
+    else if(isMusicPlaying)
         bgmusic.play();
 
-    if (!lightTheme)
+    if(!lightTheme)
         background.SetTexture("4096 bg(dark).png");
 
     // Open the next window
-    while (window.isOpen()) {
+    while(window.isOpen()) {
 
         // Handle events for the next window (if needed)
         Event Event;
 
-        if (playbutton.coursorInbound(window))
+        if(playbutton.cursorInbound(window))
             playbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             playbutton.setBackColor(Color(6, 46, 81));
 
-        if (lbbutton.coursorInbound(window))
+        if(lbbutton.cursorInbound(window))
             lbbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             lbbutton.setBackColor(Color(6, 46, 81));
 
-        if (settingbutton.coursorInbound(window))
+        if(settingbutton.cursorInbound(window))
             settingbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
         else
             settingbutton.setBackColor(Color(6, 46, 81));
 
-        while (window.pollEvent(Event)) {
+        while(window.pollEvent(Event)) {
             // Handle events for the next window
-            if (Event.type == Event::Closed)
+            if(Event.type == Event::Closed)
                 window.close();
 
-            if (Event.type == Event::MouseButtonPressed) {
-                if (Event.mouseButton.button == Mouse::Left) {
-                    if (playbutton.coursorInbound(window)) {
+            if(Event.type == Event::MouseButtonPressed) {
+                if(Event.mouseButton.button == Mouse::Left) {
+                    if(playbutton.cursorInbound(window)) {
                         mainMenu(window, lightTheme, sfx);
                     }
-                    else if (lbbutton.coursorInbound(window)) {
-                        beforeLeaderboard(window);
+                    else if(lbbutton.cursorInbound(window)) {
+                        beforeLeaderboard(window, lightTheme);
                     }
 
-                    else if (settingbutton.coursorInbound(window)) {
+                    else if(settingbutton.cursorInbound(window)) {
                         settings(window);
                         file.open("settings.dat", ios::in);
                         file >> lightTheme;
                         file >> sfx;
                         file.close();
-                        if (lightTheme)
+                        if(lightTheme)
                             background.SetTexture("4096 bg(light).png");
                         else
                             background.SetTexture("4096 bg(dark).png");
-                        if (sfx)
+                        if(sfx)
                             cout << "Sound Effects: On" << endl;
                         else
                             cout << "Sound Effects: Off" << endl;
