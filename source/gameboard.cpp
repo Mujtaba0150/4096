@@ -708,13 +708,21 @@ struct gameboard {
 
             while(window.pollEvent(event)) // Loop to manage when something changes in the console
             {
-                for(int i = 0; i < size; ++i) {
-                    for(int j = 0; j < size; ++j) {
-                        buttons[i][j].setText(boardValues(arr[i][j]));
-                        buttons[i][j].setBackColor(tileColor(size, i, j, multi));
+                if(event.type == Event::MouseMoved) {
+                    if(newgame.cursorInbound(window)) {
+                        newgame.setBackColor(Color(137, 70, 38));
+                    }
+                    else {
+                        newgame.setBackColor(Color(160, 82, 45));
+                    }
+                    if(back.cursorInbound(window)) {
+                        back.setBackColor(Color(137, 70, 38));
+                    }
+                    else {
+                        back.setBackColor(Color(160, 82, 45));
                     }
                 }
-                if(event.type == Event::Closed) {
+                else if(event.type == Event::Closed) {
                     window.close();
                 }
                 else if(event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
@@ -765,6 +773,12 @@ struct gameboard {
                             return newGame; // End the game
                         }
                     }
+                    for(int i = 0; i < size; ++i) {
+                        for(int j = 0; j < size; ++j) {
+                            buttons[i][j].setText(boardValues(arr[i][j]));
+                            buttons[i][j].setBackColor(tileColor(size, i, j, multi));
+                        }
+                    }
                 }
                 window.clear();
                 background.drawTo(window);
@@ -790,7 +804,7 @@ struct gameboard {
         return false;
     }
 
-    private:
+private:
     string fileName;
     int size;
     bool newGame = false;
