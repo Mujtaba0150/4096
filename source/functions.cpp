@@ -38,7 +38,7 @@ void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
     Button rankButt(window, "RANK", Vector2f(8, 7), 24, Color(6, 46, 81, 190), Color::White);
     Button nameButton(window, "NAME", Vector2f(19, 7), 24, Color(6, 46, 81, 190), Color::White);
     Button scoreButton(window, "SCORE", Vector2f(8, 7), 24, Color(6, 46, 81, 190), Color::White);
-    Button back(window, "BACK", Vector2f(12, 7), 24, Color(6, 46, 81, 190), Color::White);
+    Button back(window, "BACK", Vector2f(12, 7), 24, Color(6, 46, 81), Color::White);
     //Rank buttons: (takes up the complete width of each transparent button placeholder)
     Button rank1(window, "", Vector2f(36, 7), 24, Color(154, 197, 219), Color::White);
     Button rank2(window, "", Vector2f(36, 7), 24, Color(238, 201, 0), Color::White);
@@ -136,20 +136,25 @@ void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
     while(window.isOpen()) {
         Event event; // Making an object "event" of the Event class
 
-        while(window.pollEvent(event)) // Loop to manage when something changes in the console
-        {
-            if(event.type == Event::Closed) {
+
+        while(window.pollEvent(event)) { // Loop to manage when something changes in the console
+            if(event.type == Event::MouseMoved) {
+                if(back.cursorInbound(window)) {
+                    back.setBackColor(Color(1, 40, 45));
+                }
+                else {
+                    back.setBackColor(Color(6, 46, 81));
+                }
+            }
+            else if(event.type == Event::Closed) {
                 window.close();
             }
 
-            else if(event.type == Event::MouseButtonPressed) // Checking if mouse was clicked
-            {
+            else if(event.type == Event::MouseButtonPressed) { // Checking if mouse was clicked
 
-                if(event.mouseButton.button == Mouse::Left) // Checking if the left mouse button was clicked
-                {
+                if(event.mouseButton.button == Mouse::Left) { // Checking if the left mouse button was clicked
 
-                    if(back.cursorInbound(window)) // Using self defined function to check if the button was clicked
-                    {
+                    if(back.cursorInbound(window)) { // Using self defined function to check if the button was clicked
                         return; // Closes the window
                     }
                 }
@@ -243,8 +248,37 @@ void beforeLeaderboard(RenderWindow& window, bool lightTheme) {
     while(window.isOpen()) {
         Event event;
 
+
         while(window.pollEvent(event)) {
-            if(event.type == Event::Closed) {
+            if(event.type == Event::MouseMoved) {
+                if(four.cursorInbound(window)) {
+                    four.setBackColor(Color(3, 25, 45));
+                }
+                else {
+                    four.setBackColor(Color(6, 46, 81));
+                }
+
+                if(six.cursorInbound(window)) {
+                    six.setBackColor(Color(35, 30, 73));
+                }
+                else {
+                    six.setBackColor(Color(60, 52, 124));
+                }
+
+                if(eight.cursorInbound(window)) {
+                    eight.setBackColor(Color(73, 7, 7));
+                }
+                else {
+                    eight.setBackColor(Color(125, 13, 13));
+                }
+                if(back.cursorInbound(window)) {
+                    back.setBackColor(Color(1, 40, 45));
+                }
+                else {
+                    back.setBackColor(Color(6, 46, 81));
+                }
+            }
+            else if(event.type == Event::Closed) {
                 window.close();
             }
 
@@ -373,7 +407,7 @@ void help(RenderWindow& window) {
             }
             else if(event.type == Event::MouseButtonPressed) {
                 if(event.mouseButton.button == Mouse::Left) {
-                    // if (sound.coursorInbound(window)) {}
+                    // if (soundButton.coursorInbound(window)) {}
 
                 }
 
@@ -497,8 +531,23 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
 
         Event event; // Making an object "event" of the Event class
 
+
         while(window.pollEvent(event)) { // Loop to manage when something changes in the console
-            if(event.type == Event::Closed) {
+            if(event.type == Event::MouseMoved) {
+                if(backbutton.cursorInbound(window)) {
+                    backbutton.setBackColor(selectedButtonColor);
+                }
+                else {
+                    backbutton.setBackColor(defaultButtonColor);
+                }
+                if(nextbutton.cursorInbound(window)) {
+                    nextbutton.setBackColor(selectedButtonColor);
+                }
+                else {
+                    nextbutton.setBackColor(defaultButtonColor);
+                }
+            }
+            else if(event.type == Event::Closed) {
                 window.close();
             }
 
@@ -753,30 +802,30 @@ int settings(RenderWindow& window) {
     Picture themeTexture("sun.png");
     Picture background("4096 bg(light).png");
 
-    Button soundbg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
-    Button modebg(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
-    Button settings(window, "Settings", Vector2f(21, 15), 40, Color(6, 46, 81, 190), Color::White, 10, 5);
-    Button sound(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
+    Button soundBackground(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button themeBackground(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
+    Button settings(window, "Settings", Vector2f(21, 15), 40, Color(6, 46, 81), Color::White, 10, 5);
+    Button soundButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
     Button themeButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
     Button purge(window, "Purge All Highscores", Vector2f(16, 5), 30, Color(212, 0, 0), Color::White);
-    Button sfxbutton(window, "Sound Effects", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White);
+    Button sfxbutton(window, "Sound Effects: On", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White);
     Button backbutton(window, "Back", Vector2f(20, 5), 30, Color(6, 46, 81), Color::White);
 
     Font font;
     font.loadFromFile("Baloo.ttf");
     settings.setFont(font);
-    soundbg.setFont(font);
-    sound.setFont(font);
+    soundBackground.setFont(font);
+    soundButton.setFont(font);
     themeButton.setFont(font);
     purge.setFont(font);
     sfxbutton.setFont(font);
     backbutton.setFont(font);
 
     settings.setPosition(window, Vector2f(50, 35));
-    sound.setPosition(window, Vector2f(58.5, 48.5));
-    soundbg.setPosition(window, Vector2f(58.5, 48.5));
+    soundButton.setPosition(window, Vector2f(58.5, 48.5));
+    soundBackground.setPosition(window, Vector2f(58.5, 48.5));
     themeButton.setPosition(window, Vector2f(41.5, 54.8));
-    modebg.setPosition(window, Vector2f(41.5, 54.8));
+    themeBackground.setPosition(window, Vector2f(41.5, 54.8));
     purge.setPosition(window, Vector2f(52, 54.8));
     sfxbutton.setPosition(window, Vector2f(48, 48.5));
     backbutton.setPosition(window, Vector2f(50, 61.1));
@@ -817,6 +866,9 @@ int settings(RenderWindow& window) {
         themeTexture.setScale(window, Vector2f(1, 2));
         background.SetTexture("4096 bg(dark).png");
     }
+    if(!sfx)
+        sfxbutton.setText("Sound Effects: Off");
+
     // Main loop that continues until the window is closed
     while(window.isOpen()) {
         // Create an event object to hold events
@@ -824,8 +876,42 @@ int settings(RenderWindow& window) {
 
         // Process all events
         while(window.pollEvent(event)) {
+            if(event.type == Event::MouseMoved) {
+                if(soundBackground.cursorInbound(window)) {
+                    soundBackground.setBackColor(Color(3, 25, 45));
+                }
+                else {
+                    soundBackground.setBackColor(Color(6, 46, 81));
+                }
+
+                if(themeBackground.cursorInbound(window)) {
+                    themeBackground.setBackColor(Color(3, 25, 45));
+                }
+                else {
+                    themeBackground.setBackColor(Color(6, 46, 81));
+                }
+
+                if(sfxbutton.cursorInbound(window)) {
+                    sfxbutton.setBackColor(Color(3, 25, 45));
+                }
+                else {
+                    sfxbutton.setBackColor(Color(6, 46, 81));
+                }
+                if(backbutton.cursorInbound(window)) {
+                    backbutton.setBackColor(Color(3, 25, 45));
+                }
+                else {
+                    backbutton.setBackColor(Color(6, 46, 81));
+                }
+                if(purge.cursorInbound(window)) {
+                    purge.setBackColor(Color(161, 0, 0));
+                }
+                else {
+                    purge.setBackColor(Color(212, 0, 0));
+                }
+            }
             // Check for specific event types
-            if(event.type == Event::Closed) { // If the close button is pressed
+            else if(event.type == Event::Closed) { // If the close button is pressed
                 window.close(); // Close the window
             }
             else if(event.type == Event::MouseButtonPressed) {
@@ -856,7 +942,7 @@ int settings(RenderWindow& window) {
                         }
                         sfx = !sfx;
                     }
-                    else if(sound.cursorInbound(window)) {
+                    else if(soundButton.cursorInbound(window)) {
                         if(isMusicPlaying) {
                             bgmusic.pause(); // Pause the music
                             soundIcon.SetTexture("mute.png");
@@ -882,12 +968,12 @@ int settings(RenderWindow& window) {
 
 
         background.drawTo(window);
-        soundbg.drawTo(window);
-        modebg.drawTo(window);
+        soundBackground.drawTo(window);
+        themeBackground.drawTo(window);
 
         // Buttons:
         settings.drawTo(window);
-        sound.drawTo(window);
+        soundButton.drawTo(window);
         themeButton.drawTo(window);
         purge.drawTo(window);
         sfxbutton.drawTo(window);
@@ -962,30 +1048,32 @@ void firstScreen(RenderWindow& window) {
     while(window.isOpen()) {
 
         // Handle events for the next window (if needed)
-        Event Event;
+        Event event;
 
-        if(playbutton.cursorInbound(window))
-            playbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
-        else
-            playbutton.setBackColor(Color(6, 46, 81));
 
-        if(lbbutton.cursorInbound(window))
-            lbbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
-        else
-            lbbutton.setBackColor(Color(6, 46, 81));
+        while(window.pollEvent(event)) {
+            if(event.type == Event::MouseMoved) {
+                if(playbutton.cursorInbound(window))
+                    playbutton.setBackColor(Color(3, 25, 45)); // Change button color to indicate hover
+                else
+                    playbutton.setBackColor(Color(6, 46, 81));
 
-        if(settingbutton.cursorInbound(window))
-            settingbutton.setBackColor(Color(2, 17, 29)); // Change button color to indicate hover
-        else
-            settingbutton.setBackColor(Color(6, 46, 81));
+                if(lbbutton.cursorInbound(window))
+                    lbbutton.setBackColor(Color(3, 25, 45)); // Change button color to indicate hover
+                else
+                    lbbutton.setBackColor(Color(6, 46, 81));
 
-        while(window.pollEvent(Event)) {
+                if(settingbutton.cursorInbound(window))
+                    settingbutton.setBackColor(Color(3, 25, 45)); // Change button color to indicate hover
+                else
+                    settingbutton.setBackColor(Color(6, 46, 81));
+            }
             // Handle events for the next window
-            if(Event.type == Event::Closed)
+            else if(event.type == Event::Closed)
                 window.close();
 
-            if(Event.type == Event::MouseButtonPressed) {
-                if(Event.mouseButton.button == Mouse::Left) {
+            if(event.type == Event::MouseButtonPressed) {
+                if(event.mouseButton.button == Mouse::Left) {
                     if(playbutton.cursorInbound(window)) {
                         mainMenu(window, lightTheme, sfx);
                     }
@@ -1003,10 +1091,6 @@ void firstScreen(RenderWindow& window) {
                             background.SetTexture("4096 bg(light).png");
                         else
                             background.SetTexture("4096 bg(dark).png");
-                        if(sfx)
-                            cout << "Sound Effects: On" << endl;
-                        else
-                            cout << "Sound Effects: Off" << endl;
                     }
                 }
             }
