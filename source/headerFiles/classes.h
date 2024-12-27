@@ -5,7 +5,6 @@ using namespace std;
 using namespace sf;
 
 /** @brief Class for creating a rectangular button
- * @details The button is created with a text and a background color. The text is automatically adjusted to fit the button size and is centered. The button can be positioned anywhere on the window.
  * @param window Window to which the button belongs
  * @param t Text to be displayed on the button
  * @param size Size of the button
@@ -16,7 +15,7 @@ using namespace sf;
  * @example Button button(window, "Click me", Vector2f(10.0f, 5.0f), 20, Color::Blue, Color::White);
  */
 class Button {
-    public:
+public:
     Button(RenderWindow& window, string t, Vector2f size, int charSize, Color bgColor, Color textColor, float xOffset = 0.0f, float yOffset = 0.0f, float padding = 5.0f)
         : padding(padding), charSize(charSize), xOffset(xOffset), yOffset(yOffset) {
         text.setString(t);
@@ -86,20 +85,31 @@ class Button {
         adjustTextSize();
         centerText();
     }
-
+    /**
+     * @return Position of the button
+    */
     Vector2f getPosition() const {
         return button.getPosition();
     }
-
+    /**
+     * @return Size of the button
+    */
     Vector2f getSize() const {
         return button.getSize();
     }
-
+    /**
+     * @brief Draw the button to the window
+     * @param window Window to which the button belongs
+    */
     void drawTo(RenderWindow& window) {
         window.draw(button);
         window.draw(text);
     }
-
+    /**
+     * @brief Check if the cursor is within the button
+     * @param window Window to which the button belongs
+     * @return True if the cursor is within the button, false otherwise
+    */
     bool cursorInbound(RenderWindow& window) {
         Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
         return button.getGlobalBounds().contains(mousePos);
@@ -111,12 +121,14 @@ class Button {
         float yPos = (pos.y + button.getLocalBounds().height / 2) - (text.getLocalBounds().height / 2);
         text.setPosition(xPos, yPos);
     }
-
+    /**
+     * @return Text of the button
+    */
     Text getText() {
         return text;
     }
 
-    private:
+private:
     RectangleShape button;
     Text text;
     float padding;
@@ -151,10 +163,12 @@ class Button {
     }
 };
 class Picture {
-    public:
+public:
     Picture(string filePath) {
         texture.loadFromFile(filePath);
+        texture.setSmooth(true);
         sprite.setTexture(texture);
+        sprite.setTextureRect(IntRect(0, 0, texture.getSize().x, texture.getSize().y));
     }
     void SetTexture(string filePath) {
         texture.loadFromFile(filePath);
@@ -201,7 +215,7 @@ class Picture {
         sprite.rotate(angle);
     }
 
-    private:
+private:
     Texture texture;
     Sprite sprite;
 };
