@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <math.h>
 #include <unistd.h>
-#include "classes.cpp"
+#include "classes.h"
 
 using namespace std;
 using namespace sf;
@@ -510,7 +510,7 @@ struct gameboard {
 
 
         Font font;
-        font.loadFromFile("Baloo.ttf");
+        font.loadFromFile("resources/Baloo.ttf");
         gameOver.setFont(font);
         playAgain.setFont(font);
         mainMenu.setFont(font);
@@ -583,9 +583,9 @@ struct gameboard {
         Button score(window, to_string(scoreValue), Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
         Button best(window, highscore, Vector2f(9, 7), 24, Color(160, 82, 45), Color::White);
 
-        Picture background("4096 bg(light).png");
+        Picture background("resources/4096 bg(light).png");
         if(!lightTheme) {
-            background.SetTexture("4096 bg(dark).png");
+            background.SetTexture("resources/4096 bg(dark).png");
         }
 
         background.setScale(window, Vector2f(51, 50));
@@ -609,7 +609,7 @@ struct gameboard {
         }
 
         Font font;
-        font.loadFromFile("Baloo.ttf");
+        font.loadFromFile("resources/Baloo.ttf");
         //gameOver.setFont(font);
         name.setFont(font);
         boardbackground.setFont(font);

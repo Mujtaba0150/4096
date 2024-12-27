@@ -87,4 +87,7 @@
         }
     ],
     "inline-bookmarks.default.words.red": "//!",
+    "files.associations": {
+        "fstream": "cpp"
+    },
 }

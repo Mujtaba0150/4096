@@ -5,8 +5,9 @@
 #include <fstream>
 #include <string>
 #include <iostream>
-#include "classes.cpp"
-#include "gameboard.cpp"
+#include "classes.h"
+#include "gameboard.h"
+#include "functions.h"
 
 using namespace std;
 using namespace sf;
@@ -65,10 +66,10 @@ void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
     Button s5(window, scores[4], Vector2f(7, 7), 25, Color::Transparent, Color::White);
 
     // To display bg image
-    Picture background("4096 bg(light).png");
+    Picture background("resources/4096 bg(light).png");
 
     if(!lightTheme)
-        background.SetTexture("4096 bg(dark).png");
+        background.SetTexture("resources/4096 bg(dark).png");
 
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
@@ -77,7 +78,7 @@ void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
     Font font;
 
     // Loading the font for the button
-    font.loadFromFile("Baloo.ttf");
+    font.loadFromFile("resources/Baloo.ttf");
 
     // Setting the font to the button
     rankButt.setFont(font);
@@ -195,9 +196,9 @@ void leaderboard(RenderWindow& window, string fileName, bool lightTheme) {
 
 void beforeLeaderboard(RenderWindow& window, bool lightTheme) {
 
-    Picture preview4x4("grid4_preview.png");
-    Picture preview6x6("grid6_preview.png");
-    Picture preview8x8("grid8_preview.png");
+    Picture preview4x4("resources/grid4_preview.png");
+    Picture preview6x6("resources/grid6_preview.png");
+    Picture preview8x8("resources/grid8_preview.png");
     // "Text displayed on the button", Vector2f(buttonSizeX, buttonSizeY), Font Size, Color::buttonColor, Color::textColor
 
     // Creating an object of the Button class named "button" and specifying its properties
@@ -207,12 +208,12 @@ void beforeLeaderboard(RenderWindow& window, bool lightTheme) {
     Button back(window, "Back", Vector2f(12, 7), 24, Color(3, 85, 97), Color(255, 255, 255));
 
     //To display bg image
-    Picture background("4096 bg(light).png");
+    Picture background("resources/4096 bg(light).png");
 
     if(!lightTheme)
-        background.SetTexture("4096 bg(dark).png");
+        background.SetTexture("resources/4096 bg(dark).png");
 
-    // background.SetTexture("4096 bg(light).png");
+    // background.SetTexture("resources/4096 bg(light).png");
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
@@ -220,7 +221,7 @@ void beforeLeaderboard(RenderWindow& window, bool lightTheme) {
     Font font;
 
     // Loading the font for the button
-    font.loadFromFile("Baloo.ttf");
+    font.loadFromFile("resources/Baloo.ttf");
 
     // Setting the font to the button
     four.setFont(font);
@@ -374,22 +375,22 @@ void help(RenderWindow& window) {
     Button instructions(window, "Use your keyboard arrow \nkeys to move the tiles.\nWhen two tiles of the same \nnumbers touch, they merge into \nONE!\nJOIN THE NUMBERS AND GET \nTO THE HIGHEST TILE!", Vector2f(21, 28), 25, Color(6, 46, 81, 190), Color::White, 5, 10);
 
     Font font;
-    font.loadFromFile("Baloo.ttf");
+    font.loadFromFile("resources/Baloo.ttf");
     htp.setFont(font);
     instructions.setFont(font);
 
     htp.setPosition(window, Vector2f(36, 33));
     instructions.setPosition(window, Vector2f(36, 56));
 
-    Picture background("4096 bg(light).png");
+    Picture background("resources/4096 bg(light).png");
 
-    background.SetTexture("4096 bg(light).png");
+    background.SetTexture("resources/4096 bg(light).png");
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
-    Picture disp("grid4_preview.png");
+    Picture disp("resources/grid4_preview.png");
 
-    disp.SetTexture("grid4_preview.png");
+    disp.SetTexture("resources/grid4_preview.png");
     disp.setScale(window, Vector2f(14, 25));
     disp.setPosition(window, Vector2f(50, 24));
 
@@ -455,9 +456,9 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
                             Button(window,"7", Vector2f(9, 7), 30, defaultButtonColor, Color::White)};
 
     // To display bg image
-    Picture background("4096 bg(light).png");
+    Picture background("resources/4096 bg(light).png");
     if(!lightTheme)
-        background.SetTexture("4096 bg(dark).png");
+        background.SetTexture("resources/4096 bg(dark).png");
 
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
@@ -469,7 +470,7 @@ void mainMenu(RenderWindow& window, int lightTheme, int sfx) {
     RectangleShape textBoxBackgroundOld;
 
     Font font;                      // Making an object of the Font class called "font"
-    font.loadFromFile("Baloo.ttf"); // Loading the font for the button
+    font.loadFromFile("resources/Baloo.ttf"); // Loading the font for the button
     backbutton.setFont(font);       // Setting the font to the button
     nextbutton.setFont(font);
     grid4button.setFont(font);
@@ -767,7 +768,8 @@ int replaceLine(const std::string& filename, int lineNumber, const std::string& 
 }
 
 void purgeHighscores() {
-    std::ofstream outfile("leaderboard4x4.dat");
+    std::ofstream outfile;
+    outfile.open("leaderboard4x4.dat");
     if(outfile.is_open()) {
         outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
         outfile.close();
@@ -775,7 +777,7 @@ void purgeHighscores() {
     else {
         cout << "Error opening file" << endl;
     }
-    outfile.open("leaderboard6x6.dat");
+    outfile.open("resources/leaderboard6x6.dat");
     if(outfile.is_open()) {
         outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
         outfile.close();
@@ -783,7 +785,7 @@ void purgeHighscores() {
     else {
         cout << "Error opening file" << endl;
     }
-    outfile.open("leaderboard8x8.dat");
+    outfile.open("resources/leaderboard8x8.dat");
     if(outfile.is_open()) {
         outfile << "0" << endl << "0" << endl << "0" << endl << "0" << endl << "0" << endl << endl << endl << endl << endl << endl << endl << endl;
         outfile.close();
@@ -798,9 +800,9 @@ int settings(RenderWindow& window) {
 
     ifstream file("settings.dat");
     // Load textures for icons
-    Picture soundIcon("unmute.png");
-    Picture themeTexture("sun.png");
-    Picture background("4096 bg(light).png");
+    Picture soundIcon("resources/unmute.png");
+    Picture themeTexture("resources/sun.png");
+    Picture background("resources/4096 bg(light).png");
 
     Button soundBackground(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
     Button themeBackground(window, "", Vector2f(3, 5), 30, Color(6, 46, 81), Color::White);
@@ -808,11 +810,11 @@ int settings(RenderWindow& window) {
     Button soundButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
     Button themeButton(window, "", Vector2f(3, 5), 30, Color::Transparent, Color::White);
     Button purge(window, "Purge All Highscores", Vector2f(16, 5), 30, Color(212, 0, 0), Color::White);
-    Button sfxbutton(window, "Sound Effects: On", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White);
+    Button sfxbutton(window, "Sound Effects: On", Vector2f(16, 5), 30, Color(6, 46, 81), Color::White, 0, 0, 10);
     Button backbutton(window, "Back", Vector2f(20, 5), 30, Color(6, 46, 81), Color::White);
 
     Font font;
-    font.loadFromFile("Baloo.ttf");
+    font.loadFromFile("resources/Baloo.ttf");
     settings.setFont(font);
     soundBackground.setFont(font);
     soundButton.setFont(font);
@@ -859,12 +861,12 @@ int settings(RenderWindow& window) {
     file.close();
 
     if(!isMusicPlaying)
-        soundIcon.SetTexture("mute.png");
+        soundIcon.SetTexture("resources/mute.png");
 
     if(!lightTheme) {
-        themeTexture.SetTexture("moon.png");
+        themeTexture.SetTexture("resources/moon.png");
         themeTexture.setScale(window, Vector2f(1, 2));
-        background.SetTexture("4096 bg(dark).png");
+        background.SetTexture("resources/4096 bg(dark).png");
     }
     if(!sfx)
         sfxbutton.setText("Sound Effects: Off");
@@ -918,16 +920,16 @@ int settings(RenderWindow& window) {
                 if(event.mouseButton.button == Mouse::Left) {
                     if(themeButton.cursorInbound(window)) {
                         if(!lightTheme) {
-                            themeTexture.SetTexture("sun.png");
+                            themeTexture.SetTexture("resources/sun.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 1, "1");
-                            background.SetTexture("4096 bg(light).png");
+                            background.SetTexture("resources/4096 bg(light).png");
                         }
                         else {
-                            themeTexture.SetTexture("moon.png");
+                            themeTexture.SetTexture("resources/moon.png");
                             themeTexture.setScale(window, Vector2f(1, 2));
                             replaceLine("settings.dat", 1, "0");
-                            background.SetTexture("4096 bg(dark).png");
+                            background.SetTexture("resources/4096 bg(dark).png");
                         }
                         lightTheme = !lightTheme;
                     }
@@ -945,12 +947,12 @@ int settings(RenderWindow& window) {
                     else if(soundButton.cursorInbound(window)) {
                         if(isMusicPlaying) {
                             bgmusic.pause(); // Pause the music
-                            soundIcon.SetTexture("mute.png");
+                            soundIcon.SetTexture("resources/mute.png");
                             replaceLine("settings.dat", 3, "0");
                         }
                         else {
                             bgmusic.play(); // Resume the music
-                            soundIcon.SetTexture("unmute.png");
+                            soundIcon.SetTexture("resources/unmute.png");
                             replaceLine("settings.dat", 3, "1");
                         }
                         isMusicPlaying = !isMusicPlaying; // Toggle the music status
@@ -998,13 +1000,13 @@ void firstScreen(RenderWindow& window) {
     Button settingbutton(window, "SETTINGS", Vector2f(22, 7), 24, Color(6, 46, 81), Color::White);
 
     //To display bg image
-    Picture background("4096 bg(light).png");
+    Picture background("resources/4096 bg(light).png");
 
     background.setScale(window, Vector2f(51, 50));
     background.setPosition(window, Vector2f(0, 0));
 
     Font font;
-    font.loadFromFile("Baloo.ttf");
+    font.loadFromFile("resources/Baloo.ttf");
     playbutton.setFont(font);
     lbbutton.setFont(font);
     settingbutton.setFont(font);
@@ -1035,14 +1037,14 @@ void firstScreen(RenderWindow& window) {
 
     // Music
 
-    if(!bgmusic.openFromFile("bg.ogg"))
+    if(!bgmusic.openFromFile("resources/bg.ogg"))
         // Handle error if audio fails to load
         return;
     else if(isMusicPlaying)
         bgmusic.play();
 
     if(!lightTheme)
-        background.SetTexture("4096 bg(dark).png");
+        background.SetTexture("resources/4096 bg(dark).png");
 
     // Open the next window
     while(window.isOpen()) {
@@ -1088,9 +1090,9 @@ void firstScreen(RenderWindow& window) {
                         file >> sfx;
                         file.close();
                         if(lightTheme)
-                            background.SetTexture("4096 bg(light).png");
+                            background.SetTexture("resources/4096 bg(light).png");
                         else
-                            background.SetTexture("4096 bg(dark).png");
+                            background.SetTexture("resources/4096 bg(dark).png");
                     }
                 }
             }
